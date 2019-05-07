@@ -411,7 +411,14 @@ code_kivy = """
                 text: 'Ok'
                 size: '30sp', '30sp'
                 on_press: root.change_size_point(float(text_change.text)) 
-                    
+                
+            ButtonRHO:
+                text: '|  |'
+                size: '30sp', '30sp'
+                on_press: root.select(self)
+                press: False
+                
+                
                 
         BoxLayout:
             canvas.before:
@@ -524,6 +531,30 @@ class PopUpExecuteRhoplus(Popup):
         window.title = 'RhoplusGUI -- ' + self.parameters['Zfile']
         app.current = 'graphic'
         graphic.init_rho(self.parameters)
+
+
+class BoxSelectLayout(FloatLayout):
+    def __init__(self, parent, **kwargs):
+        super(BoxSelectLayout, self).__init__(**kwargs)
+
+
+        self.size = parent.size
+        self.pos = parent.pos
+
+        self.bind(on_touch_down=self.on)
+        self.bind(on_touch_up=self.up)
+        self.bind(on_touch_move=self.move)
+
+
+    def on(self, instance, value):
+        print('on')
+
+    def up(self, instance, value):
+        print('up')
+
+    def move(self, instance, value):
+        print('move')
+
 
 
 class MenuInit(Screen):
@@ -1509,8 +1540,19 @@ class Graphic(Screen):
         self.pop_merge.open()
 
 
+    def select(self, bt):
 
-
+        if not bt.press:
+            bt.background_color = [1., 0., 0., 1.]
+            bt.press = True
+            self.lay_select = BoxSelectLayout(self.ids.plot)
+            self.ids.plot.add_widget(self.lay_select)
+            Window.set_system_cursor('crosshair')
+        else:
+            bt.background_color = [0.00784, 0.35686, 0.90980, 1.]
+            bt.press = False
+            self.ids.plot.remove_widget(self.lay_select)
+            Window.set_system_cursor('arrow')
 
     def merge_rsp_jones(self):
         pass
