@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22546068-54d1-4455-90e5-7d2fc8d2a599" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/bor600a/xy_bor600a.out" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/xy_bor600a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/xy_bor600a.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/xy_bor600a.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/xy_bor600a_NM" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/xy_bor600a_NM" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rhoplusGUI" beforeDir="false" afterPath="$PROJECT_DIR$/rhoplusGUI" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tes_cursor.py" beforeDir="false" afterPath="$PROJECT_DIR$/tes_cursor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,73 +11,22 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <splitter split-orientation="horizontal" split-proportion="0.5">
-            <split-first>
-              <leaf>
-                <file pinned="false" current-in-tab="true">
-                  <entry file="file://$PROJECT_DIR$/rhoplusGUI">
-                    <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="690">
-                        <caret line="417" column="42" selection-start-line="417" selection-start-column="42" selection-end-line="417" selection-end-column="42" />
-                        <folding>
-                          <element signature="e#468#478#0" expanded="true" />
-                        </folding>
-                      </state>
-                    </provider>
-                  </entry>
-                </file>
-              </leaf>
-            </split-first>
-            <split-second>
-              <leaf>
-                <file pinned="false" current-in-tab="true">
-                  <entry file="file://$PROJECT_DIR$/rhoplusGUI_v0">
-                    <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="906">
-                        <caret line="915" selection-start-line="915" selection-end-line="915" />
-                        <folding>
-                          <element signature="e#100#110#0" expanded="true" />
-                          <element signature="e#14874#15246#0" />
-                          <element signature="e#33719#37609#0" />
-                        </folding>
-                      </state>
-                    </provider>
-                  </entry>
-                </file>
-              </leaf>
-            </split-second>
-          </splitter>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.72804314">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/rhoplusGUI">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="396">
-                  <caret line="549" selection-start-line="549" selection-end-line="549" />
+                <state relative-caret-position="213">
+                  <caret line="597" lean-forward="true" selection-start-line="597" selection-end-line="597" />
                   <folding>
                     <element signature="e#468#478#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/tes_cursor.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-108">
-                  <caret column="18" selection-start-column="18" selection-end-column="18" />
-                  <folding>
-                    <element signature="e#16#26#0" expanded="true" />
+                    <element signature="e#14923#15571#0" />
+                    <element signature="e#15595#21426#0" />
+                    <element signature="e#21473#32403#0" />
+                    <element signature="e#32461#33007#0" />
+                    <element signature="e#33048#38028#0" />
                   </folding>
                 </state>
               </provider>
@@ -93,16 +39,14 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/rhoplusGUI">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="409">
-                  <caret line="1549" column="37" lean-forward="true" selection-start-line="1549" selection-start-column="37" selection-end-line="1549" selection-end-column="37" />
+                <state relative-caret-position="3978">
+                  <caret line="1623" lean-forward="true" selection-start-line="1623" selection-end-line="1623" />
                   <folding>
                     <element signature="e#468#478#0" expanded="true" />
-                    <element signature="e#40956#41974#0" />
-                    <element signature="e#42032#42122#0" />
-                    <element signature="e#42159#42217#0" />
-                    <element signature="e#42256#42271#0" />
-                    <element signature="e#42318#42621#0" />
-                    <element signature="e#42666#42670#0" />
+                    <element signature="e#41646#42664#0" />
+                    <element signature="e#42722#42812#0" />
+                    <element signature="e#42849#42907#0" />
+                    <element signature="e#43008#43311#0" />
                   </folding>
                 </state>
               </provider>
@@ -138,8 +82,8 @@
         <option value="$PROJECT_DIR$/rhoplusGUI.py" />
         <option value="$PROJECT_DIR$/rhoplusGUI_v0" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/rhoplusGUI" />
         <option value="$PROJECT_DIR$/tes_cursor.py" />
+        <option value="$PROJECT_DIR$/rhoplusGUI" />
       </list>
     </option>
   </component>
@@ -155,7 +99,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -167,6 +110,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -249,15 +193,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="51" y="25" width="1869" height="1055" extended-state="6" />
-    <editor active="true" />
+    <frame x="45" y="27" width="1321" height="741" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.100271" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.14791988" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" auto_hide="true" id="Run" order="2" weight="0.19351351" />
+      <window_info anchor="bottom" auto_hide="true" id="Run" order="2" weight="0.19338843" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3983471" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -308,16 +251,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/.gitignore" />
+    <entry file="file://$PROJECT_DIR$/tes_cursor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        <state relative-caret-position="17">
+          <caret line="1" column="15" selection-start-line="1" selection-start-column="15" selection-end-line="1" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-1247971763/kivy/_clock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-306">
+          <caret line="188" column="8" selection-start-line="188" selection-start-column="8" selection-end-line="188" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/rhoplusGUI_v0">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="906">
+        <state relative-caret-position="9265">
           <caret line="915" selection-start-line="915" selection-end-line="915" />
           <folding>
             <element signature="e#100#110#0" expanded="true" />
@@ -329,20 +280,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rhoplusGUI">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="549" selection-start-line="549" selection-end-line="549" />
+        <state relative-caret-position="213">
+          <caret line="597" lean-forward="true" selection-start-line="597" selection-end-line="597" />
           <folding>
             <element signature="e#468#478#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tes_cursor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-108">
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-          <folding>
-            <element signature="e#16#26#0" expanded="true" />
+            <element signature="e#14923#15571#0" />
+            <element signature="e#15595#21426#0" />
+            <element signature="e#21473#32403#0" />
+            <element signature="e#32461#33007#0" />
+            <element signature="e#33048#38028#0" />
           </folding>
         </state>
       </provider>

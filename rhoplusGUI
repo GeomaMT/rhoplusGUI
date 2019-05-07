@@ -35,6 +35,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
+from kivy.clock import Clock
 
 
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -541,19 +542,80 @@ class BoxSelectLayout(FloatLayout):
         self.size = parent.size
         self.pos = parent.pos
 
+
+
         self.bind(on_touch_down=self.on)
         self.bind(on_touch_up=self.up)
         self.bind(on_touch_move=self.move)
 
+        height = self.height - sp(100)
+
+        self.x0 = self.x + sp(70)
+        self.xf = self.x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        self.y0 = self.y + sp(40)
+        self.yf = self.y0 + 3 * height / 3
+
+        inter = self.width * .05 + sp(40)
+
+        self.x0_2 = self.xf + inter
+        self.xf_2 = self.x0_2 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        self.change_mouse()
+
+        self.in_grafic = False
+
+        self.i_x_on = None
+        self.i_y_on = None
 
     def on(self, instance, value):
         print('on')
+        self.i_x_on = value.pos[0]
+        self.i_y_on = value.pos[1]
 
     def up(self, instance, value):
         print('up')
+        self.i_x_on = None
+        self.i_y_on = None
+        self.canvas.before.clear()
 
     def move(self, instance, value):
         print('move')
+        self.canvas.before.clear()
+        self.delta_x = value.pos[0] - self.i_x_on
+
+        self.delta_y = value.pos[1] - self.i_y_on
+
+        if self.in_grafic and (abs(self.delta_x) > sp(5) and abs(self.delta_y) > sp(5)):
+
+            mark = Rectangle()
+            mark.pos = self.i_x_on, self.i_y_on
+            mark.size = self.delta_x, self.delta_y
+
+            self.canvas.before.add(Color(rgba=[0., 0., 0., .5]))
+            self.canvas.before.add(mark)
+
+
+    def change_mouse(self):
+        Clock.schedule_interval(self.mouse_in_grafic, 1/15)
+
+    def mouse_in_grafic(self, *args):
+        x = Window.mouse_pos[0]
+        y = Window.mouse_pos[1]
+
+        if (x > self.x0 and x < self.xf and \
+            y > self.y0 and y < self.yf) or \
+           (x > self.x0_2 and x < self.xf_2 and \
+            y > self.y0 and y < self.yf):
+            Window.set_system_cursor('crosshair')
+            self.in_grafic = True
+
+        else:
+            Window.set_system_cursor('arrow')
+            self.in_grafic = False
+
+
+
 
 
 
@@ -1547,12 +1609,13 @@ class Graphic(Screen):
             bt.press = True
             self.lay_select = BoxSelectLayout(self.ids.plot)
             self.ids.plot.add_widget(self.lay_select)
-            Window.set_system_cursor('crosshair')
+
         else:
             bt.background_color = [0.00784, 0.35686, 0.90980, 1.]
             bt.press = False
             self.ids.plot.remove_widget(self.lay_select)
-            Window.set_system_cursor('arrow')
+            Clock.unschedule(self.lay_select.mouse_in_grafic)
+
 
     def merge_rsp_jones(self):
         pass
