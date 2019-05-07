@@ -1,0 +1,1538 @@
+#!/usr/bin/python3
+#coding: utf-8
+
+
+"""
+Developed by Garcia P. R.
+Date: 2019-02-07
+Email: garcia.rpatrick@gmail.com
+
+
+Program for communication between Rho+ (Robert L. Parker & John R. Booker, 1996) and Python 3.6.
+This program uses a GUI build in Kivy 1.11 for interaction with the user.
+"""
+
+"""
+This program belongs to the software collection of INPE/GEOMA 
+
+License:
+"""
+
+# Configuration
+__author__ = "Patrick Rogger Garcia"
+__email__ = "patrick.garcia@inpe.br"
+
+
+import sys
+import pkgutil
+import subprocess
+import os
+from math import log10
+
+
+
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.properties import ObjectProperty
+from kivy.core.window import Window
+
+
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+
+from kivy.graphics import Color, Rectangle, Line
+from kivy.metrics import sp
+
+code_kivy = """
+#: import o os
+
+
+<ButtonRHO@Button>:
+    background_normal: ''
+    background_color: 0.00784, 0.35686, 0.90980, 1.
+    size_hint: None, None
+    height: '40sp'
+    width: '120sp'
+
+<LabelRot@Label>
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: 90
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+<LineH@Widget>
+    canvas.before:
+        Color:
+            rgba: .8, .8, .8, 8.
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            
+    size_hint_y: None
+    height: '1sp'
+
+<LineV@Widget>
+    canvas.before:
+        Color:
+            rgba: .8, .8, .8, 8.
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            
+    size_hint_x: None
+    width: '1sp'
+
+
+   
+<PopUPMerge@BoxLayout>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: None
+            height: '30sp'
+            text: dir_merge.path
+            text_size: self.size
+            haling: 'left'
+        LineH:
+        
+        BoxLayout:
+        
+            FileChooserListView:
+                rootpath: o.environ['HOME']
+                filters: ['*.dat']
+                path: o.getcwd()
+                id: dir_merge
+            LineV:
+            BoxLayout:    
+                orientation: 'vertical'
+                padding: '5sp', '5sp'
+                spacing: '5sp'
+                
+                
+                Label:
+                    text: 'Mode'
+                    size_hint_y: None
+                    height: '20sp'
+                    markup: True
+                    bold: True
+                    font_size: '18sp'
+                    
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                    Label: 
+                        text: 'Data'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                    
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                    Label:
+                        text: 'Model'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                    
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                        active: True
+                    Label: 
+                        text: 'Merge'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                      
+                    Label: 
+                        text: 'Merge-tf   (experimental!)'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'     
+                Widget:
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: '30sp'
+                    padding: '5sp', '5sp'
+                    spacing: '5sp'
+                    TextInput:
+                        size_hint_y: None
+                        height: '30sp'
+                    ButtonRHO:
+                        text: 'Save'
+                        height: '30sp'
+                        wight: '40sp'
+
+            
+    
+<PopUpExecuteRhoplus>
+    title: 'Settings Rho+'
+    size_hint: None, None
+    height: '330sp'
+    width: '400sp'
+    column: '100sp'
+    auto_dismiss: False
+    BoxLayout:
+        padding: 10, 10
+        spacing: '5sp'
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label: 
+                text_size: self.size
+                halign: 'left'
+                text: 'ZFile'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                id: zfile
+        
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label: 
+                text_size: self.size
+                halign: 'left'
+                text: 'Criterion'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '0.95'
+                id: c
+        
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label: 
+                text_size: self.size
+                halign: 'left'
+                text: 'Surface'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: 'conducting'
+                id: s
+        
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label: 
+                text_size: self.size
+                halign: 'left'
+                text: 'Fix Rho'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '10'
+                id: Trho
+        
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label: 
+                text_size: self.size
+                halign: 'left'
+                text: 'Rotation'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '0'
+                id: rot
+        
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label: 
+                text_size: self.size
+                halign: 'left'
+                text: 'Error Floor'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '0'
+                id: ef
+        
+        Widget
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            spacing: '5sp'
+            ButtonRHO:
+                text: 'OK'
+                height: '30sp'
+                size_hint_x: 1.
+                on_press: root.on_press_ok()
+            ButtonRHO:
+                text: 'Cancel'
+                height: '30sp'
+                size_hint_x: 1.
+                on_press: root.on_press_cancel()
+                    
+
+<MenuInit>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 10
+        row_default_height: '48dp'
+        row_force_default: True
+        spacing: 10, 10
+        
+        Label:
+            text: dir.path
+            size_hint_y: None
+            height: '30sp'
+        
+        LineH:
+        
+        FileChooserListView:
+            rootpath: o.environ['HOME']
+            filters: ['*.dat']
+            path: o.getcwd()
+            id: dir
+            on_submit: root.on_press_execute(dir.path, dir.selection)
+            
+        
+        LineH:
+        BoxLayout:
+            spacing: '10sp'
+            size_hint_y: None
+            height: '50sp'
+            
+            Widget:
+            
+            ButtonRHO:
+                text: 'Execute'
+                on_press: root.on_press_execute(dir.path, dir.selection)
+            
+            ButtonRHO:
+                text: 'Close'
+                on_press: root.on_press_close()
+            
+
+<Graphic>:
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: None
+            height: '38sp'
+            padding: '5sp', '0sp'
+            spacing: '2sp'
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: None, None
+                height: '38sp'
+                width: '55sp'
+                padding: '5sp', '0sp'
+                spacing: '2sp'
+                Label:
+                    text: 'zoom'
+                    markup: True
+                    italic: True
+                    font_size: '12sp'
+                BoxLayout:
+                    spacing: '5sp'
+                    ButtonRHO:
+                        text: '+'
+                        height: '20sp'
+                        width: '20sp'
+                        on_press: root.update_draw_rho()
+                    ButtonRHO:
+                        text: '-'
+                        height: '20sp'
+                        width: '20sp'
+                Widget:
+                    size_hint_y: None
+                    height: '2sp'
+            Slider:
+                min: 1
+                max: 20
+                size_hint: None, None
+                width: '150sp'
+                height: '38sp'
+                cursor_height: '25sp'
+                value: 6
+                id: Schange
+            TextInput:
+                text: str(int(Schange.value))
+                size_hint: None, None
+                height: '30sp'
+                width: '32sp'
+                multiline: False
+                id: text_change
+                on_text_validate: root.change_size_point(float(self.text))
+                
+            ButtonRHO:
+                text: 'Ok'
+                size: '30sp', '30sp'
+                on_press: root.change_size_point(float(text_change.text)) 
+                    
+                
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: 1., 1., 1., 1.
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    
+            orientation: 'vertical'
+            FloatLayout:
+                id: draw
+                FloatLayout:
+                    id: plot
+                    size: draw.size
+                    pos: draw.pos
+                    
+        
+    
+    
+        BoxLayout:
+            size_hint_y: None
+            height: '60sp'
+            spacing: '5sp'
+            padding: '10sp', '10sp'
+            
+            Widget:
+            
+            ButtonRHO:
+                text: 'Export Figure'
+                on_press: root.export_image()
+            
+            ButtonRHO:
+                text: 'Merge rsp-dat'
+                on_press: root.open_merge_rsp_jones()
+            
+            ButtonRHO:
+                text: 'Executar'
+                on_press: root.run_rhoplus()
+            
+            
+            ButtonRHO:
+                text: 'Change Site'
+                on_press: root.change_site()
+"""
+
+Builder.load_string(code_kivy)
+
+class Install():
+
+    def __init__(self):
+        self.check_install_python()
+        self.check_install_shell()
+        self.check_install_geoma()
+
+    def check_install_python(self):
+
+        kivy = (print('Check Kivy -- OK') if pkgutil.find_loader("kivy") else self.install_python())
+
+    def check_install_shell(self):
+        pass
+
+    def check_install_geoma(self):
+
+        z2rhoplus = (print('Check Z2rhoplus -- OK')
+                     if os.system('which Z2rhoplus') == 0 else self.install_geoma())
+
+        rsp2jones = (print('Check rsp2jones -- OK')
+                     if os.system('which rsp2jones') == 0 else self.install_geoma())
+
+        rhoplus = (print('Check rhoplus -- OK')
+                     if os.system('which rhoplus') == 0 else self.install_geoma())
+
+    def install_python(self):
+        pass
+
+    def install_shell(self):
+        pass
+
+    def install_geoma(self):
+        pass
+
+class ButtonRHO(Button):
+    pass
+
+class LabelRot(Label):
+    pass
+
+class PopUPMerge(BoxLayout):
+    pass
+
+class PopUpExecuteRhoplus(Popup):
+
+    site_origin = ''
+
+    def on_press_cancel(self):
+        app.current = 'menu'
+        self.dismiss()
+
+    def on_press_ok(self):
+        self.parameters = {}
+        self.parameters['Zorigin'] = self.site_origin
+        self.parameters['Zfile'] = self.ids.zfile.text
+        self.parameters['c'] = self.ids.c.text
+        self.parameters['s'] = self.ids.s.text
+        self.parameters['Trho'] = self.ids.Trho.text
+        self.parameters['rot'] = self.ids.rot.text
+        self.parameters['ef'] = self.ids.ef.text
+        self.dismiss()
+        window.title = 'RhoplusGUI -- ' + self.parameters['Zfile']
+        app.current = 'graphic'
+        graphic.init_rho(self.parameters)
+
+
+class MenuInit(Screen):
+    def on_press_execute(self, path, selection):
+
+        if selection == []:
+            pop = Popup(title='Select a Zfile (.dat)')
+            pop.size_hint = None, None
+            pop.height = '70sp'
+            pop.width = '200sp'
+            pop.open()
+        else:
+            self.popup_execute_rhoplus = PopUpExecuteRhoplus()
+            self.popup_execute_rhoplus.site_origin = os.path.basename(selection[0])
+            self.popup_execute_rhoplus.open()
+            os.chdir(path)
+
+            self.popup_execute_rhoplus.ids.zfile.text = \
+                os.path.basename(selection[0])
+
+
+    def on_press_close(self):
+        window.stop()
+
+class Rhoplus():
+
+    def __init__(self, site, Zorigin, criterion, surface, fix_rho, rotation, error_floor):
+        self.site = site
+        self.zorigin = Zorigin.replace('.dat', '')
+        self.criterion = criterion
+        self.surface = surface
+        self.fix_rho = fix_rho
+        self.rotation = rotation
+        self.error_floor = error_floor
+
+
+        self.xy_NM = []
+        self.yx_NM = []
+
+        self.xy_rsp = []
+        self.yx_rsp = []
+
+        if os.path.isdir(self.zorigin) == False:
+            os.mkdir(self.zorigin)
+
+
+    def make_NM(self):
+        xy = subprocess.getoutput('Z2rhoplus ../{}.dat cmp=xy c={} s={} Trho={} rot={} ef={}'.format(
+                            self.zorigin, self.criterion, self.surface, self.fix_rho,
+                            self.rotation, self.error_floor))
+
+        file_xy = open('xy_' + self.site + '_NM', 'w')
+        file_xy.write(xy)
+        file_xy.close()
+
+        yx = subprocess.getoutput('Z2rhoplus ../{}.dat cmp=yx c={} s={} Trho={} rot={} ef={}'.format(
+            self.zorigin, self.criterion, self.surface, self.fix_rho,
+            self.rotation, self.error_floor))
+
+        file_yx = open('yx_' + self.site + '_NM', 'w')
+        file_yx.write(yx)
+        file_yx.close()
+
+    def check_NM(self):
+
+        return os.path.isfile('xy_' + self.site + '_NM'),\
+               os.path.isfile('yx_' + self.site + '_NM')
+
+    def run(self):
+        print(self.site)
+        self.rhoplus_exec = subprocess.getoutput('rhoplus < xy_' + self.site + '_NM')
+        #print(self.rhoplus_exec)
+
+        self.rhoplus_exec = subprocess.getoutput('rhoplus < yx_' + self.site + '_NM')
+        #print(self.rhoplus_exec)
+
+    def read_NM(self):
+
+        xy = open('xy_' + self.site + '_NM', 'r')
+
+        xy_periods = []
+        read = False
+
+        for readline in xy:
+            line = readline.split()
+
+            if line[0] == '0':
+                read = False
+                break
+
+            if read:
+
+                period = {}
+                period['T'] = float(line[0])
+                period['rho'] = float(line[1])
+                period['Erho'] = float(line[2])
+                period['phi'] = float(line[3])
+                period['Ephi'] = float(line[4])
+                period['Srho'] = bool(int(line[5]))
+                period['Sphi'] = bool(int(line[6]))
+                xy_periods.append(period)
+            elif line[0] == 'execute':
+                read = True
+        xy.close()
+
+        self.xy_NM = xy_periods
+
+        yx = open('yx_' + self.site + '_NM', 'r')
+
+        yx_periods = []
+        read = False
+
+        for readline in yx:
+            line = readline.split()
+
+            if line[0] == '0':
+                read = False
+                break
+
+            if read:
+
+                period = {}
+                period['T'] = float(line[0])
+                period['rho'] = float(line[1])
+                period['Erho'] = float(line[2])
+                period['phi'] = float(line[3])
+                period['Ephi'] = float(line[4])
+                period['Srho'] = bool(int(line[5]))
+                period['Sphi'] = bool(int(line[6]))
+                yx_periods.append(period)
+            elif line[0] == 'execute':
+                read = True
+
+        yx.close()
+
+        self.yx_NM = yx_periods
+
+    def save_NM(self):
+        self.check_change_NM('xy', 'rho')
+        self.check_change_NM('xy', 'phi')
+        self.check_change_NM('yx', 'rho')
+        self.check_change_NM('yx', 'phi')
+
+    def check_change_NM(self, component, element):
+
+        if component == 'xy':
+            check = self.xy_NM
+        else:
+            check = self.yx_NM
+
+        if element == 'rho':
+            index = -2
+            key = 'Srho'
+        else:
+            index = -1
+            key = 'Sphi'
+
+        file = open(component + '_' + self.site + '_NM', 'r')
+        i = 0
+        read = False
+        save = []
+        for read_line in file:
+            line = read_line.split()
+            try:
+                if line[0] == '0':
+                    read = False
+                if line[0] == 'execute':
+                    read = True
+                    save.append(read_line)
+                    continue
+
+            except IndexError:
+                pass
+            if read:
+                if check[i][key]:
+                    line[index] = '1'
+                    read_line = ' '.join(line) + '\n'
+                    i += 1
+                else:
+                    line[index] = '0'
+                    read_line = ' '.join(line) + '\n'
+                    i += 1
+
+            save.append(read_line)
+        file.close()
+
+        file = open(component + '_' + self.site + '_NM', 'w')
+        for line in save:
+            file.write(line)
+        file.close()
+
+    def read_rsp(self):
+        self.xy_rsp = []
+        self.yx_rsp = []
+
+
+
+
+        xy = open('xy_' + self.site + '.rsp', 'r')
+
+        for read_line in xy:
+            line = read_line.split()
+
+            period = {}
+            period['T'] = float(line[0])
+            period['rhoa'] = float(line[1])
+            period['Erho'] = float(line[2])
+            period['Mrho'] = float(line[3])
+            period['phia'] = float(line[4])
+            period['Ephia'] = float(line[5])
+            period['Mphi'] = float(line[6])
+            self.xy_rsp.append(period)
+        xy.close()
+
+        yx = open('yx_' + self.site + '.rsp', 'r')
+
+        for read_line in yx:
+            line = read_line.split()
+
+            period = {}
+            period['T'] = float(line[0])
+            period['rhoa'] = float(line[1])
+            period['Erho'] = float(line[2])
+            period['Mrho'] = float(line[3])
+            period['phia'] = float(line[4])
+            period['Ephia'] = float(line[5])
+            period['Mphi'] = float(line[6])
+            self.yx_rsp.append(period)
+        yx.close()
+
+
+
+
+
+class DrawGraphicPlot(FloatLayout):
+
+    def __init__(self, name_station, **kwargs):
+        super(DrawGraphicPlot, self).__init__(**kwargs)
+        self.name_station = name_station
+
+
+    def draw_grafic(self):
+        self.draw_lines_rho()
+        self.draw_lines_phi()
+        self.draw_header()
+
+
+    def draw_header(self):
+
+        height = self.parent.height - sp(100)
+        inter = self.parent.width * .05 + sp(40)
+
+        y0 = self.parent.y + height / 3 + sp(40)
+        yf = y0 + 2 * height / 3
+
+        x0 = self.parent.x + sp(70)
+        xf = x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        x0_2 = xf + inter
+        xf_2 = x0_2 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        lb_title = Label()
+        lb_title.size_hint = None, None
+        lb_title.height = '20sp'
+        lb_title.width = '400sp'
+        lb_title.font_size = '24sp'
+        lb_title.center_x = xf + inter/2
+        lb_title.y = yf + sp(20)
+        lb_title.color = [0., 0., 0., 1.]
+        lb_title.text = self.name_station
+
+        lb_xy = Label()
+        lb_xy.size_hint = None, None
+        lb_xy.height = '20sp'
+        lb_xy.width = '20sp'
+        lb_xy.font_size = '17sp'
+        lb_xy.center_x = x0 + (xf - x0)/2
+        lb_xy.y = yf + sp(10)
+        lb_xy.color = [0., 0., 0., 1.]
+        lb_xy.text = 'XY'
+
+        lb_yx = Label()
+        lb_yx.size_hint = None, None
+        lb_yx.height = '20sp'
+        lb_yx.width = '20sp'
+        lb_yx.font_size = '17sp'
+        lb_yx.center_x = x0_2 + (xf_2 - x0_2) / 2
+        lb_yx.y = yf + sp(10)
+        lb_yx.color = [0., 0., 0., 1.]
+        lb_yx.text = 'YX'
+
+
+        self.add_widget(lb_title)
+        self.add_widget(lb_xy)
+        self.add_widget(lb_yx)
+
+
+    def draw_lines_rho(self):
+
+        height = self.parent.height - sp(100)
+        inter = self.parent.width * .05 + sp(40)
+
+        y0 = self.parent.y + height/3 + sp(40)
+        yf = y0 + 2 * height/3
+
+        x0 = self.parent.x + sp(70)
+        xf = x0 + 2 * height/3 + 2*(2*height/3)/6
+
+        x0_2 = xf + inter
+        xf_2 = x0_2 + 2 * height/3 + 2*(2*height/3)/6
+
+
+        border = 1.05
+
+        limx = 100000000
+        limy = 1000000
+
+        dec_x = range(-4, 4)
+        dec_y = range(-1, 6)
+
+        fzoom = (2*height/3)/(log10(limy))
+
+        scale = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                 10, 20, 30, 40, 50, 60, 70, 80, 90,
+                 100, 200, 300, 400, 500, 600, 700, 800, 900,
+                 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000,
+                 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000,
+                 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000,
+                 1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000,
+                 10000000, 20000000, 30000000, 40000000, 50000000, 60000000, 70000000, 80000000, 90000000,
+                 100000000]
+
+        scale_log = [log10(i) for i in scale]
+        scale_log_zoom = [i * fzoom for i in scale_log]
+
+        self.canvas.clear()
+        with self.canvas:
+            Color(rgba=(0., 0., 0., 1.))
+            Line(points=[x0, y0, x0, yf], width=border)
+            Line(points=[x0, y0, xf, y0], width=border)
+            Line(points=[x0, yf, xf, yf], width=border)
+            Line(points=[xf, y0, xf, yf], width=border)
+
+            Line(points=[x0_2, y0, x0_2, yf], width=border)
+            Line(points=[x0_2, y0, xf_2, y0], width=border)
+            Line(points=[x0_2, yf, xf_2, yf], width=border)
+            Line(points=[xf_2, y0, xf_2, yf], width=border)
+
+            c = 0
+            for i in scale_log_zoom:
+                if scale[c] > limx:
+                    continue
+                else:
+                    Line(points=[i + x0, y0, i + x0, y0 - sp(5)])
+                    Line(points=[i + x0_2, y0, i + x0_2, y0 - sp(5)])
+                    c += 1
+            c = 0
+            for i in scale_log_zoom:
+                if scale[c] > limy:
+                    continue
+                else:
+                    Line(points=[x0, i + y0, x0 - sp(5), i + y0])
+                    Line(points=[xf, i + y0, xf + sp(5), i + y0])
+                    Line(points=[x0_2, i + y0, x0_2 - sp(5), i + y0])
+                    Line(points=[xf_2, i + y0, xf_2 + sp(5), i + y0])
+                    c += 1
+
+
+
+
+        for i in dec_y:
+
+            if dec_y[0] < 0:
+                pos = -dec_y[0]
+
+            lb = Label()
+            lb.color = [0,0,0,1]
+            lb.markup = True
+            lb.text = '10' + '[sup][size=10]' + str(i) + '[/size][/sup]'
+            lb.size_hint = None, None
+            lb.font_size = '17sp'
+            lb.height = sp(30)
+            lb.width = sp(30)
+
+            y = int((y0 - 20) + ((i + pos) * fzoom))
+            lb.pos = x0 - 35, y
+            self.add_widget(lb)
+
+            lb_2 = Label()
+            lb_2.color = [0, 0, 0, 1]
+            lb_2.markup = True
+            lb_2.text = '10' + '[sup][size=10]' + str(i) + '[/size][/sup]'
+            lb_2.size_hint = None, None
+            lb_2.font_size = '17sp'
+            lb_2.height = sp(30)
+            lb_2.width = sp(30)
+
+            y = int((y0 - 20) + ((i + pos) * fzoom))
+            lb_2.pos = x0_2 - 35, y
+            self.add_widget(lb_2)
+
+
+
+
+
+
+
+        lb_rho_ohm_meter = LabelRot()
+        lb_rho_ohm_meter.size_hint = None, None
+        lb_rho_ohm_meter.height = sp(100)
+        lb_rho_ohm_meter.width = sp(25)
+        lb_rho_ohm_meter.markup = True
+        lb_rho_ohm_meter.italic = True
+        lb_rho_ohm_meter.text = 'ρ (Ω.m)'
+        lb_rho_ohm_meter.font_size = '18sp'
+        lb_rho_ohm_meter.color = [0., 0., 0., 1.]
+        lb_rho_ohm_meter.center_x = x0 - sp(50)
+        lb_rho_ohm_meter.center_y = int(y0 + (2*height/3) / 2)
+
+        self.add_widget(lb_rho_ohm_meter)
+
+
+    def draw_lines_phi(self):
+
+        height = self.parent.height - sp(100)
+        inter = self.parent.width * .05 + sp(40)
+
+        y0 = self.parent.y + sp(40)
+        yf = y0 + height/3
+
+        x0 = self.parent.x + sp(70)
+        xf = x0 + 2 * height/3 + 2*(2*height/3)/6
+
+        x0_2 = xf + inter
+        xf_2 = x0_2 + 2 * height/3 + 2*(2*height/3)/6
+
+
+        border = 1.05
+
+        limx = 100000000
+        limy = 1000000
+
+        lim_phi = 180
+        step_phi = 45
+
+        dec_x = range(-4, 4 + 1)
+        dec_y = range(-1, 5 + 1)
+
+        fzoom = (2*height/3)/(log10(limy))
+        fzoom_phi = ((height/3)/lim_phi)
+
+        scale = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                 10, 20, 30, 40, 50, 60, 70, 80, 90,
+                 100, 200, 300, 400, 500, 600, 700, 800, 900,
+                 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000,
+                 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000,
+                 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000,
+                 1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000,
+                 10000000, 20000000, 30000000, 40000000, 50000000, 60000000, 70000000, 80000000, 90000000,
+                 100000000]
+
+        scale_log = [log10(i) for i in scale]
+        scale_log_zoom = [i * fzoom for i in scale_log]
+
+        scale_phi = [i * fzoom_phi for i in range(0, lim_phi, step_phi)]
+
+
+        with self.canvas:
+            Color(rgba=(0., 0., 0., 1.))
+            Line(points=[x0, y0, x0, yf], width=border)
+            Line(points=[x0, y0, xf, y0], width=border)
+            Line(points=[x0, yf, xf, yf], width=border)
+            Line(points=[xf, y0, xf, yf], width=border)
+
+            Line(points=[x0_2, y0, x0_2, yf], width=border)
+            Line(points=[x0_2, y0, xf_2, y0], width=border)
+            Line(points=[x0_2, yf, xf_2, yf], width=border)
+            Line(points=[xf_2, y0, xf_2, yf], width=border)
+
+            c = 0
+            for i in scale_log_zoom:
+                if scale[c] > limx:
+                    continue
+                else:
+                    Line(points=[i + x0, y0, i + x0, y0 - sp(5)])
+                    Line(points=[i + x0_2, y0, i + x0_2, y0 - sp(5)])
+                    c += 1
+
+            for i in scale_phi:
+                Line(points=[x0, i + y0, x0 - sp(5), i + y0])
+                Line(points=[xf, i + y0, xf + sp(5), i + y0])
+                Line(points=[x0_2, i + y0, x0_2 - sp(5), i + y0])
+                Line(points=[xf_2, i + y0, xf_2 + sp(5), i + y0])
+
+
+
+
+
+        for i in dec_x:
+
+            if dec_x[0] < 0:
+                pos = -dec_x[0]
+
+            lb = Label()
+            lb.color = [0,0,0,1]
+            lb.markup = True
+            lb.text = '10' + '[sup][size=10]' + str(i) + '[/size][/sup]'
+            lb.size_hint = None, None
+            lb.font_size = '17sp'
+            lb.height = sp(30)
+            lb.width = sp(30)
+
+            x = int((x0 - lb.width/2) + ((i + pos) * fzoom))
+            lb.pos = x, y0 - sp(30)
+            self.add_widget(lb)
+
+            lb_2 = Label()
+            lb_2.color = [0, 0, 0, 1]
+            lb_2.markup = True
+            lb_2.text = '10' + '[sup][size=10]' + str(i) + '[/size][/sup]'
+            lb_2.size_hint = None, None
+            lb_2.font_size = '17sp'
+            lb_2.height = sp(30)
+            lb_2.width = sp(30)
+
+            x = int((x0_2 - lb_2.width / 2) + ((i + pos) * fzoom))
+            lb_2.pos = x, y0 - sp(30)
+            self.add_widget(lb_2)
+
+
+
+
+
+
+
+        for i in range(0, lim_phi + step_phi, step_phi):
+            lb_phi = Label()
+            lb_phi.color = [0., 0., 0., 1.]
+            lb_phi.markup = True
+            lb_phi.text = str(i)
+
+            lb_phi.font_size = '17sp'
+            lb_phi.size_hint = None, None
+            lb_phi.height = sp(17)
+            lb_phi.width = sp(30)
+            lb_phi.text_size = lb_phi.size
+            lb_phi.halign = 'left'
+
+
+            y = int((y0 - lb_phi.height/2) + ((i) * fzoom_phi))
+            lb_phi.pos = xf + sp(10), y
+            self.add_widget(lb_phi)
+
+            lb_phi_2 = Label()
+            lb_phi_2.color = [0., 0., 0., 1.]
+            lb_phi_2.markup = True
+            lb_phi_2.text = str(i)
+
+            lb_phi_2.font_size = '17sp'
+            lb_phi_2.size_hint = None, None
+            lb_phi_2.height = sp(17)
+            lb_phi_2.width = sp(30)
+            lb_phi_2.text_size = lb_phi.size
+            lb_phi_2.halign = 'left'
+
+            y = int((y0 - lb_phi_2.height / 2) + ((i) * fzoom_phi))
+            lb_phi_2.pos = xf_2 + sp(10), y
+            self.add_widget(lb_phi_2)
+
+
+        lb_rho_ohm_meter = LabelRot()
+        lb_rho_ohm_meter.size_hint = None, None
+        lb_rho_ohm_meter.height = sp(100)
+        lb_rho_ohm_meter.width = sp(25)
+        lb_rho_ohm_meter.markup = True
+        lb_rho_ohm_meter.italic = True
+        lb_rho_ohm_meter.text = 'φ (Ω.m)'
+        lb_rho_ohm_meter.font_size = '18sp'
+        lb_rho_ohm_meter.color = [0., 0., 0., 1.]
+        lb_rho_ohm_meter.center_x = x0 - sp(50)
+        lb_rho_ohm_meter.center_y = int(y0 + (height/3) / 2)
+
+        self.add_widget(lb_rho_ohm_meter)
+
+
+size_point = sp(6), sp(6)
+
+class Points(Button):
+
+
+    size_hint = None, None
+    background_normal = ' '
+    cor_active = [1., 0, 0, 1.]
+    cor_no_active = [0., 0., 0., 1.]
+    border = [0, 0, 0, 0]
+
+
+    def __init__(self, **kwargs):
+        super(Points, self).__init__(**kwargs)
+        self.size = size_point
+        self.active = False
+        self.background_color = self.cor_no_active
+
+    def on_press(self):
+        self.active = not self.active
+        if self.active:
+            self.background_color = self.cor_active
+        else:
+            self.background_color = self.cor_no_active
+
+
+
+class PlotPeriods(FloatLayout):
+
+    def __init__(self, points_xy, points_yx, model_xy, model_yx, **kwargs):
+        super(PlotPeriods, self).__init__(**kwargs)
+
+        self.points_xy = points_xy
+        self.points_yx = points_yx
+
+        self.model_xy = model_xy
+        self.model_yx = model_yx
+
+
+    def plot(self):
+        self.plot_rho()
+        self.plot_phi()
+
+    def plot_model(self):
+
+        lay_model = FloatLayout()
+        lay_model.size = self.size
+        lay_model.pos = self.pos
+
+
+        self.canvas.before.clear()
+        height = self.parent.height - sp(100)
+        inter = self.parent.width * .05 + sp(40)
+
+        y0 = self.parent.y + height / 3 + sp(40)
+
+        x0 = self.parent.x + sp(70)
+        xf = x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        x0_2 = xf + inter
+
+        border_model = 1.02
+
+
+        limy = 1000000
+
+        fzoom = (2 * height / 3) / (log10(limy))
+
+
+        model_xy_rho = []
+        model_yx_rho = []
+
+        y0_phi = self.parent.y + sp(40)
+        x0_2_phi = xf + inter
+        lim_phi = 180
+        fzoom_phi = ((height / 3) / lim_phi)
+
+        model_xy_phi = []
+        model_yx_phi = []
+
+
+
+
+        for period in self.model_xy:
+            model_xy_rho.append(x0 + (log10(1/period['T']) + 4) * fzoom)
+            model_xy_rho.append(y0 + (log10(period['Mrho']) + 1) * fzoom)
+
+            model_xy_phi.append(x0 + (log10(1/period['T']) + 4) * fzoom)
+            model_xy_phi.append(y0_phi + period['Mphi'] * fzoom_phi)
+
+        for period in self.model_yx:
+            model_yx_rho.append(x0_2 + (log10(1/period['T']) + 4) * fzoom)
+            model_yx_rho.append(y0 + (log10(period['Mrho']) + 1) * fzoom)
+
+            model_yx_phi.append(x0_2 + (log10(1 / period['T']) + 4) * fzoom)
+            model_yx_phi.append(y0_phi + period['Mphi'] * fzoom_phi)
+
+
+
+
+
+        with self.canvas.before:
+            Color(rgba=(0., 0., 1., 1.))
+            Line(points=model_xy_rho, width=border_model)
+            Line(points=model_yx_rho, width=border_model)
+
+            Line(points=model_xy_phi, width=border_model)
+            Line(points=model_yx_phi, width=border_model)
+
+    def plot_rho(self):
+
+        self.clear_widgets()
+
+        height = self.parent.height - sp(100)
+        inter = self.parent.width * .05 + sp(40)
+
+        y0 = self.parent.y + height / 3 + sp(40)
+        yf = y0 + 2 * height / 3
+
+        x0 = self.parent.x + sp(70)
+        xf = x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        x0_2 = xf + inter
+        xf_2 = x0_2 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        border_model = sp(1.05)
+
+        limx = 100000000
+        limy = 1000000
+
+        fzoom = (2 * height / 3) / (log10(limy))
+
+        self.points_rho_xy = []
+
+        for period in self.points_xy:
+            x = x0 + (log10(period['T']) + 4) * fzoom
+            y = y0 + (log10(period['rho']) + 1) * fzoom
+
+            bt = Points()
+            bt.pos = x, y
+            if period['Srho']:
+                bt.on_press()
+            self.points_rho_xy.append(bt)
+
+            if bt.x > x0 and bt.x < xf and bt.y > y0 and bt.y < yf:
+                self.add_widget(bt)
+
+
+
+        self.points_rho_yx = []
+
+        for period in self.points_yx:
+            x = x0_2 + (log10(period['T']) + 4) * fzoom
+            y = y0 + (log10(period['rho']) + 1) * fzoom
+
+            bt = Points()
+            bt.pos = x, y
+            if period['Srho']:
+                bt.on_press()
+            self.points_rho_yx.append(bt)
+
+            if bt.x > x0_2 and bt.x < xf_2 and bt.y > y0 and bt.y < yf:
+                self.add_widget(bt)
+
+
+    def plot_phi(self):
+
+        height = self.parent.height - sp(100)
+        inter = self.parent.width * .05 + sp(40)
+
+        y0 = self.parent.y + sp(40)
+        yf = y0 + height / 3
+
+        x0 = self.parent.x + sp(70)
+        xf = x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        x0_2 = xf + inter
+        xf_2 = x0_2 + 2 * height / 3 + 2 * (2 * height / 3) / 6
+
+        border = 1.05
+
+        limx = 100000000
+        limy = 1000000
+
+        lim_phi = 180
+
+        fzoom = (2 * height / 3) / (log10(limy))
+        fzoom_phi = ((height / 3) / lim_phi)
+
+        self.points_phi_xy = []
+
+        for period in self.points_xy:
+            x = x0 + (log10(period['T']) + 4) * fzoom
+            y = y0 + period['phi'] * fzoom_phi
+
+            bt = Points()
+            bt.pos = x, y
+            if period['Sphi']:
+                bt.on_press()
+            self.points_phi_xy.append(bt)
+            if bt.x > x0 and bt.x < xf and bt.y > y0 and bt.y < yf:
+                self.add_widget(bt)
+
+
+        self.points_phi_yx = []
+
+        for period in self.points_yx:
+            x = x0_2 + (log10(period['T']) + 4) * fzoom
+            y = y0 + period['phi'] * fzoom_phi
+
+            bt = Points()
+            bt.pos = x, y
+            if period['Sphi']:
+                bt.on_press()
+            self.points_phi_yx.append(bt)
+            if bt.x > x0_2 and bt.x < xf_2 and bt.y > y0 and bt.y < yf:
+                self.add_widget(bt)
+
+
+
+class Graphic(Screen):
+
+
+
+    def init_rho(self, parameter):
+
+        self.site = parameter['Zfile'].replace('.dat', '')
+
+        self.rhoplus = Rhoplus(self.site,
+                          parameter['Zorigin'],
+                          parameter['c'],
+                          parameter['s'],
+                          parameter['Trho'],
+                          parameter['rot'],
+                          parameter['ef'])
+
+        os.chdir(self.rhoplus.zorigin)
+        self.draw_graphic = DrawGraphicPlot(self.rhoplus.site)
+        self.ids.draw.add_widget(self.draw_graphic)
+
+        if self.rhoplus.check_NM() == (True, True):
+            self.pop = Popup(title='The File: ' + parameter['Zorigin'].replace('.dat', '') + '/xy_' + self.site + '_NM already exists:\n'
+                                'Do you want to replace it?')
+
+
+            bt_ok = ButtonRHO(text='Yes')
+            bt_ok.height = '20sp'
+            bt_ok.on_press = self.make_NM
+            bt_ok.size_hint_x = 1.
+            bt_no = ButtonRHO(text='No')
+            bt_no.height = '20sp'
+            bt_no.size_hint_x = 1.
+            bt_no.on_press = self.close_pop
+            box = BoxLayout()
+            box.spacing = '10sp'
+            box.add_widget(bt_ok)
+            box.add_widget(bt_no)
+            self.pop.size_hint = None, None
+            self.pop.size = '300sp', '150sp'
+            self.pop.content = box
+            self.pop.auto_dismiss = False
+            self.pop.open()
+        else:
+            self.pop = Popup(title='Made the NM files')
+            bt_ok = ButtonRHO(text='OK')
+            bt_ok.height = '20sp'
+            bt_ok.on_press = self.make_NM
+            bt_ok.size_hint_x = 1.
+            box = BoxLayout()
+            box.spacing = '10sp'
+            box.add_widget(bt_ok)
+            self.pop.size_hint = None, None
+            self.pop.size = '300sp', '100sp'
+            self.pop.content = box
+            self.pop.auto_dismiss = False
+            self.pop.open()
+
+
+    def make_NM(self):
+        Window.set_system_cursor('wait')
+        self.rhoplus.make_NM()
+        self.rhoplus.run()
+        self.pop.dismiss()
+        self.draw_graphic.draw_grafic()
+        self.import_read_NM()
+        self.plot()
+        Window.set_system_cursor('arrow')
+
+    def close_pop(self):
+        Window.set_system_cursor('wait')
+        self.rhoplus.run()
+        self.pop.dismiss()
+        self.rhoplus.read_NM()
+        self.draw_graphic.draw_grafic()
+        self.import_read_NM()
+        self.plot()
+        Window.set_system_cursor('arrow')
+
+
+    def update_draw_rho(self):
+        self.draw_graphic.draw_grafic()
+        self.update_NM_rhoplus()
+        self.points.plot()
+        self.plot_model()
+
+
+    def run_rhoplus(self):
+        Window.set_system_cursor('wait')
+        self.update_NM_rhoplus()
+        self.rhoplus.save_NM()
+        self.rhoplus.run()
+        self.draw_graphic.draw_grafic()
+        self.plot()
+        Window.set_system_cursor('arrow')
+
+    def import_read_NM(self):
+        self.rhoplus.read_NM()
+        self.rhoplus.read_rsp()
+
+        print(self.rhoplus.xy_rsp)
+
+        self.points = PlotPeriods(self.rhoplus.xy_NM, self.rhoplus.yx_NM, \
+                                  self.rhoplus.xy_rsp, self.rhoplus.yx_rsp)
+        self.ids.plot.add_widget(self.points)
+
+
+    def plot(self):
+        self.points.plot()
+        self.plot_model()
+
+    def plot_model(self):
+        self.rhoplus.read_rsp()
+        self.points.model_xy = self.rhoplus.xy_rsp
+        self.points.model_yx = self.rhoplus.yx_rsp
+        self.points.plot_model()
+
+
+    def update_NM_rhoplus(self):
+
+        i = 0
+        for bt in self.points.points_rho_xy:
+            if bt.active:
+                self.rhoplus.xy_NM[i]['Srho'] = True
+                i += 1
+            else:
+                self.rhoplus.xy_NM[i]['Srho'] = False
+                i += 1
+
+        i = 0
+        for bt in self.points.points_rho_yx:
+            if bt.active:
+                self.rhoplus.yx_NM[i]['Srho'] = True
+                i += 1
+            else:
+                self.rhoplus.yx_NM[i]['Srho'] = False
+                i += 1
+
+        i = 0
+        for bt in self.points.points_phi_xy:
+            if bt.active:
+                self.rhoplus.xy_NM[i]['Sphi'] = True
+                i += 1
+            else:
+                self.rhoplus.xy_NM[i]['Sphi'] = False
+                i += 1
+
+        i = 0
+        for bt in self.points.points_phi_yx:
+            if bt.active:
+                self.rhoplus.yx_NM[i]['Sphi'] = True
+                i += 1
+            else:
+                self.rhoplus.yx_NM[i]['Sphi'] = False
+                i += 1
+
+    def change_size_point(self, value, *args):
+
+        global size_point
+        size_point = sp(value), sp(value)
+        self.update_draw_rho()
+
+    def change_site(self):
+        self.ids.draw.clear_widgets()
+        app.current = 'menu'
+
+
+    def export_image(self):
+        print('export')
+
+    def open_merge_rsp_jones(self):
+
+        self.pop_merge = Popup()
+        self.pop_merge.size_hint = None, None
+        self.pop_merge.size = sp(600), sp(600)
+        self.pop_merge.title = 'Merge rsp file and dat'
+        self.pop_merge_layout = PopUPMerge()
+        self.pop_merge.content = self.pop_merge_layout
+        self.pop_merge.open()
+
+
+
+
+
+    def merge_rsp_jones(self):
+        pass
+
+
+
+app = ScreenManager()
+app.add_widget(MenuInit(name='menu'))
+graphic = Graphic(name='graphic')
+app.add_widget(graphic)
+
+
+
+
+
+class RhoplusGUI(App):
+
+    def build(self):
+
+        return app
+
+if __name__ == '__main__':
+    Install()
+    window = RhoplusGUI()
+    window.run()
