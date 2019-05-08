@@ -486,8 +486,11 @@ class Install():
     def check_install_python(self):
 
         kivy = (print('Check Kivy -- OK') if pkgutil.find_loader("kivy") else self.install_python())
+        # sudo add-apt-repository ppa:kivy-team/kivy-daily    sudo apt install python3-kivy   
+
 
     def check_install_shell(self):
+	# sudo apt install libsdl2-image-dev
         pass
 
     def check_install_geoma(self):
@@ -534,7 +537,7 @@ class PopUPMerge(BoxLayout):
         graphic.pop_merge.dismiss()
 
     def rsp_jones(self, mode):
-        rsp_jones = subprocess.getoutput('rsp2jones ../{}.dat xy_{}_NM yx_{}_NM {}'.format(
+        rsp_jones = subprocess.getoutput('rsp2jones ../{}.dat xy_{}.rsp yx_{}.rsp {}'.format(
                                                     self.site_origin, self.site, self.site, mode))
 
         arq_save = open(self.ids.dir_merge.path + '/' + self.ids.text_save.text, 'w')
