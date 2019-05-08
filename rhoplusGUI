@@ -418,6 +418,7 @@ code_kivy = """
                 size: '30sp', '30sp'
                 on_press: root.select(self)
                 press: False
+                id: bt_box
                 
                 
                 
@@ -535,14 +536,14 @@ class PopUpExecuteRhoplus(Popup):
 
 
 class BoxSelectLayout(FloatLayout):
-    def __init__(self, parent, **kwargs):
+    def __init__(self, parent, points, **kwargs):
         super(BoxSelectLayout, self).__init__(**kwargs)
 
 
         self.size = parent.size
         self.pos = parent.pos
 
-
+        self.points = points
 
         self.bind(on_touch_down=self.on)
         self.bind(on_touch_up=self.up)
@@ -564,23 +565,44 @@ class BoxSelectLayout(FloatLayout):
         self.change_mouse()
 
         self.in_grafic = False
+        self.select = False
 
         self.i_x_on = None
         self.i_y_on = None
 
     def on(self, instance, value):
-        print('on')
         self.i_x_on = value.pos[0]
         self.i_y_on = value.pos[1]
 
     def up(self, instance, value):
-        print('up')
+
+
+
+        if self.select:
+
+            region = [self.i_x_on, self.i_y_on, value.pos[0], value.pos[1]]
+
+
+            for point in self.points.points_rho_xy:
+                self.point_in_select(point, region)
+
+            for point in self.points.points_rho_yx:
+                self.point_in_select(point, region)
+
+            for point in self.points.points_phi_xy:
+                self.point_in_select(point, region)
+
+            for point in self.points.points_phi_yx:
+                self.point_in_select(point, region)
+
         self.i_x_on = None
         self.i_y_on = None
         self.canvas.before.clear()
 
+
+
+
     def move(self, instance, value):
-        print('move')
         self.canvas.before.clear()
         self.delta_x = value.pos[0] - self.i_x_on
 
@@ -594,6 +616,9 @@ class BoxSelectLayout(FloatLayout):
 
             self.canvas.before.add(Color(rgba=[0., 0., 0., .5]))
             self.canvas.before.add(mark)
+            self.select = True
+        else:
+            self.select = False
 
 
     def change_mouse(self):
@@ -613,6 +638,16 @@ class BoxSelectLayout(FloatLayout):
         else:
             Window.set_system_cursor('arrow')
             self.in_grafic = False
+
+    def point_in_select(self, point, region):
+
+        region_x = [region[0], region[2]]
+        region_y = [region[1], region[3]]
+
+        if point.x > min(region_x) and point.x < max(region_x) and \
+            point.y > min(region_y) and point.y < max(region_y):
+
+            point.on_press()
 
 
 
@@ -1429,7 +1464,7 @@ class Graphic(Screen):
     def init_rho(self, parameter):
 
         self.site = parameter['Zfile'].replace('.dat', '')
-
+        self.check_select_box = False
         self.rhoplus = Rhoplus(self.site,
                           parameter['Zorigin'],
                           parameter['c'],
@@ -1510,6 +1545,9 @@ class Graphic(Screen):
 
     def run_rhoplus(self):
         Window.set_system_cursor('wait')
+        if self.check_select_box:
+            self.select(self.ids.bt_box)
+            
         self.update_NM_rhoplus()
         self.rhoplus.save_NM()
         self.rhoplus.run()
@@ -1607,12 +1645,14 @@ class Graphic(Screen):
         if not bt.press:
             bt.background_color = [1., 0., 0., 1.]
             bt.press = True
-            self.lay_select = BoxSelectLayout(self.ids.plot)
+            self.check_select_box = True
+            self.lay_select = BoxSelectLayout(self.ids.plot, self.points)
             self.ids.plot.add_widget(self.lay_select)
 
         else:
             bt.background_color = [0.00784, 0.35686, 0.90980, 1.]
             bt.press = False
+            self.check_select_box = False
             self.ids.plot.remove_widget(self.lay_select)
             Clock.unschedule(self.lay_select.mouse_in_grafic)
 
