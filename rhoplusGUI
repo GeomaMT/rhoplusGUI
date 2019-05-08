@@ -105,10 +105,9 @@ code_kivy = """
         LineH:
         
         BoxLayout:
-        
+            padding: '5sp'
             FileChooserListView:
                 rootpath: o.environ['HOME']
-                filters: ['*.dat']
                 path: o.getcwd()
                 id: dir_merge
             LineV:
@@ -135,6 +134,7 @@ code_kivy = """
                         size_hint_x: None
                         width: '20sp'
                         group: 'mode'
+                        id: data
                     Label: 
                         text: 'Data'
                         text_size: self.size
@@ -150,6 +150,7 @@ code_kivy = """
                         size_hint_x: None
                         width: '20sp'
                         group: 'mode'
+                        id: model
                     Label:
                         text: 'Model'
                         text_size: self.size
@@ -166,6 +167,7 @@ code_kivy = """
                         width: '20sp'
                         group: 'mode'
                         active: True
+                        id: merge
                     Label: 
                         text: 'Merge'
                         text_size: self.size
@@ -181,6 +183,7 @@ code_kivy = """
                         size_hint_x: None
                         width: '20sp'
                         group: 'mode'
+                        id: mergetf
                       
                     Label: 
                         text: 'Merge-tf   (experimental!)'
@@ -198,10 +201,13 @@ code_kivy = """
                     TextInput:
                         size_hint_y: None
                         height: '30sp'
+                        text: root.site + '.dat'
+                        id: text_save
                     ButtonRHO:
                         text: 'Save'
                         height: '30sp'
                         wight: '40sp'
+                        on_press: root.save()
 
             
     
@@ -433,6 +439,7 @@ code_kivy = """
             orientation: 'vertical'
             FloatLayout:
                 id: draw
+                
                 FloatLayout:
                     id: plot
                     size: draw.size
@@ -510,7 +517,33 @@ class LabelRot(Label):
     pass
 
 class PopUPMerge(BoxLayout):
-    pass
+    site = ObjectProperty(None)
+    site_origin = ObjectProperty(None)
+
+    def save(self):
+        if self.ids.data.active:
+            self.rsp_jones('dados')
+        elif self.ids.model.active:
+            self.rsp_jones('modelo')
+        elif self.ids.mergetf.active:
+            self.rsp_jones_tf()
+        else:
+            self.rsp_jones('composto')
+
+
+        graphic.pop_merge.dismiss()
+
+    def rsp_jones(self, mode):
+        rsp_jones = subprocess.getoutput('rsp2jones ../{}.dat xy_{}_NM yx_{}_NM {}'.format(
+                                                    self.site_origin, self.site, self.site, mode))
+
+        arq_save = open(self.ids.dir_merge.path + '/' + self.ids.text_save.text, 'w')
+        arq_save.write(rsp_jones)
+        arq_save.close()
+
+    def rsp_jones_tf(self):
+        pass
+
 
 class PopUpExecuteRhoplus(Popup):
 
@@ -610,12 +643,20 @@ class BoxSelectLayout(FloatLayout):
 
         if self.in_grafic and (abs(self.delta_x) > sp(5) and abs(self.delta_y) > sp(5)):
 
-            mark = Rectangle()
-            mark.pos = self.i_x_on, self.i_y_on
-            mark.size = self.delta_x, self.delta_y
+            border = sp(1.2)
 
-            self.canvas.before.add(Color(rgba=[0., 0., 0., .5]))
-            self.canvas.before.add(mark)
+            line_left = Line(points=[self.i_x_on, self.i_y_on, self.i_x_on, value.pos[1]], width=border)
+            line_bottom = Line(points=[self.i_x_on, self.i_y_on, value.pos[0], self.i_y_on], width=border)
+            line_right = Line(points=[value.pos[0], self.i_y_on, value.pos[0], value.pos[1]], width=border)
+            line_top = Line(points=[self.i_x_on, value.pos[1], value.pos[0], value.pos[1]], width=border)
+
+
+            self.canvas.before.add(Color(rgba=[0.3, 0.3, 0.3, 1.]))
+            self.canvas.before.add(line_left)
+            self.canvas.before.add(line_bottom)
+            self.canvas.before.add(line_right)
+            self.canvas.before.add(line_top)
+
             self.select = True
         else:
             self.select = False
@@ -721,7 +762,6 @@ class Rhoplus():
                os.path.isfile('yx_' + self.site + '_NM')
 
     def run(self):
-        print(self.site)
         self.rhoplus_exec = subprocess.getoutput('rhoplus < xy_' + self.site + '_NM')
         #print(self.rhoplus_exec)
 
@@ -1547,7 +1587,7 @@ class Graphic(Screen):
         Window.set_system_cursor('wait')
         if self.check_select_box:
             self.select(self.ids.bt_box)
-            
+
         self.update_NM_rhoplus()
         self.rhoplus.save_NM()
         self.rhoplus.run()
@@ -1558,8 +1598,6 @@ class Graphic(Screen):
     def import_read_NM(self):
         self.rhoplus.read_NM()
         self.rhoplus.read_rsp()
-
-        print(self.rhoplus.xy_rsp)
 
         self.points = PlotPeriods(self.rhoplus.xy_NM, self.rhoplus.yx_NM, \
                                   self.rhoplus.xy_rsp, self.rhoplus.yx_rsp)
@@ -1635,7 +1673,7 @@ class Graphic(Screen):
         self.pop_merge.size_hint = None, None
         self.pop_merge.size = sp(600), sp(600)
         self.pop_merge.title = 'Merge rsp file and dat'
-        self.pop_merge_layout = PopUPMerge()
+        self.pop_merge_layout = PopUPMerge(site=self.site, site_origin=self.rhoplus.zorigin)
         self.pop_merge.content = self.pop_merge_layout
         self.pop_merge.open()
 
