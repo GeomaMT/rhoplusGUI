@@ -91,6 +91,106 @@ code_kivy = """
     size_hint_x: None
     width: '1sp'
 
+<PopUPExportFigure@BoxLayout>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: None
+            height: '30sp'
+            text: dir_figure.path
+            text_size: self.size
+            haling: 'left'
+        LineH:
+        
+        BoxLayout:
+            padding: '5sp'
+            FileChooserListView:
+                rootpath: o.environ['HOME']
+                path: o.getcwd()
+                id: dir_figure
+            LineV:
+            BoxLayout:    
+                orientation: 'vertical'
+                padding: '5sp', '5sp'
+                spacing: '5sp'
+                
+                
+                Label:
+                    text: 'Style'
+                    size_hint_y: None
+                    height: '20sp'
+                    markup: True
+                    bold: True
+                    font_size: '18sp'
+                    
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'style'
+                        id: skivy
+                    Label: 
+                        text: 'Kivy'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                    
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'style'
+                        id: matplot
+                    Label:
+                        text: 'MatplotLib'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                    
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'style'
+                        active: True
+                        id: gmt
+                    Label: 
+                        text: 'GMT'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                
+                           
+                Widget:
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: '30sp'
+                    padding: '5sp', '5sp'
+                    spacing: '5sp'
+                    TextInput:
+                        size_hint_y: None
+                        height: '30sp'
+                        text: root.site + '.png'
+                        id: text_save
+                    ButtonRHO:
+                        text: 'Save'
+                        height: '30sp'
+                        wight: '40sp'
+                        on_press: root.save()
 
    
 <PopUPMerge@BoxLayout>:
@@ -545,6 +645,30 @@ class PopUPMerge(BoxLayout):
         arq_save.close()
 
     def rsp_jones_tf(self):
+        pass
+
+
+
+class PopUPExportFigure(BoxLayout):
+    site = ObjectProperty(None)
+
+    def save(self):
+        if self.ids.skivy.active:
+            self.save_kivy()
+        elif self.ids.matplot.active:
+            self.save_matplotlib()
+        else:
+            self.save_gmt()
+
+        graphic.pop_export_figure.dismiss()
+
+    def save_kivy(self):
+        pass
+
+    def save_matplotlib(self):
+        pass
+
+    def save_gmt(self):
         pass
 
 
@@ -1668,7 +1792,14 @@ class Graphic(Screen):
 
 
     def export_image(self):
-        print('export')
+        self.pop_export_figure = Popup()
+        self.pop_export_figure.size_hint = None, None
+        self.pop_export_figure.size = sp(600), sp(600)
+        self.pop_export_figure.title = 'Export Figure'
+        self.pop_export_layout = PopUPExportFigure(site=self.site)
+        self.pop_export_figure.content = self.pop_export_layout
+        self.pop_export_figure.open()
+
 
     def open_merge_rsp_jones(self):
 

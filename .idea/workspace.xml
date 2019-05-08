@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22546068-54d1-4455-90e5-7d2fc8d2a599" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rhoplusGUI" beforeDir="false" afterPath="$PROJECT_DIR$/rhoplusGUI" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ufb101a/ufb101a.dat" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/ufb101a.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ufb101a/ufb101ad.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ufb101a/xy_ufb101a.out" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/xy_ufb101a.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ufb101a/xy_ufb101a.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/xy_ufb101a.rsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ufb101a/xy_ufb101a_NM" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/xy_ufb101a_NM" afterDir="false" />
@@ -20,16 +17,18 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.45377505">
+    <splitter split-orientation="horizontal" split-proportion="0.5469954">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/rhoplusGUI">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="80">
-                  <caret line="747" column="24" selection-start-line="747" selection-start-column="24" selection-end-line="747" selection-end-column="24" />
+                <state relative-caret-position="148">
+                  <caret line="661" selection-start-line="661" selection-end-line="661" />
                   <folding>
                     <element signature="e#468#478#0" expanded="true" />
+                    <element signature="e#14843#15520#0" />
+                    <element signature="e#15563#19073#0" />
                   </folding>
                 </state>
               </provider>
@@ -42,8 +41,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/rhoplusGUI">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="63">
-                  <caret line="536" column="81" selection-start-line="536" selection-start-column="81" selection-end-line="536" selection-end-column="81" />
+                <state relative-caret-position="196">
+                  <caret line="192" column="24" lean-forward="true" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="24" />
                   <folding>
                     <element signature="e#468#478#0" expanded="true" />
                   </folding>
@@ -194,6 +193,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="45" y="27" width="1321" height="741" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.14791988" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -280,8 +280,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rhoplusGUI">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="536" column="81" selection-start-line="536" selection-start-column="81" selection-end-line="536" selection-end-column="81" />
+        <state relative-caret-position="196">
+          <caret line="192" column="24" lean-forward="true" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="24" />
           <folding>
             <element signature="e#468#478#0" expanded="true" />
           </folding>
