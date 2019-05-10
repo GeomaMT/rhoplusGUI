@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22546068-54d1-4455-90e5-7d2fc8d2a599" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/xy_bor600a.out" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/xy_bor600a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/xy_bor600a.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/xy_bor600a.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/xy_bor600a_NM" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/xy_bor600a_NM" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/yx_bor600a.out" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/yx_bor600a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/yx_bor600a.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/yx_bor600a.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bor600a/yx_bor600a_NM" beforeDir="false" afterPath="$PROJECT_DIR$/bor600a/yx_bor600a_NM" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rhoplusGUI" beforeDir="false" afterPath="$PROJECT_DIR$/rhoplusGUI" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ufb101a/xy_ufb101a.out" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/xy_ufb101a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ufb101a/xy_ufb101a.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/xy_ufb101a.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ufb101a/xy_ufb101a_NM" beforeDir="false" afterPath="$PROJECT_DIR$/ufb101a/xy_ufb101a_NM" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,8 +17,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/plotZ.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1008">
-                  <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+                <state relative-caret-position="17">
+                  <caret line="100" selection-start-line="100" selection-end-line="100" />
                   <folding>
                     <element signature="e#20#51#0" expanded="true" />
                   </folding>
@@ -39,15 +29,15 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/rhoplusGUI">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="369">
-                  <caret line="2044" column="4" selection-start-line="2044" selection-start-column="4" selection-end-line="2044" selection-end-column="4" />
+                <state relative-caret-position="882">
+                  <caret line="80" column="19" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
                   <folding>
-                    <element signature="e#468#478#0" expanded="true" />
-                    <element signature="e#17743#19375#0" />
+                    <element signature="e#467#481#0" expanded="true" />
+                    <element signature="e#1127#16308#0" />
                   </folding>
                 </state>
               </provider>
@@ -196,13 +186,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="45" y="27" width="1321" height="741" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.14791988" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" auto_hide="true" id="Run" order="2" weight="0.21322314" />
+      <window_info anchor="bottom" auto_hide="true" id="Run" order="2" weight="0.49917355" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3983471" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -215,22 +206,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/rhoplusGUI</url>
-          <line>731</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/rhoplusGUI</url>
-          <line>706</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/bor606a/xy_bor606a_NM" />
@@ -303,16 +278,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plotZ.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1008">
-          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
-          <folding>
-            <element signature="e#20#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/lib/python3/dist-packages/matplotlib/figure.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
@@ -320,13 +285,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/plotZ.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="100" selection-start-line="100" selection-end-line="100" />
+          <folding>
+            <element signature="e#20#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/rhoplusGUI">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="2044" column="4" selection-start-line="2044" selection-start-column="4" selection-end-line="2044" selection-end-column="4" />
+        <state relative-caret-position="882">
+          <caret line="80" column="19" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
           <folding>
-            <element signature="e#468#478#0" expanded="true" />
-            <element signature="e#17743#19375#0" />
+            <element signature="e#467#481#0" expanded="true" />
+            <element signature="e#1127#16308#0" />
           </folding>
         </state>
       </provider>

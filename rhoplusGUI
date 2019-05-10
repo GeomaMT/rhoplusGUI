@@ -13,7 +13,8 @@ This program uses a GUI build in Kivy 1.11 for interaction with the user.
 """
 
 """
-This program belongs to the software collection of INPE/GEOMA 
+   This program belongs to the software collection of 
+INPE/GEOMA by Marcelo de Padua Banik and Marcos de Padua Banik
 
 License:
 """
@@ -22,16 +23,65 @@ License:
 __author__ = "Patrick Rogger Garcia"
 __email__ = "patrick.garcia@inpe.br"
 
-
-import sys
 import pkgutil
 import subprocess
 import os
 from math import log10
+import sys
 
+class Install():
 
+    def __init__(self):
+        self.check_install_python()
+        self.check_install_shell()
+        self.check_install_geoma()
+
+    def check_install_python(self):
+
+        kivy = (print('Check Kivy -- OK') if pkgutil.find_loader("kivy") else self.install_python())
+
+        matplotlib = (print('Check MatplotLib -- OK') if pkgutil.find_loader("matplotlib") else self.install_python())
+
+    def check_install_shell(self):
+	# sudo apt install libsdl2-image-dev
+        pass
+
+    def check_install_geoma(self):
+
+        z2rhoplus = (print('Check Z2rhoplus -- OK')
+                     if os.system('which Z2rhoplus') == 0 else self.install_geoma())
+
+        rsp2jones = (print('Check rsp2jones -- OK')
+                     if os.system('which rsp2jones') == 0 else self.install_geoma())
+
+        rhoplus = (print('Check rhoplus -- OK')
+                     if os.system('which rhoplus') == 0 else self.install_geoma())
+
+        plot_rhoplus = (print('Check plot-rhoplus -- OK')
+                   if os.system('which plot-rhoplus') == 0 else self.install_geoma())
+
+    def install_python(self):
+        print('You need to install kivy or matplotlib, type:\n')
+        print('sudo add-apt-repository ppa:kivy-team/kivy-daily\n'
+              'sudo apt install python3-kivy\n'
+              'sudo apt install libsdl2-image-dev\n'
+              '\n'
+              'sudo apt install python3-matplotlib')
+        sys.exit()
+
+    def install_shell(self):
+        pass
+
+    def install_geoma(self):
+        print('You need to install the GEOMA software:\n'
+              'Contact us by E-mail:\n'
+              '-----@inpe.br')
+        sys.exit()
+
+install = Install()
 
 from kivy.app import App
+
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
@@ -39,14 +89,13 @@ from kivy.clock import Clock
 
 
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
-from kivy.graphics import Color, Rectangle, Line
+from kivy.graphics import Color, Line
 from kivy.metrics import sp
 
 import matplotlib.pyplot as plt
@@ -579,43 +628,6 @@ code_kivy = """
 
 Builder.load_string(code_kivy)
 
-class Install():
-
-    def __init__(self):
-        self.check_install_python()
-        self.check_install_shell()
-        self.check_install_geoma()
-
-    def check_install_python(self):
-
-        kivy = (print('Check Kivy -- OK') if pkgutil.find_loader("kivy") else self.install_python())
-        # sudo add-apt-repository ppa:kivy-team/kivy-daily    sudo apt install python3-kivy   
-
-        matplotlib = (print('Check MatplotLib -- OK') if pkgutil.find_loader("matplotlib") else self.install_python())
-
-    def check_install_shell(self):
-	# sudo apt install libsdl2-image-dev
-        pass
-
-    def check_install_geoma(self):
-
-        z2rhoplus = (print('Check Z2rhoplus -- OK')
-                     if os.system('which Z2rhoplus') == 0 else self.install_geoma())
-
-        rsp2jones = (print('Check rsp2jones -- OK')
-                     if os.system('which rsp2jones') == 0 else self.install_geoma())
-
-        rhoplus = (print('Check rhoplus -- OK')
-                     if os.system('which rhoplus') == 0 else self.install_geoma())
-
-    def install_python(self):
-        pass
-
-    def install_shell(self):
-        pass
-
-    def install_geoma(self):
-        pass
 
 class PlotMatplotLib():
 
@@ -2041,9 +2053,6 @@ class RhoplusGUI(App):
         return app
 
 if __name__ == '__main__':
-    Install()
     window = RhoplusGUI()
+    Window.size = 1030, 650
     window.run()
-
-    #os.chdir('ufb101a')
-    #plot = PlotMatplotLib('ufb101a')
