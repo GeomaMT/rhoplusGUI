@@ -43,7 +43,7 @@ class Install():
         matplotlib = (print('Check MatplotLib -- OK') if pkgutil.find_loader("matplotlib") else self.install_python())
 
     def check_install_shell(self):
-	# sudo apt install libsdl2-image-dev
+	    # sudo apt install libsdl2-image-dev
         pass
 
     def check_install_geoma(self):
@@ -75,7 +75,8 @@ class Install():
     def install_geoma(self):
         print('You need to install the GEOMA software:\n'
               'Contact us by E-mail:\n'
-              '-----@inpe.br')
+              '\n'
+              'Marcelo Banik de Padua (marcelo.banik@gmail.com)')
         sys.exit()
 
 install = Install()
@@ -589,7 +590,47 @@ code_kivy = """
                     
             orientation: 'vertical'
             id: export_image
+            BoxLayout:
+                size_hint_y: None
+                height: '12sp'
+                Widget:
+                    size_hint_x: None
+                    width: '100sp'
+                Points:
+                    id: bt_data
+                Label:
+                    text: 'Data'
+                    size_hint_x: None
+                    width: '35sp'
+                    color: 0., 0., 0., 1.
+                    font_size: '12sp'
+                Points:
+                Label:
+                    text: 'Model'
+                    size_hint_x: None
+                    width: '45sp'
+                    color: 0., 0., 0., 1.
+                    font_size: '12sp'
+                Widget:
+                    size_hint_x: None
+                    width: '20sp'
+                    canvas:
+                        Color:
+                            rgba: 0, 0, 1., 1.
+                        Line:
+                            points: self.x, self.y + self.height/2, self.x + self.width, self.y + self.height/2
+                            width: sp(1.05)
+                Label:
+                    text: 'Rho+'
+                    size_hint_x: None
+                    width: '45sp'
+                    color: 0., 0., 0., 1.
+                    font_size: '12sp'
+                
+                
+                
             FloatLayout:
+            
                 id: draw
                 
                 FloatLayout:
@@ -621,9 +662,9 @@ code_kivy = """
                 on_press: root.run_rhoplus()
             
             
-            ButtonRHO:
-                text: 'Change Site'
-                on_press: root.change_site()
+            #ButtonRHO:
+            #    text: 'Change Site'
+            #    on_press: root.change_site()
 """
 
 Builder.load_string(code_kivy)
@@ -673,41 +714,45 @@ class PlotMatplotLib():
         rho_xy.set_title('XY')
         rho_xy.set_aspect('equal')
         rho_xy.plot(self.T_xy, self.Mrho_xy)
-        rho_xy.plot(self.T_xy_n_rho, self.rhoa_xy_n, 'o', ms=size_point)
-        rho_xy.plot(self.T_xy_y_rho, self.rhoa_xy_y, 'o', ms=size_point)
+        rho_xy.plot(self.T_xy_n_rho, self.rhoa_xy_n, 'ro', ms=size_point)
+        rho_xy.plot(self.T_xy_y_rho, self.rhoa_xy_y, 'ko', ms=size_point)
         rho_xy.set_xlim(1E-4, 1E4)
         rho_xy.set_ylim(1E-1, 1E5)
         rho_xy.set_xscale('log')
         rho_xy.set_yscale('log')
+        rho_xy.grid()
         rho_xy.set_ylabel(r'$\rho$ ($\Omega.m$)')
 
 
         rho_yx.set_title('YX')
         rho_yx.set_aspect('equal')
         rho_yx.plot(self.T_yx, self.Mrho_yx)
-        rho_yx.plot(self.T_yx_n_rho, self.rhoa_yx_n, 'o', ms=size_point)
-        rho_yx.plot(self.T_yx_y_rho, self.rhoa_yx_y, 'o', ms=size_point)
+        rho_yx.plot(self.T_yx_n_rho, self.rhoa_yx_n, 'ro', ms=size_point)
+        rho_yx.plot(self.T_yx_y_rho, self.rhoa_yx_y, 'ko', ms=size_point)
         rho_yx.set_xlim(1E-4, 1E4)
         rho_yx.set_ylim(1E-1, 1E5)
         rho_yx.set_xscale('log')
         rho_yx.set_yscale('log')
-
+        rho_yx.grid()
+        rho_yx.legend(('Rho+', 'Data', 'Model'), loc='upper right')
 
         phi_xy.plot(self.T_xy, self.Mphi_xy)
-        phi_xy.plot(self.T_xy_n_phi, self.phia_xy_n, 'o', ms=size_point)
-        phi_xy.plot(self.T_xy_y_phi, self.phia_xy_y, 'o', ms=size_point)
+        phi_xy.plot(self.T_xy_n_phi, self.phia_xy_n, 'ro', ms=size_point)
+        phi_xy.plot(self.T_xy_y_phi, self.phia_xy_y, 'ko', ms=size_point)
         phi_xy.set_xlim(1E-4, 1E4)
         phi_xy.set_ylim(0, 180)
         phi_xy.set_xscale('log')
+        phi_xy.grid()
         phi_xy.set_ylabel(r'$\phi$ $(degrees)$')
         phi_xy.set_xlabel('T (s)')
 
         phi_yx.plot(self.T_yx, self.Mphi_yx)
-        phi_yx.plot(self.T_yx_n_phi, self.phia_yx_n, 'o', ms=size_point)
-        phi_yx.plot(self.T_yx_y_phi, self.phia_yx_y, 'o', ms=size_point)
+        phi_yx.plot(self.T_yx_n_phi, self.phia_yx_n, 'ro', ms=size_point)
+        phi_yx.plot(self.T_yx_y_phi, self.phia_yx_y, 'ko', ms=size_point)
         phi_yx.set_xlim(1E-4, 1E4)
         phi_yx.set_ylim(0, 180)
         phi_yx.set_xscale('log')
+        phi_yx.grid()
         phi_yx.set_xlabel('T (s)')
 
         plt.savefig(self.site + '.png', dpi=300)
@@ -745,7 +790,6 @@ class PlotMatplotLib():
         yx_rsp = yx_rsp.splitlines()
 
         self.T_yx = [1/float(i.split()[0]) for i in yx_rsp]
-        print(self.T_xy)
         self.T_yx_y_rho = self.T_yx.copy()
         self.T_yx_n_rho = self.T_yx.copy()
 
@@ -807,12 +851,6 @@ class PlotMatplotLib():
             i += 1
 
 
-
-
-
-
-
-
 class ButtonRHO(Button):
     pass
 
@@ -846,7 +884,6 @@ class PopUPMerge(BoxLayout):
 
     def rsp_jones_tf(self):
         pass
-
 
 
 class PopUPExportFigure(BoxLayout):
@@ -1019,10 +1056,6 @@ class BoxSelectLayout(FloatLayout):
             point.y > min(region_y) and point.y < max(region_y):
 
             point.on_press()
-
-
-
-
 
 
 class MenuInit(Screen):
@@ -1253,9 +1286,6 @@ class Rhoplus():
         yx.close()
 
 
-
-
-
 class DrawGraphicPlot(FloatLayout):
 
     def __init__(self, name_station, **kwargs):
@@ -1289,7 +1319,7 @@ class DrawGraphicPlot(FloatLayout):
         lb_title.width = '400sp'
         lb_title.font_size = '24sp'
         lb_title.center_x = xf + inter/2
-        lb_title.y = yf + sp(20)
+        lb_title.y = yf + sp(30)
         lb_title.color = [0., 0., 0., 1.]
         lb_title.text = self.name_station
 
@@ -1835,6 +1865,7 @@ class Graphic(Screen):
 
         self.site = parameter['Zfile'].replace('.dat', '')
         self.check_select_box = False
+        self.ids.bt_data.on_press()
         self.rhoplus = Rhoplus(self.site,
                           parameter['Zorigin'],
                           parameter['c'],
@@ -2056,3 +2087,5 @@ if __name__ == '__main__':
     window = RhoplusGUI()
     Window.size = 1030, 650
     window.run()
+    #os.chdir('ufb101a')
+    #plot = PlotMatplotLib('ufb101a')
