@@ -21,7 +21,7 @@ License:
 
 # Configuration
 __author__ = "Patrick Rogger Garcia"
-__email__ = "patrick.garcia@inpe.br"
+__email__ = "garcia.rpatrick@gmail.com"
 
 import pkgutil
 import subprocess
@@ -658,7 +658,7 @@ code_kivy = """
                 on_press: root.open_merge_rsp_jones()
             
             ButtonRHO:
-                text: 'Executar'
+                text: 'Execute'
                 on_press: root.run_rhoplus()
             
             
