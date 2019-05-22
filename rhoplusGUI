@@ -65,6 +65,7 @@ class Install():
         print('sudo add-apt-repository ppa:kivy-team/kivy-daily\n'
               'sudo apt install python3-kivy\n'
               'sudo apt install libsdl2-image-dev\n'
+              'sudo apt install libsdl2-ttf-dev\n'
               '\n'
               'sudo apt install python3-matplotlib')
         sys.exit()
