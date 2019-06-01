@@ -569,7 +569,7 @@ code_kivy = """
             ButtonRHO:
                 text: 'Ok'
                 size: '30sp', '30sp'
-                on_press: root.change_size_point(float(text_change.text)) 
+                on_press: root.change_size_point(text_change.text) 
                 
             ButtonRHO:
                 text: '|  |'
@@ -2016,9 +2016,21 @@ class Graphic(Screen):
 
     def change_size_point(self, value, *args):
 
+        # value is string
+
         global size_point
-        size_point = sp(value), sp(value)
-        self.update_draw_rho()
+
+        try:
+            value = float(value)
+            size_point = sp(value), sp(value)
+            self.update_draw_rho()
+            self.ids.text_change.foreground_color = (0., 0, 0, 1.)
+
+
+        except ValueError:
+            self.ids.text_change.foreground_color = (1.,0,0,1.)
+
+     
 
     def change_site(self):
         self.ids.draw.clear_widgets()
