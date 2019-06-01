@@ -83,10 +83,15 @@ install = Install()
 
 from kivy.app import App
 
+import kivy
+kivy.require('1.10.0')
+
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
+from kivy.core.window import WindowBase
 from kivy.clock import Clock
+
 
 
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -564,7 +569,7 @@ code_kivy = """
                 width: '32sp'
                 multiline: False
                 id: text_change
-                on_text_validate: root.change_size_point(float(self.text))
+                on_text_validate: root.change_size_point(self.text)
                 
             ButtonRHO:
                 text: 'Ok'
@@ -669,6 +674,8 @@ code_kivy = """
 
 Builder.load_string(code_kivy)
 
+def on_keyboard_none(*args):
+    pass
 
 class PlotMatplotLib():
 
@@ -915,12 +922,23 @@ class PopUPExportFigure(BoxLayout):
 class PopUpExecuteRhoplus(Popup):
 
     site_origin = ''
+    def __init__(self, **kwargs):
+        super(PopUpExecuteRhoplus, self).__init__(**kwargs)
+
+        WindowBase.on_key_down = self.keyboard
+
+    def keyboard(self, key, scancode, codepoint, modifier):
+
+        if scancode == 40:
+            self.on_press_ok()
+
 
     def on_press_cancel(self):
         app.current = 'menu'
         self.dismiss()
 
     def on_press_ok(self):
+
         self.parameters = {}
         self.parameters['Zorigin'] = self.site_origin
         self.parameters['Zfile'] = self.ids.zfile.text
@@ -1862,7 +1880,7 @@ class Graphic(Screen):
 
 
     def init_rho(self, parameter):
-
+        WindowBase.on_key_down = on_keyboard_none
         self.site = parameter['Zfile'].replace('.dat', '')
         self.check_select_box = False
         self.ids.bt_data.on_press()
@@ -1877,9 +1895,11 @@ class Graphic(Screen):
         os.chdir(self.rhoplus.zorigin)
         self.draw_graphic = DrawGraphicPlot(self.rhoplus.site)
         self.ids.draw.add_widget(self.draw_graphic)
+        WindowBase.on_maximize = self.maximize_or_restore
+        WindowBase.on_restore = self.maximize_or_restore
 
         if self.rhoplus.check_NM() == (True, True):
-            self.pop = Popup(title='The File: ' + parameter['Zorigin'].replace('.dat', '') + '/xy_' + self.site + '_NM already exists:\n'
+            self.pop = Popup(title='The File: ' + parameter['Zorigin'].replace('.dat', '') + '/xy_' + self.site + '_NM or /yx_' + self.site + ' already exists:\n'
                                 'Do you want to replace it?')
 
 
@@ -1901,6 +1921,7 @@ class Graphic(Screen):
             self.pop.auto_dismiss = False
             self.pop.open()
         else:
+            WindowBase.on_key_down = self.press_enter_made_NM_files
             self.pop = Popup(title='Made the NM files')
             bt_ok = ButtonRHO(text='OK')
             bt_ok.height = '20sp'
@@ -1914,6 +1935,11 @@ class Graphic(Screen):
             self.pop.content = box
             self.pop.auto_dismiss = False
             self.pop.open()
+
+    def press_enter_made_NM_files(self, key, scancode, *args):
+        if scancode == 40:
+            WindowBase.on_key_down = on_keyboard_none
+            self.make_NM()
 
 
     def make_NM(self):
@@ -2030,8 +2056,6 @@ class Graphic(Screen):
         except ValueError:
             self.ids.text_change.foreground_color = (1.,0,0,1.)
 
-     
-
     def change_site(self):
         self.ids.draw.clear_widgets()
         app.current = 'menu'
@@ -2077,6 +2101,9 @@ class Graphic(Screen):
 
     def merge_rsp_jones(self):
         pass
+
+    def maximize_or_restore(self, *args):
+        self.update_draw_rho()
 
 
 
