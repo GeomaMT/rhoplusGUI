@@ -65,6 +65,7 @@ class Install():
         print('sudo add-apt-repository ppa:kivy-team/kivy-daily\n'
               'sudo apt install python3-kivy\n'
               'sudo apt install libsdl2-image-dev\n'
+              'sudo apt install libsdl2-ttf-dev\n'
               '\n'
               'sudo apt install python3-matplotlib')
         sys.exit()
@@ -1899,6 +1900,7 @@ class Graphic(Screen):
         WindowBase.on_maximize = self.maximize_or_restore
         WindowBase.on_restore = self.maximize_or_restore
 
+
         if self.rhoplus.check_NM() == (True, True):
             self.pop = Popup(title='The File: ' + parameter['Zorigin'].replace('.dat', '') + '/xy_' + self.site + '_NM or /yx_' + self.site + ' already exists:\n'
                                 'Do you want to replace it?')
@@ -1921,6 +1923,7 @@ class Graphic(Screen):
             self.pop.content = box
             self.pop.auto_dismiss = False
             self.pop.open()
+
         else:
             WindowBase.on_key_down = self.press_enter_made_NM_files
             self.pop = Popup(title='Made the NM files')
@@ -1939,8 +1942,19 @@ class Graphic(Screen):
 
     def press_enter_made_NM_files(self, key, scancode, *args):
         if scancode == 40:
-            WindowBase.on_key_down = on_keyboard_none
+            WindowBase.on_key_down = self.on_press_shortcuts
             self.make_NM()
+
+    def on_press_shortcuts(self, key, scancode, *args):
+        print(scancode)
+
+        # press 'enter'
+        if scancode == 40:
+            self.run_rhoplus()
+
+        # press 's'
+        if scancode == 22:
+            self.select(self.ids.bt_box)
 
 
     def make_NM(self):
@@ -1951,7 +1965,9 @@ class Graphic(Screen):
         self.draw_graphic.draw_grafic()
         self.import_read_NM()
         self.plot()
+        WindowBase.on_key_down = self.on_press_shortcuts
         Window.set_system_cursor('arrow')
+
 
     def close_pop(self):
         Window.set_system_cursor('wait')
@@ -1961,6 +1977,7 @@ class Graphic(Screen):
         self.draw_graphic.draw_grafic()
         self.import_read_NM()
         self.plot()
+        WindowBase.on_key_down = self.on_press_shortcuts
         Window.set_system_cursor('arrow')
 
 
@@ -2025,18 +2042,12 @@ class Graphic(Screen):
                 self.no_select_period = ''
             return False
 
-
-
     def pop_select_period(self):
         pop = Popup(title='Select a Period: ' + self.no_select_period)
         pop.size_hint = None, None
         pop.height = '70sp'
         pop.width = '200sp'
         pop.open()
-
-
-
-
 
     def import_read_NM(self):
         self.rhoplus.read_NM()
@@ -2045,7 +2056,6 @@ class Graphic(Screen):
         self.points = PlotPeriods(self.rhoplus.xy_NM, self.rhoplus.yx_NM, \
                                   self.rhoplus.xy_rsp, self.rhoplus.yx_rsp)
         self.ids.plot.add_widget(self.points)
-
 
     def plot(self):
         self.points.plot()
@@ -2056,7 +2066,6 @@ class Graphic(Screen):
         self.points.model_xy = self.rhoplus.xy_rsp
         self.points.model_yx = self.rhoplus.yx_rsp
         self.points.plot_model()
-
 
     def update_NM_rhoplus(self):
 
@@ -2116,7 +2125,6 @@ class Graphic(Screen):
         self.ids.draw.clear_widgets()
         app.current = 'menu'
 
-
     def export_image(self):
         self.pop_export_figure = Popup()
         self.pop_export_figure.size_hint = None, None
@@ -2125,7 +2133,6 @@ class Graphic(Screen):
         self.pop_export_layout = PopUPExportFigure(site=self.site)
         self.pop_export_figure.content = self.pop_export_layout
         self.pop_export_figure.open()
-
 
     def open_merge_rsp_jones(self):
 
@@ -2136,7 +2143,6 @@ class Graphic(Screen):
         self.pop_merge_layout = PopUPMerge(site=self.site, site_origin=self.rhoplus.zorigin)
         self.pop_merge.content = self.pop_merge_layout
         self.pop_merge.open()
-
 
     def select(self, bt):
 
@@ -2153,13 +2159,15 @@ class Graphic(Screen):
             self.check_select_box = False
             self.ids.plot.remove_widget(self.lay_select)
             Clock.unschedule(self.lay_select.mouse_in_grafic)
-
+            Window.set_system_cursor('arrow')
 
     def merge_rsp_jones(self):
         pass
 
     def maximize_or_restore(self, *args):
+        Window.set_system_cursor('wait')
         self.update_draw_rho()
+        Window.set_system_cursor('arrow')
 
 
 
