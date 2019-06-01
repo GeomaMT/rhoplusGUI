@@ -1149,6 +1149,7 @@ class Rhoplus():
         self.rhoplus_exec = subprocess.getoutput('rhoplus < yx_' + self.site + '_NM')
         #print(self.rhoplus_exec)
 
+
     def read_NM(self):
 
         xy = open('xy_' + self.site + '_NM', 'r')
@@ -1977,10 +1978,65 @@ class Graphic(Screen):
 
         self.update_NM_rhoplus()
         self.rhoplus.save_NM()
-        self.rhoplus.run()
-        self.draw_graphic.draw_grafic()
-        self.plot()
-        Window.set_system_cursor('arrow')
+
+        if self.check_select_none_periods():
+            self.rhoplus.run()
+            self.draw_graphic.draw_grafic()
+            self.plot()
+            Window.set_system_cursor('arrow')
+
+        else:
+            Window.set_system_cursor('arrow')
+            self.pop_select_period()
+
+    def check_select_none_periods(self):
+
+        select_rho_xy = False
+        select_phi_xy = False
+        select_rho_yx = False
+        select_phi_yx = False
+
+        for period in self.rhoplus.xy_NM:
+            if period['Srho']:
+                select_rho_xy = True
+            if period['Sphi']:
+                select_phi_xy = True
+
+        for period in self.rhoplus.yx_NM:
+            if period['Srho']:
+                select_rho_yx = True
+            if period['Sphi']:
+                select_phi_yx = True
+
+
+        if select_rho_xy and select_phi_xy and \
+               select_rho_yx and select_phi_yx:
+            return True
+        else:
+            if not select_rho_xy:
+                self.no_select_period = 'Rho XY'
+            elif not select_phi_xy:
+                self.no_select_period = 'Phi XY'
+            elif not select_rho_yx:
+                self.no_select_period = 'Rho YX'
+            elif not select_phi_yx:
+                self.no_select_period = 'Phi YX'
+            else:
+                self.no_select_period = ''
+            return False
+
+
+
+    def pop_select_period(self):
+        pop = Popup(title='Select a Period: ' + self.no_select_period)
+        pop.size_hint = None, None
+        pop.height = '70sp'
+        pop.width = '200sp'
+        pop.open()
+
+
+
+
 
     def import_read_NM(self):
         self.rhoplus.read_NM()
