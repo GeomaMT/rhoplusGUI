@@ -1770,6 +1770,7 @@ class PlotPeriods(FloatLayout):
     def plot_rho(self):
 
         self.clear_widgets()
+        self.canvas.clear()
 
         height = self.parent.height - sp(100)
         inter = self.parent.width * .05 + sp(40)
@@ -1847,6 +1848,11 @@ class PlotPeriods(FloatLayout):
         fzoom = (2 * height / 3) / (log10(limy))
         fzoom_phi = ((height / 3) / lim_phi)
 
+
+        # Error Bar
+        border_error = 1.05
+
+
         self.points_phi_xy = []
 
         for period in self.points_xy:
@@ -1875,6 +1881,56 @@ class PlotPeriods(FloatLayout):
             self.points_phi_yx.append(bt)
             if bt.x > x0_2 and bt.x < xf_2 and bt.y > y0 and bt.y < yf:
                 self.add_widget(bt)
+
+
+        with self.canvas:
+            Color(rgba=(0., 0., 0., 1.))
+
+            for period in self.points_xy:
+
+                yi_erro = y0 + (fzoom_phi * (period['phi'] - period['Ephi']))
+                yf_erro = y0 + (fzoom_phi * (period['phi'] + period['Ephi']))
+
+                x = x0 + (log10(period['T']) + 4) * fzoom
+
+                if yi_erro < y0:
+                    yi_erro = y0
+
+                if yf_erro > yf:
+                    yf_erro = yf
+
+
+                bar = [x, yi_erro, x, yf_erro]
+                phi = y0 + period['phi'] * fzoom_phi
+                if phi > y0 and phi < yf:
+                    Line(points=bar, width=border_error)
+
+        with self.canvas:
+            Color(rgba=(0., 0., 0., 1.))
+
+            for period in self.points_yx:
+
+                yi_erro = y0 + (fzoom_phi * (period['phi'] - period['Ephi']))
+                yf_erro = y0 + (fzoom_phi * (period['phi'] + period['Ephi']))
+
+                x = x0_2 + (log10(period['T']) + 4) * fzoom
+
+                if yi_erro < y0:
+                    yi_erro = y0
+
+                if yf_erro > yf:
+                    yf_erro = yf
+
+
+
+                bar = [x, yi_erro,x, yf_erro]
+
+                phi = y0 + period['phi'] *fzoom_phi
+                if phi > y0 and phi < yf:
+                    Line(points=bar, width=border_error)
+
+
+
 
 
 
