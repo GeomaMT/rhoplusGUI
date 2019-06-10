@@ -1,0 +1,233 @@
+ Rho+ 2.0 18-05-97
+ 
+Data read from file *                                                                          
+    Freq (Hz) rho(ohm-m)  rhoerr    lg10rho lg10err phi(deg)  err   downweight
+  1 6.836E-03   277.5       10.9      2.443  0.017   61.27    1.13  1.00  1.00
+  >>> Warning: Refinement phase 1 of  1 failed to improve fit
+Chisq before:   0.832846064E-26  Chisq after:   0.182258424E-25
+
+Report: Chisq: 0.1823E-25
+ 
+            Table of misfits between data and model predictions
+ 
+                ----- Apparent Resistivity ------   ---------- Phase ----------
+    freq        data    predicted     %dR/R  norm   data  predicted   dP   norm
+                                                                   (scaled)    
+  1 6.836E-03  277.5      277.5         0.0   0.0   61.27   61.27    -0.0   0.0
+
+  - norm: missfit divided by data error (as modified by downweights)
+  - %dR/R: (rho missfit)/rho in %
+  - dP(scaled): (phase missfit) * 3.491 to give it same scale as %dR/R
+
+
+Response summary matrix written to xy_bor605aerro.rsp
+
+Final Refinement: Chisq =  7.2701E-27
+
+>>> Model is attempting to reverse surface condition
+
+               Poles
+ 8.80165E-03 7.57418E-02 0.36544    
+
+               Zeros
+ 2.39768E-03 1.27788E-02 0.14950    
+
+
+   a0 =      0.0000    
+    n    lambda(n)          a(n)
+    0      0.0000          270.26    
+    1     8.80165E-03      245.14    
+    2     7.57418E-02      3333.3    
+    3     0.36544          10525.    
+
+     Units are kilometers and siemens
+level  depth      conductance   separation   total conductance
+  1    0.0000        55.362        0.0000        55.362    
+  2    50.381        254.31        50.381        309.67    
+  3    89.975        1449.5        39.594        1759.2    
+  4    216.20        1185.3        126.23        2944.5    
+ Model terminates with an insulator
+
+Just acceptable chi-squared level:    5.991
+Confidence level of this misfit:      0.950
+
+>>> Iteration failed at freq  6.8357E-03 while seeking lower bound on phase 
+>>> chisq =    10.77    
+
+   Table of iterates
+   datum      chisq
+   61.27      1.8226E-26
+   61.88      0.2956    
+   63.12       2.696    
+   65.64       15.07    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+ 
+            Table of misfits between data and model predictions
+ 
+                ----- Apparent Resistivity ------   ---------- Phase ----------
+    freq        data    predicted     %dR/R  norm   data  predicted   dP   norm
+                                                                   (scaled)    
+  1 6.836E-03     --      277.5          -     -    57.57   57.57     0.0   0.0
+  2 6.836E-03  277.5      277.5         0.0   0.0   61.27   57.57   -12.9   3.3
+
+  - norm: missfit divided by data error (as modified by downweights)
+  - %dR/R: (rho missfit)/rho in %
+  - dP(scaled): (phase missfit) * 3.491 to give it same scale as %dR/R
+
+
+>>> Iteration failed at freq  6.8357E-03 while seeking lower bound on rho-a 
+>>> chisq =    12.33    
+
+   Table of iterates
+   datum      chisq
+   277.5      1.8226E-26
+   280.3      6.7852E-02
+   285.9      0.6317    
+   297.4       3.687    
+   321.1       19.63    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   304.3       6.887    
+   312.7       12.33    
+   312.7       12.33    
+   312.7       12.33    
+   312.7       12.33    
+   312.7       12.33    
+   312.7       12.33    
+ 
+            Table of misfits between data and model predictions
+ 
+                ----- Apparent Resistivity ------   ---------- Phase ----------
+    freq        data    predicted     %dR/R  norm   data  predicted   dP   norm
+                                                                   (scaled)    
+  1 6.836E-03  242.4      242.4         0.0   0.0    --     61.27     -      - 
+  2 6.836E-03  277.5      242.4       -12.7   3.4   61.27   61.27     0.0   0.0
+
+  - norm: missfit divided by data error (as modified by downweights)
+  - %dR/R: (rho missfit)/rho in %
+  - dP(scaled): (phase missfit) * 3.491 to give it same scale as %dR/R
+
+
+>>> Iteration failed at freq  6.8357E-03 while seeking upper bound on phase 
+>>> chisq =    10.77    
+
+   Table of iterates
+   datum      chisq
+   61.27      1.8226E-26
+   61.88      0.2956    
+   63.12       2.696    
+   65.64       15.07    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.29       7.190    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+   64.97       10.77    
+ 
+            Table of misfits between data and model predictions
+ 
+                ----- Apparent Resistivity ------   ---------- Phase ----------
+    freq        data    predicted     %dR/R  norm   data  predicted   dP   norm
+                                                                   (scaled)    
+  1 6.836E-03     --      277.5          -     -    64.97   64.97    -0.0   0.0
+  2 6.836E-03  277.5      277.5        -0.0   0.0   61.27   64.97    12.9   3.3
+
+  - norm: missfit divided by data error (as modified by downweights)
+  - %dR/R: (rho missfit)/rho in %
+  - dP(scaled): (phase missfit) * 3.491 to give it same scale as %dR/R
+
+ >>> BVLS fails to converge! 

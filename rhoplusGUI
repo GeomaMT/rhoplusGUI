@@ -1791,6 +1791,78 @@ class PlotPeriods(FloatLayout):
 
         fzoom = (2 * height / 3) / (log10(limy))
 
+        border_error = sp(1.05)
+
+        with self.canvas:
+            Color(rgba=(0., 0., 0., 1.))
+
+            for period in self.points_xy:
+
+                dz = 0.434*(period['Erho']/period['rho'])
+
+
+                yi_erro = y0 + (fzoom * (log10(period['rho']) - dz + 1))
+                yf_erro = y0 + (fzoom * (log10(period['rho']) + dz + 1))
+
+
+
+                x = x0 + (log10(period['T']) + 4) * fzoom
+
+                print('------')
+                print(log10(period['rho']))
+                print(log10(period['Erho']))
+
+
+                if yi_erro < y0:
+                    yi_erro = y0
+
+                if yf_erro > yf:
+                    yf_erro = yf
+
+
+                bar = [x, yi_erro, x, yf_erro]
+                rho = y0 + (log10(period['rho']) + 1) * fzoom
+                if rho > y0 and rho < yf:
+                    Line(points=bar, width=border_error)
+
+
+            for period in self.points_yx:
+
+                dz = 0.434*(period['Erho']/period['rho'])
+
+
+                yi_erro = y0 + (fzoom * (log10(period['rho']) - dz + 1))
+                yf_erro = y0 + (fzoom * (log10(period['rho']) + dz + 1))
+
+
+
+                x = x0_2 + (log10(period['T']) + 4) * fzoom
+
+                print('------')
+                print(log10(period['rho']))
+                print(log10(period['Erho']))
+
+
+                if yi_erro < y0:
+                    yi_erro = y0
+
+                if yf_erro > yf:
+                    yf_erro = yf
+
+
+                bar = [x, yi_erro, x, yf_erro]
+                rho = y0 + (log10(period['rho']) + 1) * fzoom
+                if rho > y0 and rho < yf:
+                    Line(points=bar, width=border_error)
+
+
+
+
+
+
+
+
+
         self.points_rho_xy = []
 
         for period in self.points_xy:
@@ -1798,6 +1870,10 @@ class PlotPeriods(FloatLayout):
             y = y0 + (log10(period['rho']) + 1) * fzoom
 
             bt = Points()
+
+            x = x - bt.width / 2
+            y = y - bt.height / 2
+
             bt.pos = x, y
             if period['Srho']:
                 bt.on_press()
@@ -1815,6 +1891,10 @@ class PlotPeriods(FloatLayout):
             y = y0 + (log10(period['rho']) + 1) * fzoom
 
             bt = Points()
+
+            x = x - bt.width / 2
+            y = y - bt.height / 2
+
             bt.pos = x, y
             if period['Srho']:
                 bt.on_press()
@@ -1822,7 +1902,6 @@ class PlotPeriods(FloatLayout):
 
             if bt.x > x0_2 and bt.x < xf_2 and bt.y > y0 and bt.y < yf:
                 self.add_widget(bt)
-
 
     def plot_phi(self):
 
@@ -1850,37 +1929,8 @@ class PlotPeriods(FloatLayout):
 
 
         # Error Bar
-        border_error = 1.05
+        border_error = sp(1.05)
 
-
-        self.points_phi_xy = []
-
-        for period in self.points_xy:
-            x = x0 + (log10(period['T']) + 4) * fzoom
-            y = y0 + period['phi'] * fzoom_phi
-
-            bt = Points()
-            bt.pos = x, y
-            if period['Sphi']:
-                bt.on_press()
-            self.points_phi_xy.append(bt)
-            if bt.x > x0 and bt.x < xf and bt.y > y0 and bt.y < yf:
-                self.add_widget(bt)
-
-
-        self.points_phi_yx = []
-
-        for period in self.points_yx:
-            x = x0_2 + (log10(period['T']) + 4) * fzoom
-            y = y0 + period['phi'] * fzoom_phi
-
-            bt = Points()
-            bt.pos = x, y
-            if period['Sphi']:
-                bt.on_press()
-            self.points_phi_yx.append(bt)
-            if bt.x > x0_2 and bt.x < xf_2 and bt.y > y0 and bt.y < yf:
-                self.add_widget(bt)
 
 
         with self.canvas:
@@ -1928,6 +1978,51 @@ class PlotPeriods(FloatLayout):
                 phi = y0 + period['phi'] *fzoom_phi
                 if phi > y0 and phi < yf:
                     Line(points=bar, width=border_error)
+
+
+
+
+
+
+        self.points_phi_xy = []
+
+        for period in self.points_xy:
+            x = x0 + (log10(period['T']) + 4) * fzoom
+            y = y0 + period['phi'] * fzoom_phi
+
+            bt = Points()
+
+            x = x - bt.width/2
+            y = y - bt.height/2
+
+            bt.pos = x, y
+            if period['Sphi']:
+                bt.on_press()
+            self.points_phi_xy.append(bt)
+            if bt.x > x0 and bt.x < xf and bt.y > y0 and bt.y < yf:
+                self.add_widget(bt)
+
+
+        self.points_phi_yx = []
+
+        for period in self.points_yx:
+            x = x0_2 + (log10(period['T']) + 4) * fzoom
+            y = y0 + period['phi'] * fzoom_phi
+
+            bt = Points()
+
+            x = x - bt.width / 2
+            y = y - bt.height / 2
+
+            bt.pos = x, y
+            if period['Sphi']:
+                bt.on_press()
+            self.points_phi_yx.append(bt)
+            if bt.x > x0_2 and bt.x < xf_2 and bt.y > y0 and bt.y < yf:
+                self.add_widget(bt)
+
+
+
 
 
 

@@ -1,0 +1,53 @@
+ Rho+ 2.0 18-05-97
+ 
+Data read from file *                                                                          
+    Freq (Hz) rho(ohm-m)  rhoerr    lg10rho lg10err phi(deg)  err   downweight
+  1 6.836E-03   69.53       172.      1.842  1.076   46.72   70.99  1.00  1.00
+  >>> Warning: Refinement phase 1 of  1 failed to improve fit
+Chisq before:   0.849455476E-31  Chisq after:   0.443734259E-30
+
+Report: Chisq: 0.4437E-30
+ 
+            Table of misfits between data and model predictions
+ 
+                ----- Apparent Resistivity ------   ---------- Phase ----------
+    freq        data    predicted     %dR/R  norm   data  predicted   dP   norm
+                                                                   (scaled)    
+  1 6.836E-03  69.53      69.53        -0.0   0.0   46.72   46.72     0.0   0.0
+
+  - norm: missfit divided by data error (as modified by downweights)
+  - %dR/R: (rho missfit)/rho in %
+  - dP(scaled): (phase missfit) * 3.491 to give it same scale as %dR/R
+
+
+Response summary matrix written to yx_bor605aerro.rsp
+
+Final Refinement: Chisq =  1.2625E-29
+
+>>> Model is attempting to reverse surface condition
+
+               Poles
+ 1.99067E-02 3.62530E-02 0.36544    
+
+               Zeros
+ 3.01776E-03 1.91381E-02 9.91714E-02
+
+
+   a0 =      0.0000    
+    n    lambda(n)          a(n)
+    0      0.0000          142.80    
+    1     1.99067E-02     -60.164    
+    2     3.62530E-02      1206.3    
+    3     0.36544          5286.3    
+
+     Units are kilometers and siemens
+level  depth      conductance   separation   total conductance
+  1    0.0000        121.03        0.0000        121.03    
+  2    21.897        625.64        21.897        746.67    
+  3    54.335        5296.6        32.437        6043.3    
+  4   -25.096       -470.59       -79.431        5572.7    
+ Model terminates with an insulator
+
+Just acceptable chi-squared level:    5.991
+Confidence level of this misfit:      0.950
+ >>> BVLS fails to converge! 
