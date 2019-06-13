@@ -2,6 +2,10 @@ Criticos (Programa fecha)
 
 1) Mudança do nome do site na seção inicial
 
+2) caminho para o arquivo .dat original
+
+3) carregar arquivo .edi
+
 Melhorias
 
 1) Botao zoom- não tem função implementada
@@ -14,9 +18,14 @@ Melhorias
 
 5) sobre shortcuts s-select enter-run
 
-6) pontos tem que estar no meio
 
+Reuniao 06-06-2019
 
+1) Colocar a direção do azimute na inicializacao
 
-# arquivo NM
-T(s)
+2) visualizar a comparação do resultado com o arquivo original
+
+3) nome Icaro
+
+4) Barra de Erro
+
