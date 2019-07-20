@@ -113,11 +113,10 @@ from kivy.metrics import sp
 import matplotlib.pyplot as plt
 
 
-# Load kivy code
-file_code_kivy = open(PWD_install + 'rhoplusgui.kv', 'r')
+
+file_code_kivy = open(PWD_install + 'kivy_code.kv', 'r')
 code_kivy = file_code_kivy.read()
 file_code_kivy.close()
-
 
 
 Builder.load_string(code_kivy)
