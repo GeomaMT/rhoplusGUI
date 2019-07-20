@@ -43,38 +43,39 @@ class Install():
         matplotlib = (print('Check MatplotLib -- OK') if pkgutil.find_loader("matplotlib") else self.install_python())
 
     def check_install_shell(self):
-	    # sudo apt install libsdl2-image-dev
-        pass
+        rhoplus = (print('Check rhoplus -- OK')
+                   if os.system('which rhoplus') == 0 else self.install_shell('rhoplus'))
 
     def check_install_geoma(self):
 
         z2rhoplus = (print('Check Z2rhoplus -- OK')
-                     if os.system('which Z2rhoplus') == 0 else self.install_geoma())
+                     if os.system('which Z2rhoplus') == 0 else self.install_geoma('Z2rhoplus'))
 
         rsp2jones = (print('Check rsp2jones -- OK')
-                     if os.system('which rsp2jones') == 0 else self.install_geoma())
-
-        rhoplus = (print('Check rhoplus -- OK')
-                     if os.system('which rhoplus') == 0 else self.install_geoma())
+                     if os.system('which rsp2jones') == 0 else self.install_geoma('rsp2jones'))
 
         plot_rhoplus = (print('Check plot-rhoplus -- OK')
-                   if os.system('which plot-rhoplus') == 0 else self.install_geoma())
+                   if os.system('which plot-rhoplus') == 0 else self.install_geoma('plot_rhoplus'))
 
     def install_python(self):
-        print('You need to install kivy or matplotlib, type:\n')
-        print('sudo add-apt-repository ppa:kivy-team/kivy-daily\n'
-              'sudo apt install python3-kivy\n'
-              'sudo apt install libsdl2-image-dev\n'
-              'sudo apt install libsdl2-ttf-dev\n'
+        print('You need to install kivy and matplotlib\n')
+        print('More information at https://kivy.org/#download and \n'
+              '      https://matplotlib.org/users/installing.html\n'
               '\n'
-              'sudo apt install python3-matplotlib')
+              'Type in the console:\n'
+              '\n'
+              'sudo apt install python3-pip\n'
+              'sudo pip3 install --upgrade pip\n'
+              'sudo pip3 install kivy\n'
+              'sudo pip3 install matplotlib\n')
         sys.exit()
 
-    def install_shell(self):
-        pass
+    def install_shell(self, program):
+        if program == 'rhoplus':
+            print('You need to install the Rhoplus, visit: http://mtnet.info/main/source.html#1d_codes')
 
-    def install_geoma(self):
-        print('You need to install the GEOMA software:\n'
+    def install_geoma(self, script):
+        print('You need to install the GEOMA software -- ' + script + '\n'
               'Contact us by E-mail:\n'
               '\n'
               'Marcelo Banik de Padua (marcelo.banik@gmail.com)')
@@ -1058,7 +1059,7 @@ class BoxSelectLayout(FloatLayout):
         y = Window.mouse_pos[1]
 
         if (x > self.x0 and x < self.xf and \
-            y > self.y0 and y < self.yf) or \
+            self.y0 < y < self.yf) or \
            (x > self.x0_2 and x < self.xf_2 and \
             y > self.y0 and y < self.yf):
             Window.set_system_cursor('crosshair')
@@ -2342,6 +2343,13 @@ class RhoplusGUI(App):
 if __name__ == '__main__':
     window = RhoplusGUI()
     Window.size = 1030, 650
-    window.run()
+    try:
+        window.run()
+    except Exception:
+        print('Error in running kivy')
+        install.install_python()
+
+    #Install().install_python()
+
     #os.chdir('ufb101a')
     #plot = PlotMatplotLib('ufb101a')
