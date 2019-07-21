@@ -1771,14 +1771,14 @@ class Graphic(Screen):
     def select(self, bt):
 
         if not bt.press:
-            bt.background_color = [1., 0., 0., 1.]
+            bt.background_normal = PWD_INSTALL + 'image/icon-select-on.png'
             bt.press = True
             self.check_select_box = True
             self.lay_select = BoxSelectLayout(self.ids.plot, self.points)
             self.ids.plot.add_widget(self.lay_select)
 
         else:
-            bt.background_color = [0.00784, 0.35686, 0.90980, 1.]
+            bt.background_normal = PWD_INSTALL + 'image/icon-select.png'
             bt.press = False
             self.check_select_box = False
             self.ids.plot.remove_widget(self.lay_select)

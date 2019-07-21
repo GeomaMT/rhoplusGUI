@@ -614,6 +614,9 @@
                         size_hint: None, None
                         height: layout_tools.width
                         width: layout_tools.width
+                        on_press: root.select(self)
+                        press: False
+                        id: bt_box
 
                     ButtonIcon:
                         background_normal: PWD_INSTALL + '/image/icon-point.png'
