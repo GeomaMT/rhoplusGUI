@@ -1,5 +1,7 @@
 #: import o os
-
+#: set USER o.environ['HOME']
+#: set PWD_INSTALL '/opt/rhoplusGUI/'
+#: set PWD_PROFILE USER + '/.rhoplusGUI/'
 
 <ButtonRHO@Button>:
     background_normal: ''
@@ -7,6 +9,14 @@
     size_hint: None, None
     height: '40sp'
     width: '120sp'
+
+
+<ButtonIcon@Button>:
+    size_hint: None, None
+    border: 0, 0, 0, 0
+    background_down: PWD_INSTALL + 'image/icon-neutral.png'
+    mipmap: True
+
 
 <LabelRot@Label>
     canvas.before:
@@ -413,66 +423,76 @@
 <Graphic>:
     BoxLayout:
         orientation: 'vertical'
+
         BoxLayout:
             size_hint_y: None
-            height: '38sp'
+            height: '2sp'
             padding: '5sp', '0sp'
             spacing: '2sp'
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint: None, None
-                height: '38sp'
-                width: '55sp'
-                padding: '5sp', '0sp'
-                spacing: '2sp'
-                Label:
-                    text: 'zoom'
-                    markup: True
-                    italic: True
-                    font_size: '12sp'
-                BoxLayout:
-                    spacing: '5sp'
-                    ButtonRHO:
-                        text: '+'
-                        height: '20sp'
-                        width: '20sp'
-                        on_press: root.update_draw_rho()
-                    ButtonRHO:
-                        text: '-'
-                        height: '20sp'
-                        width: '20sp'
-                Widget:
-                    size_hint_y: None
-                    height: '2sp'
-            Slider:
-                min: 1
-                max: 20
-                size_hint: None, None
-                width: '150sp'
-                height: '38sp'
-                cursor_height: '25sp'
-                value: 6
-                id: Schange
-            TextInput:
-                text: str(int(Schange.value))
-                size_hint: None, None
-                height: '30sp'
-                width: '32sp'
-                multiline: False
-                id: text_change
-                on_text_validate: root.change_size_point(self.text)
+            canvas.before:
+                Color:
+                    rgba: 1., 1., 1., 1.
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
 
-            ButtonRHO:
-                text: 'Ok'
-                size: '30sp', '30sp'
-                on_press: root.change_size_point(text_change.text)
 
-            ButtonRHO:
-                text: '|  |'
-                size: '30sp', '30sp'
-                on_press: root.select(self)
-                press: False
-                id: bt_box
+
+#            BoxLayout:
+#                orientation: 'vertical'
+#                size_hint: None, None
+#                height: '38sp'
+#                width: '55sp'
+#                padding: '5sp', '0sp'
+#                spacing: '2sp'
+#                Label:
+#                    text: 'zoom'
+#                    markup: True
+#                    italic: True
+#                    font_size: '12sp'
+#                BoxLayout:
+#                    spacing: '5sp'
+#                    ButtonRHO:
+#                        text: '+'
+#                        height: '20sp'
+#                        width: '20sp'
+#                        on_press: root.update_draw_rho()
+#                    ButtonRHO:
+#                        text: '-'
+#                        height: '20sp'
+#                        width: '20sp'
+#                Widget:
+#                    size_hint_y: None
+#                    height: '2sp'
+#            Slider:
+#                min: 1
+#                max: 20
+#                size_hint: None, None
+#                width: '150sp'
+#                height: '38sp'
+#                cursor_height: '25sp'
+#                value: 6
+#                id: Schange
+#            TextInput:
+#                text: str(int(Schange.value))
+#                size_hint: None, None
+#                height: '30sp'
+#                width: '32sp'
+#                multiline: False
+#                id: text_change
+#                on_text_validate: root.change_size_point(self.text)
+#
+#            ButtonRHO:
+#                text: 'Ok'
+#                size: '30sp', '30sp'
+#                on_press: root.change_size_point(text_change.text)
+#
+#            ButtonRHO:
+#                text: '|  |'
+#                size: '30sp', '30sp'
+#                on_press: root.select(self)
+#                press: False
+#                id: bt_box
 
 
 
@@ -525,6 +545,10 @@
 
 
 
+
+
+
+
             FloatLayout:
 
                 id: draw
@@ -556,6 +580,46 @@
             ButtonRHO:
                 text: 'Execute'
                 on_press: root.run_rhoplus()
+
+
+            # Menu Tools and Config
+
+            FloatLayout:
+                size_hint: None, None
+                size: 0,0
+                BoxLayout:
+                    size_hint: None, None
+                    height: self.spacing + len(self.children) * self.width
+                    width: '45dp'
+                    x: root.width - self.width - dp(20)
+                    y: root.height - self.height - dp(20)
+                    orientation: 'vertical'
+                    id: layout_tools
+                    spacing: '5dp'
+#                        canvas:
+#                            Color:
+#                                rgba: 1., 0, 0, 1.
+#                            Rectangle:
+#                                size: self.size
+#                                pos: self.pos
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-config.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-select.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-point.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
 
 
             #ButtonRHO:

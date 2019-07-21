@@ -28,9 +28,11 @@ import subprocess
 import os
 from math import log10
 import sys
+import json
 
 USER = os.environ['HOME']
-PWD_install = USER + '/.rhoplusGUI/'
+PWD_INSTALL = '/opt/rhoplusGUI/'
+PWD_PROFILE = USER + '/.rhoplusGUI/'
 
 class Install():
 
@@ -38,6 +40,7 @@ class Install():
         self.check_install_python()
         self.check_install_shell()
         self.check_install_geoma()
+
 
     def check_install_python(self):
 
@@ -84,6 +87,25 @@ class Install():
               'Marcelo Banik de Padua (marcelo.banik@gmail.com)')
         sys.exit()
 
+class Setting():
+
+    def __init__(self):
+        pass
+
+    def make_default_config(self):
+        file_settings = open(PWD_PROFILE + 'config.json', 'w')
+
+
+
+
+    def read_setting(self):
+        pass
+
+    def change_setting(self):
+        pass
+
+
+
 install = Install()
 
 from kivy.app import App
@@ -103,18 +125,20 @@ Config.set('graphics', 'multisamples', 16)
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.uix.button import ButtonBehavior
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
 
-from kivy.graphics import Color, Line
+from kivy.graphics import Color, Line, Ellipse
 from kivy.metrics import sp
 
 import matplotlib.pyplot as plt
 
 
-
-file_code_kivy = open(PWD_install + 'kivy_code.kv', 'r')
+# Load code kivy
+file_code_kivy = open(PWD_INSTALL + 'kivy_code.kv', 'r')
 code_kivy = file_code_kivy.read()
 file_code_kivy.close()
 
@@ -308,6 +332,8 @@ class PlotMatplotLib():
 class ButtonRHO(Button):
     pass
 
+
+
 class LabelRot(Label):
     pass
 
@@ -381,7 +407,7 @@ class PopUpExecuteRhoplus(Popup):
 
 
     def on_press_cancel(self):
-        app.current = 'menu'
+        application.current = 'menu'
         WindowBase.on_key_down = on_keyboard_none
         self.dismiss()
 
@@ -397,7 +423,7 @@ class PopUpExecuteRhoplus(Popup):
         self.parameters['ef'] = self.ids.ef.text
         self.dismiss()
         window.title = 'RhoplusGUI -- ' + self.parameters['Zfile']
-        app.current = 'graphic'
+        application.current = 'graphic'
         graphic.init_rho(self.parameters)
 
 
@@ -1721,7 +1747,7 @@ class Graphic(Screen):
 
     def change_site(self):
         self.ids.draw.clear_widgets()
-        app.current = 'menu'
+        application.current = 'menu'
 
     def export_image(self):
         self.pop_export_figure = Popup()
@@ -1769,10 +1795,10 @@ class Graphic(Screen):
 
 
 
-app = ScreenManager()
-app.add_widget(MenuInit(name='menu'))
+application = ScreenManager()
+application.add_widget(MenuInit(name='menu'))
 graphic = Graphic(name='graphic')
-app.add_widget(graphic)
+application.add_widget(graphic)
 
 
 
@@ -1783,13 +1809,12 @@ class RhoplusGUI(App):
 
     def build(self):
 
-        return app
+        return application
 
 if __name__ == '__main__':
     window = RhoplusGUI()
-    print(PWD_install + '/image/icon.png')
 
-    window.icon = PWD_install + 'image/icon.png'
+    #window.icon = PWD_install + 'image/icon.png'
 
     Window.size = 1030, 650
     # try:
