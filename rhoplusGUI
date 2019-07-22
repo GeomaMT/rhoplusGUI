@@ -1239,13 +1239,19 @@ class Points(Button):
 
     size_hint = None, None
     background_normal = ' '
-    cor_active = CONFIG.config['COLOR_SELECT_DATA']
-    cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
+    #cor_active = CONFIG.config['COLOR_SELECT_DATA']
+    #cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
     border = [0, 0, 0, 0]
 
 
-    def __init__(self, **kwargs):
+    def __init__(self, cor_active=CONFIG.config['COLOR_SELECT_DATA'], cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'], **kwargs):
         super(Points, self).__init__(**kwargs)
+
+        self.cor_active = cor_active
+        self.cor_no_active = cor_no_active
+
+
+
         self.size = sp(CONFIG.config['SIZE_POINT']), sp(CONFIG.config['SIZE_POINT'])
         self.active = False
         self.background_color = self.cor_no_active
@@ -1458,7 +1464,8 @@ class PlotPeriods(FloatLayout):
             x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
 
-            bt = Points()
+            bt = Points(cor_active=CONFIG.config['COLOR_SELECT_DATA'],
+                        cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'])
 
             bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
             bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
@@ -1484,7 +1491,8 @@ class PlotPeriods(FloatLayout):
             x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
 
-            bt = Points()
+            bt = Points(cor_active=CONFIG.config['COLOR_SELECT_DATA'],
+                        cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'])
 
             bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
             bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
@@ -1601,7 +1609,8 @@ class PlotPeriods(FloatLayout):
             x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             y = y0 + (-phi0 + period['phi']) * fzoom_phi
 
-            bt = Points()
+            bt = Points(cor_active=CONFIG.config['COLOR_SELECT_DATA'],
+                        cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'])
 
             bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
             bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
@@ -1623,7 +1632,8 @@ class PlotPeriods(FloatLayout):
             x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             y = y0 + (-phi0 + period['phi']) * fzoom_phi
 
-            bt = Points()
+            bt = Points(cor_active=CONFIG.config['COLOR_SELECT_DATA'],
+                        cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'])
 
             bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
             bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
@@ -1964,6 +1974,9 @@ class Graphic(Screen):
         CONFIG.config = CONFIG.read_settings()
         self.draw_graphic.draw_grafic()
         self.plot()
+        
+        self.ids.points_model.background_color = CONFIG.config['COLOR_SELECT_MODEL']
+        self.ids.bt_data.background_color = CONFIG.config['COLOR_SELECT_DATA']
 
         Menu.dismiss()
         Window.set_system_cursor('arrow')
@@ -1973,7 +1986,8 @@ class Graphic(Screen):
         settings_from_menu = Menu.settings_menu()
         CONFIG.update_settings(settings_from_menu)
 
-
+        self.ids.points_model.background_color = CONFIG.config['COLOR_SELECT_MODEL']
+        self.ids.bt_data.background_color = CONFIG.config['COLOR_SELECT_DATA']
 
         self.draw_graphic.draw_grafic()
         self.plot()
