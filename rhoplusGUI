@@ -894,13 +894,14 @@ class DrawGraphicPlot(FloatLayout):
 
         border = dp(CONFIG.config['WIDTH_GRAFICS_BORDER'])
 
-        limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + (CONFIG.config['MIN_PERIOD'] + CONFIG.config['DECADE_NUMBER']))
+        limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + (CONFIG.config['MAX_PERIOD']))
         limy = 10 ** (-CONFIG.config['MIN_RHO'] + (CONFIG.config['MAX_RHO']))
 
-        dec_x = range(CONFIG.config['MIN_PERIOD'], (CONFIG.config['MIN_PERIOD'] + CONFIG.config['DECADE_NUMBER']))
+        dec_x = range(CONFIG.config['MIN_PERIOD'], (CONFIG.config['MAX_PERIOD']))
         dec_y = range(CONFIG.config['MIN_RHO'], CONFIG.config['MAX_RHO'] + 1)
 
-        fzoom = (2*height/3)/(log10(limy))
+        fzoom_rho = (yf - y0)/(log10(limy))
+        fzoom_T = (xf - x0) / (log10(limx))
 
         scale = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                  10, 20, 30, 40, 50, 60, 70, 80, 90,
@@ -913,7 +914,8 @@ class DrawGraphicPlot(FloatLayout):
                  100000000]
 
         scale_log = [log10(i) for i in scale]
-        scale_log_zoom = [i * fzoom for i in scale_log]
+        scale_log_zoom_rho = [i * fzoom_rho for i in scale_log]
+        scale_log_zoom_T = [i * fzoom_T for i in scale_log]
 
         self.canvas.clear()
         with self.canvas:
@@ -929,7 +931,7 @@ class DrawGraphicPlot(FloatLayout):
             Line(points=[xf_2, y0, xf_2, yf], width=border)
 
             c = 0
-            for i in scale_log_zoom:
+            for i in scale_log_zoom_T:
                 if scale[c] > limx:
                     continue
                 else:
@@ -937,7 +939,7 @@ class DrawGraphicPlot(FloatLayout):
                     Line(points=[i + x0_2, y0, i + x0_2, y0 - sp(5)])
                     c += 1
             c = 0
-            for i in scale_log_zoom:
+            for i in scale_log_zoom_rho:
                 if scale[c] > limy:
                     continue
                 else:
@@ -965,7 +967,7 @@ class DrawGraphicPlot(FloatLayout):
             lb.height = sp(30)
             lb.width = sp(30)
 
-            y = int((y0 - 20) + ((i + pos) * fzoom))
+            y = int((y0 - 20) + ((i + pos) * fzoom_rho))
             lb.pos = x0 - 35, y
             self.add_widget(lb)
 
@@ -978,7 +980,7 @@ class DrawGraphicPlot(FloatLayout):
             lb_2.height = sp(30)
             lb_2.width = sp(30)
 
-            y = int((y0 - 20) + ((i + pos) * fzoom))
+            y = int((y0 - 20) + ((i + pos) * fzoom_rho))
             lb_2.pos = x0_2 - 35, y
             self.add_widget(lb_2)
 
@@ -1020,16 +1022,17 @@ class DrawGraphicPlot(FloatLayout):
 
         border = dp(CONFIG.config['WIDTH_GRAFICS_BORDER'])
 
-        limx = 10 ** (CONFIG.config['DECADE_NUMBER'])
+        limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + (CONFIG.config['MAX_PERIOD']))
         limy = 10 ** (-CONFIG.config['MIN_RHO'] + (CONFIG.config['MAX_RHO']))
 
         lim_phi = 180
         step_phi = 45
 
-        dec_x = range(CONFIG.config['MIN_PERIOD'], (CONFIG.config['MIN_PERIOD']+ CONFIG.config['DECADE_NUMBER']) + 1)
+        dec_x = range(CONFIG.config['MIN_PERIOD'], (CONFIG.config['MAX_PERIOD']) + 1)
         dec_y = range(CONFIG.config['MIN_RHO'], CONFIG.config['MAX_RHO'] + 1)
 
-        fzoom = (2*height/3)/(log10(limy))
+        fzoom_rho = (yf - y0)/(log10(limy))
+        fzoom_T = (xf - x0) / (log10(limx))
         fzoom_phi = ((height/3)/lim_phi)
 
         scale = [1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -1043,7 +1046,8 @@ class DrawGraphicPlot(FloatLayout):
                  100000000]
 
         scale_log = [log10(i) for i in scale]
-        scale_log_zoom = [i * fzoom for i in scale_log]
+        scale_log_zoom_rho = [i * fzoom_rho for i in scale_log]
+        scale_log_zoom_T = [i * fzoom_T for i in scale_log]
 
         scale_phi = [i * fzoom_phi for i in range(0, lim_phi, step_phi)]
 
@@ -1061,7 +1065,7 @@ class DrawGraphicPlot(FloatLayout):
             Line(points=[xf_2, y0, xf_2, yf], width=border)
 
             c = 0
-            for i in scale_log_zoom:
+            for i in scale_log_zoom_T:
                 if scale[c] > limx:
                     continue
                 else:
@@ -1093,7 +1097,7 @@ class DrawGraphicPlot(FloatLayout):
             lb.height = sp(30)
             lb.width = sp(30)
 
-            x = int((x0 - lb.width/2) + ((i + pos) * fzoom))
+            x = int((x0 - lb.width/2) + ((i + pos) * fzoom_T))
             lb.pos = x, y0 - sp(30)
             self.add_widget(lb)
 
@@ -1106,7 +1110,7 @@ class DrawGraphicPlot(FloatLayout):
             lb_2.height = sp(30)
             lb_2.width = sp(30)
 
-            x = int((x0_2 - lb_2.width / 2) + ((i + pos) * fzoom))
+            x = int((x0_2 - lb_2.width / 2) + ((i + pos) * fzoom_T))
             lb_2.pos = x, y0 - sp(30)
             self.add_widget(lb_2)
 
@@ -1231,13 +1235,13 @@ class PlotPeriods(FloatLayout):
 
         border_model = dp(CONFIG.config['WIDTH_MODEL'])
 
-
+        limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + CONFIG.config['MAX_PERIOD'])
         limy = 10 ** (-CONFIG.config['MIN_RHO'] + (CONFIG.config['MAX_RHO']))
 
 
 
-        fzoom = (2 * height / 3) / (log10(limy))
-
+        fzoom_rho = (yf - y0) / (log10(limy))
+        fzoom_T = (xf - x0) / (log10(limx))
 
         model_xy_rho = []
         model_yx_rho = []
@@ -1255,8 +1259,8 @@ class PlotPeriods(FloatLayout):
 
         for period in self.model_xy:
 
-            T = x0 + (log10(1/period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
-            rho = y0 + (log10(period['Mrho']) + (-CONFIG.config['MIN_RHO'])) * fzoom
+            T = x0 + (log10(1/period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
+            rho = y0 + (log10(period['Mrho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
             phi = y0_phi + period['Mphi'] * fzoom_phi
 
             if T > x0 and T < xf and rho > y0 and rho < yf:
@@ -1268,8 +1272,8 @@ class PlotPeriods(FloatLayout):
                 model_xy_phi.append(phi)
 
         for period in self.model_yx:
-            T = x0_2 + (log10(1 / period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
-            rho = y0 + (log10(period['Mrho']) + (-CONFIG.config['MIN_RHO'])) * fzoom
+            T = x0_2 + (log10(1 / period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
+            rho = y0 + (log10(period['Mrho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
             phi = y0_phi + period['Mphi'] * fzoom_phi
 
             if T > x0_2 and T < xf_2 and rho > y0 and rho < yf:
@@ -1310,10 +1314,11 @@ class PlotPeriods(FloatLayout):
 
         border_model = sp(1.05)
 
-        limx = 100000000
+        limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + CONFIG.config['MAX_PERIOD'])
         limy = 10 ** (-CONFIG.config['MIN_RHO'] + (CONFIG.config['MAX_RHO']))
 
-        fzoom = (2 * height / 3) / (log10(limy))
+        fzoom_rho = (yf - y0) / (log10(limy))
+        fzoom_T = (xf - x0) / (log10(limx))
 
         border_error = dp(CONFIG.config['WIDTH_ERROR_BAR'])
 
@@ -1326,12 +1331,12 @@ class PlotPeriods(FloatLayout):
                 dz = 0.434*(period['Erho']/period['rho'])
 
 
-                yi_erro = y0 + (fzoom * (log10(period['rho']) - dz + (-CONFIG.config['MIN_RHO'])))
-                yf_erro = y0 + (fzoom * (log10(period['rho']) + dz + (-CONFIG.config['MIN_RHO'])))
+                yi_erro = y0 + (fzoom_rho * (log10(period['rho']) - dz + (-CONFIG.config['MIN_RHO'])))
+                yf_erro = y0 + (fzoom_rho * (log10(period['rho']) + dz + (-CONFIG.config['MIN_RHO'])))
 
 
 
-                x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
+                x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
 
 
                 if yi_erro < y0:
@@ -1342,7 +1347,7 @@ class PlotPeriods(FloatLayout):
 
 
                 bar = [x, yi_erro, x, yf_erro]
-                rho = y0 + (log10(period['rho']) + 1) * fzoom
+                rho = y0 + (log10(period['rho']) + 1) * fzoom_rho
                 if x > x0 and x < xf and rho > y0 and rho < yf:
 
                     Line(points=bar, width=border_error)
@@ -1353,12 +1358,12 @@ class PlotPeriods(FloatLayout):
                 dz = 0.434*(period['Erho']/period['rho'])
 
 
-                yi_erro = y0 + (fzoom * (log10(period['rho']) - dz + (-CONFIG.config['MIN_RHO'])))
-                yf_erro = y0 + (fzoom * (log10(period['rho']) + dz + (-CONFIG.config['MIN_RHO'])))
+                yi_erro = y0 + (fzoom_rho * (log10(period['rho']) - dz + (-CONFIG.config['MIN_RHO'])))
+                yf_erro = y0 + (fzoom_rho * (log10(period['rho']) + dz + (-CONFIG.config['MIN_RHO'])))
 
 
 
-                x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
+                x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
 
 
                 if yi_erro < y0:
@@ -1369,7 +1374,7 @@ class PlotPeriods(FloatLayout):
 
 
                 bar = [x, yi_erro, x, yf_erro]
-                rho = y0 + (log10(period['rho']) + 1) * fzoom
+                rho = y0 + (log10(period['rho']) + 1) * fzoom_rho
                 if x > x0_2 and x < xf_2 and rho > y0 and rho < yf:
                     Line(points=bar, width=border_error)
 
@@ -1384,8 +1389,8 @@ class PlotPeriods(FloatLayout):
         self.points_rho_xy = []
 
         for period in self.points_xy:
-            x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
-            y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom
+            x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
+            y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
 
             bt = Points()
 
@@ -1405,8 +1410,8 @@ class PlotPeriods(FloatLayout):
         self.points_rho_yx = []
 
         for period in self.points_yx:
-            x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
-            y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom
+            x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
+            y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
 
             bt = Points()
 
@@ -1437,12 +1442,13 @@ class PlotPeriods(FloatLayout):
 
         border = 1.05
 
-        limx = 100000000
+        limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + CONFIG.config['MAX_PERIOD'])
         limy = 10 ** (-CONFIG.config['MIN_RHO'] + (CONFIG.config['MAX_RHO']))
 
         lim_phi = 180
 
-        fzoom = (2 * height / 3) / (log10(limy))
+        fzoom_rho = (yf - y0) / (log10(limy))
+        fzoom_T = (xf - x0) / (log10(limx))
         fzoom_phi = ((height / 3) / lim_phi)
 
 
@@ -1459,7 +1465,7 @@ class PlotPeriods(FloatLayout):
                 yi_erro = y0 + (fzoom_phi * (period['phi'] - period['Ephi']))
                 yf_erro = y0 + (fzoom_phi * (period['phi'] + period['Ephi']))
 
-                x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
+                x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
 
                 if yi_erro < y0:
                     yi_erro = y0
@@ -1481,7 +1487,7 @@ class PlotPeriods(FloatLayout):
                 yi_erro = y0 + (fzoom_phi * (period['phi'] - period['Ephi']))
                 yf_erro = y0 + (fzoom_phi * (period['phi'] + period['Ephi']))
 
-                x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
+                x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
 
                 if yi_erro < y0:
                     yi_erro = y0
@@ -1505,7 +1511,7 @@ class PlotPeriods(FloatLayout):
         self.points_phi_xy = []
 
         for period in self.points_xy:
-            x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
+            x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             y = y0 + period['phi'] * fzoom_phi
 
             bt = Points()
@@ -1524,7 +1530,7 @@ class PlotPeriods(FloatLayout):
         self.points_phi_yx = []
 
         for period in self.points_yx:
-            x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom
+            x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             y = y0 + period['phi'] * fzoom_phi
 
             bt = Points()
