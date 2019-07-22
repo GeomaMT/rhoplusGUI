@@ -419,6 +419,329 @@
                 text: 'Close'
                 on_press: root.on_press_close()
 
+<MenuConfig>:
+    size_hint: None, None
+    width: dp(400)
+    height: dp(440)
+    #: set tab_label '150dp'
+    #ScrollView:
+    #BoxLayout:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15), dp(15), dp(15), dp(15)
+        spacing: dp(5)
+        size_hint_y: None
+        height: dp(440)
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Period:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            TextInput:
+                text: str(root.MIN_PERIOD)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MIN_PERIOD
+            Label:
+                text: 'to'
+            TextInput:
+                text: str(root.MAX_PERIOD)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MAX_PERIOD
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Rho:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+            TextInput:
+                text: str(root.MIN_RHO)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MIN_RHO
+            Label:
+                text: 'to'
+            TextInput:
+                text: str(root.MAX_RHO)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MAX_RHO
+
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Phi:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+            TextInput:
+                text: str(root.MIN_PHI)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MIN_PHI
+
+            Label:
+                text: 'to'
+            TextInput:
+                text: str(root.MAX_PHI)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MAX_PHI
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Width Model:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            Slider:
+                value: root.WIDTH_MODEL
+                min: 0
+                max: 10
+                id: slider_WIDTH_MODEL
+
+            TextInput:
+                text: '{:.2f}'.format(slider_WIDTH_MODEL.value)
+                multiline: False
+                input_filter: 'float'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_WIDTH_MODEL
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Width Error Bar:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            Slider:
+                value: root.WIDTH_ERROR_BAR
+                min: 0
+                max: 10
+                id: slider_WIDTH_ERROR_BAR
+
+            TextInput:
+                text: '{:.2f}'.format(slider_WIDTH_ERROR_BAR.value)
+                multiline: False
+                input_filter: 'float'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_WIDTH_ERROR_BAR
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Size Point:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            Slider:
+                value: root.SIZE_POINT
+                min: 0
+                max: 20
+                id: slider_SIZE_POINT
+
+
+            TextInput:
+                text: '{:.2f}'.format(slider_SIZE_POINT.value)
+                multiline: False
+                input_filter: 'float'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_SIZE_POINT
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Color Model:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            BoxLayout:
+                spacing: '5dp'
+                Button:
+                    background_normal: ''
+                    background_color: ['0' if (textinput_COLOR_MODEL_r.text == '') else float(textinput_COLOR_MODEL_r.text)/255, '0' if (textinput_COLOR_MODEL_g.text == '') else float(textinput_COLOR_MODEL_g.text)/255, '0' if (textinput_COLOR_MODEL_b.text == '') else float(textinput_COLOR_MODEL_b.text)/255, 1.]
+                    size_hint: None, None
+                    width: dp(20)
+                    height: dp(20)
+                    id: button_COLOR_MODEL
+
+                TextInput:
+                    text: str(int(root.COLOR_MODEL[0]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_MODEL_r
+
+                TextInput:
+                    text: str(int(root.COLOR_MODEL[1]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_MODEL_g
+
+                TextInput:
+                    text: str(int(root.COLOR_MODEL[2]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_MODEL_b
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Color Select Data:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            BoxLayout:
+                spacing: '5dp'
+                Button:
+                    background_normal: ''
+                    background_color: ['0' if (textinput_COLOR_SELECT_DATA_r.text == '') else float(textinput_COLOR_SELECT_DATA_r.text)/255, '0' if (textinput_COLOR_SELECT_DATA_g.text == '') else float(textinput_COLOR_SELECT_DATA_g.text)/255, '0' if (textinput_COLOR_SELECT_DATA_b.text == '') else float(textinput_COLOR_SELECT_DATA_b.text)/255, 1.]
+                    size_hint: None, None
+                    width: dp(20)
+                    height: dp(20)
+                    id: button_COLOR_SELECT_DATA
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_DATA[0]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_DATA_r
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_DATA[1]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_DATA_g
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_DATA[2]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_DATA_b
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Color Select Model:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            BoxLayout:
+                spacing: '5dp'
+                Button:
+                    background_normal: ''
+                    background_color: ['0' if (textinput_COLOR_SELECT_MODEL_r.text == '') else float(textinput_COLOR_SELECT_MODEL_r.text)/255, '0' if (textinput_COLOR_SELECT_MODEL_g.text == '') else float(textinput_COLOR_SELECT_MODEL_g.text)/255, '0' if (textinput_COLOR_SELECT_MODEL_b.text == '') else float(textinput_COLOR_SELECT_MODEL_b.text)/255, 1.]
+                    size_hint: None, None
+                    width: dp(20)
+                    height: dp(20)
+                    id: button_COLOR_SELECT_MODEL
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_MODEL[0]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_MODEL_r
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_MODEL[1]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_MODEL_g
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_MODEL[2]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_MODEL_b
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Widget:
+            ButtonRHO:
+                text: 'Restore'
+                height: dp(30)
+                on_press: root.ON_PRESS_RESTORE(root)
+            ButtonRHO:
+                text: 'Cancel'
+                height: dp(30)
+                on_press: root.dismiss()
+            ButtonRHO:
+                text: 'OK'
+                height: dp(30)
+                on_press: root.ON_PRESS_OK(root)
+
+
+
+
+        Widget:
+
+
+
+
+
+
+
+
+
+
 
 <Graphic>:
     BoxLayout:
@@ -608,6 +931,7 @@
                         size_hint: None, None
                         height: layout_tools.width
                         width: layout_tools.width
+                        on_press: root.open_settings()
 
                     ButtonIcon:
                         background_normal: PWD_INSTALL + '/image/icon-select.png'

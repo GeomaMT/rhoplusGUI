@@ -91,15 +91,20 @@ class Setting():
 
     def __init__(self):
 
+        if not os.path.isdir(PWD_PROFILE):
+            os.mkdir(PWD_PROFILE)
+
         if not os.path.isfile(PWD_PROFILE + 'config.json'):
             self.make_default_config()
 
         #### config tesste
-        self.make_default_config()
+        #self.make_default_config()
         ####
 
-        self.config = self.read_setting()
-
+        try:
+            self.config = self.read_settings()
+        except Exception:
+            self.make_default_config()
 
     def make_default_config(self):
 
@@ -127,13 +132,23 @@ class Setting():
         file_settings.close()
 
 
-    def read_setting(self):
+    def read_settings(self):
         file_settings = open(PWD_PROFILE + 'config.json', 'r')
         settings = json.loads(file_settings.read())
         file_settings.close()
 
         return settings
 
+    def update_settings(self, new_settings):
+
+        self.config = new_settings
+        self.save_settings()
+
+    def save_settings(self):
+        string_settings_json = json.dumps(self.config)
+        file_settings = open(PWD_PROFILE + 'config.json', 'w')
+        file_settings.write(string_settings_json)
+        file_settings.close()
 
     def change_setting(self):
         pass
@@ -164,9 +179,13 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.modalview import ModalView
 from kivy.uix.image import Image
 
-from kivy.graphics import Color, Line, Ellipse
+from kivy.graphics import Color
+from kivy.graphics import Line
+from kivy.graphics import Ellipse
+from kivy.graphics import Rectangle
 from kivy.metrics import sp, dp
 
 import matplotlib.pyplot as plt
@@ -367,7 +386,49 @@ class PlotMatplotLib():
 class ButtonRHO(Button):
     pass
 
+class MenuConfig(ModalView):
 
+    MIN_PERIOD = ObjectProperty(None)
+    MAX_PERIOD = ObjectProperty(None)
+    MIN_RHO = ObjectProperty(None)
+    MAX_RHO = ObjectProperty(None)
+    MIN_PHI = ObjectProperty(None)
+    MAX_PHI = ObjectProperty(None)
+    STEP_PHI = ObjectProperty(None)
+    WIDTH_MODEL = ObjectProperty(None)
+    WIDTH_ERROR_BAR = ObjectProperty(None)
+    WIDTH_GRAFICS_BORDER = ObjectProperty(None)
+    SIZE_POINT = ObjectProperty(None)
+    COLOR_MODEL = ObjectProperty(None)
+    COLOR_SELECT_DATA = ObjectProperty(None)
+    COLOR_SELECT_MODEL = ObjectProperty(None)
+
+
+    # functions
+    ON_PRESS_OK = ObjectProperty(None)
+    ON_PRESS_RESTORE = ObjectProperty(None)
+
+
+        #### pensar em como atualizar
+
+
+    def settings_menu(self):
+        settings = {'MIN_PERIOD': int(self.ids.textinput_MIN_PERIOD.text),
+                    'MAX_PERIOD': int(self.ids.textinput_MAX_PERIOD.text),
+                    'MIN_RHO': int(self.ids.textinput_MIN_RHO.text),
+                    'MAX_RHO': int(self.ids.textinput_MAX_RHO.text),
+                    'MIN_PHI': int(self.ids.textinput_MIN_PHI.text),
+                    'MAX_PHI': int(self.ids.textinput_MAX_PHI.text),
+                    'STEP_PHI': 45,
+                    'WIDTH_MODEL': float(self.ids.textinput_WIDTH_MODEL.text),
+                    'WIDTH_ERROR_BAR': float(self.ids.textinput_WIDTH_ERROR_BAR.text),
+                    'WIDTH_GRAFICS_BORDER': 1.05,
+                    'SIZE_POINT': float(self.ids.textinput_SIZE_POINT.text),
+                    'COLOR_MODEL': self.ids.button_COLOR_MODEL.background_color,
+                    'COLOR_SELECT_DATA': self.ids.button_COLOR_SELECT_DATA.background_color,
+                    'COLOR_SELECT_MODEL': self.ids.button_COLOR_SELECT_MODEL.background_color}
+
+        return settings
 
 class LabelRot(Label):
     pass
@@ -1185,7 +1246,7 @@ class Points(Button):
 
     def __init__(self, **kwargs):
         super(Points, self).__init__(**kwargs)
-        self.size = size_point
+        self.size = sp(CONFIG.config['SIZE_POINT']), sp(CONFIG.config['SIZE_POINT'])
         self.active = False
         self.background_color = self.cor_no_active
 
@@ -1399,6 +1460,11 @@ class PlotPeriods(FloatLayout):
 
             bt = Points()
 
+            bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
+            bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
+
+
+
             x = x - bt.width / 2
             y = y - bt.height / 2
 
@@ -1419,6 +1485,9 @@ class PlotPeriods(FloatLayout):
             y = y0 + (log10(period['rho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
 
             bt = Points()
+
+            bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
+            bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
 
             x = x - bt.width / 2
             y = y - bt.height / 2
@@ -1534,6 +1603,9 @@ class PlotPeriods(FloatLayout):
 
             bt = Points()
 
+            bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
+            bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
+
             x = x - bt.width/2
             y = y - bt.height/2
 
@@ -1552,6 +1624,9 @@ class PlotPeriods(FloatLayout):
             y = y0 + (-phi0 + period['phi']) * fzoom_phi
 
             bt = Points()
+
+            bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
+            bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
 
             x = x - bt.width / 2
             y = y - bt.height / 2
@@ -1863,7 +1938,49 @@ class Graphic(Screen):
         self.update_draw_rho()
         Window.set_system_cursor('arrow')
 
+    def open_settings(self):
+        menu_config = MenuConfig(MIN_PERIOD=CONFIG.config['MIN_PERIOD'],
+                                 MAX_PERIOD=CONFIG.config['MAX_PERIOD'],
+                                 MIN_RHO=CONFIG.config['MIN_RHO'],
+                                 MAX_RHO=CONFIG.config['MAX_RHO'],
+                                 MIN_PHI=CONFIG.config['MIN_PHI'],
+                                 MAX_PHI=CONFIG.config['MAX_PHI'],
+                                 STEP_PHI=CONFIG.config['STEP_PHI'],
+                                 WIDTH_MODEL=CONFIG.config['WIDTH_MODEL'],
+                                 WIDTH_ERROR_BAR=CONFIG.config['WIDTH_ERROR_BAR'],
+                                 WIDTH_GRAFICS_BORDER=CONFIG.config['WIDTH_GRAFICS_BORDER'],
+                                 SIZE_POINT=CONFIG.config['SIZE_POINT'],
+                                 COLOR_MODEL=CONFIG.config['COLOR_MODEL'],
+                                 COLOR_SELECT_DATA=CONFIG.config['COLOR_SELECT_DATA'],
+                                 COLOR_SELECT_MODEL=CONFIG.config['COLOR_SELECT_MODEL'],
+                                 ON_PRESS_OK=self.update_settings,
+                                 ON_PRESS_RESTORE=self.restore_settings,
+                                 )
+        menu_config.open()
 
+    def restore_settings(self, Menu):
+        Window.set_system_cursor('wait')
+        CONFIG.make_default_config()
+        CONFIG.config = CONFIG.read_settings()
+        self.draw_graphic.draw_grafic()
+        self.plot()
+
+        Menu.dismiss()
+        Window.set_system_cursor('arrow')
+
+    def update_settings(self, Menu):
+        Window.set_system_cursor('wait')
+        settings_from_menu = Menu.settings_menu()
+        CONFIG.update_settings(settings_from_menu)
+
+
+
+        self.draw_graphic.draw_grafic()
+        self.plot()
+
+        Menu.dismiss()
+        Window.set_system_cursor('arrow')
+        print('update')
 
 application = ScreenManager()
 application.add_widget(MenuInit(name='menu'))
@@ -1881,12 +1998,38 @@ class RhoplusGUI(App):
 
         return application
 
+# class RhoplusGUI(App):
+#
+#
+#     def build(self):
+#
+#         lay = FloatLayout()
+#         menu_config = MenuConfig(MIN_PERIOD=CONFIG.config['MIN_PERIOD'],
+#                                  MAX_PERIOD=CONFIG.config['MAX_PERIOD'],
+#                                  MIN_RHO=CONFIG.config['MIN_RHO'],
+#                                  MAX_RHO=CONFIG.config['MAX_RHO'],
+#                                  MIN_PHI=CONFIG.config['MIN_PHI'],
+#                                  MAX_PHI=CONFIG.config['MAX_PHI'],
+#                                  STEP_PHI=CONFIG.config['STEP_PHI'],
+#                                  WIDTH_MODEL=CONFIG.config['WIDTH_MODEL'],
+#                                  WIDTH_ERROR_BAR=CONFIG.config['WIDTH_ERROR_BAR'],
+#                                  WIDTH_GRAFICS_BORDER=CONFIG.config['WIDTH_GRAFICS_BORDER'],
+#                                  SIZE_POINT=CONFIG.config['SIZE_POINT'],
+#                                  COLOR_MODEL=CONFIG.config['COLOR_MODEL'],
+#                                  COLOR_SELECT_DATA=CONFIG.config['COLOR_SELECT_DATA'],
+#                                  COLOR_SELECT_MODEL=CONFIG.config['COLOR_SELECT_MODEL'],
+#                                  )
+#         menu_config.open()
+#
+#         return lay
+
 if __name__ == '__main__':
     window = RhoplusGUI()
 
     #window.icon = PWD_install + 'image/icon.png'
 
-    Window.size = 1030, 650
+    Window.size = 1100, 650
+
     # try:
     window.run()
     # except Exception:
