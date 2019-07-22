@@ -107,13 +107,12 @@ class Setting():
 
         settings={'MIN_PERIOD': -4,
                   'MAX_PERIOD': 4,
-                  'DECADE_NUMBER': 8,
                   'MIN_RHO': -1,
                   'MAX_RHO': 5,
-                  'MIN_PHI': 45,
+                  'MIN_PHI': 0,
                   'MAX_PHI': 90,
                   'STEP_PHI': 45,
-                  'WIDTH_MODEL': 1.02,
+                  'WIDTH_MODEL': 1.3,
                   'WIDTH_ERROR_BAR': 1.05,
                   'WIDTH_GRAFICS_BORDER': 1.05,
                   'SIZE_POINT': 6,
@@ -1294,7 +1293,7 @@ class PlotPeriods(FloatLayout):
 
 
         with self.canvas.before:
-            Color(rgba=(0., 0., 1., 1.))
+            Color(rgba=CONFIG.config['COLOR_MODEL'])
             Line(points=model_xy_rho, width=border_model)
             Line(points=model_yx_rho, width=border_model)
 
