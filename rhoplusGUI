@@ -202,6 +202,15 @@ Builder.load_string(code_kivy)
 def on_keyboard_none(*args):
     pass
 
+class Help(ModalView):
+    pass
+
+
+
+
+
+
+
 class PlotMatplotLib():
 
     def __init__(self, site):
@@ -1974,7 +1983,7 @@ class Graphic(Screen):
         CONFIG.config = CONFIG.read_settings()
         self.draw_graphic.draw_grafic()
         self.plot()
-        
+
         self.ids.points_model.background_color = CONFIG.config['COLOR_SELECT_MODEL']
         self.ids.bt_data.background_color = CONFIG.config['COLOR_SELECT_DATA']
 
@@ -1996,6 +2005,13 @@ class Graphic(Screen):
         Window.set_system_cursor('arrow')
         print('update')
 
+    def open_help(self):
+        help_application = Help()
+        help_application.open()
+
+
+
+
 application = ScreenManager()
 application.add_widget(MenuInit(name='menu'))
 graphic = Graphic(name='graphic')
@@ -2006,11 +2022,22 @@ application.add_widget(graphic)
 
 
 class RhoplusGUI(App):
-
-
     def build(self):
-
         return application
+
+# class RhoplusGUI(App):
+# 
+# 
+#     def build(self):
+# 
+#         lay = FloatLayout()
+# 
+#         help_app = Help()
+#         help_app.open()
+# 
+#         return lay
+
+
 
 # class RhoplusGUI(App):
 #

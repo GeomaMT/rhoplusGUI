@@ -49,6 +49,40 @@
     size_hint_x: None
     width: '1sp'
 
+<Help>:
+    size_hint: None, None
+    width: dp(400)
+    height: dp(440)
+    #: set tab_label '150dp'
+    #ScrollView:
+    #BoxLayout:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15), dp(15), dp(15), dp(15)
+        spacing: dp(5)
+        size_hint_y: None
+        height: dp(440)
+
+
+
+        Image:
+            source: PWD_INSTALL + 'image/logo_inpe_GEOMA.png'
+            mipmap: True
+            size_hint_y: None
+            height: '80dp'
+
+
+        LineH:
+
+        BoxLayout:
+
+
+
+
+
+
+
+
 <PopUPExportFigure@BoxLayout>:
     BoxLayout:
         orientation: 'vertical'
@@ -948,6 +982,13 @@
                         size_hint: None, None
                         height: layout_tools.width
                         width: layout_tools.width
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-help.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
+                        on_press: root.open_help()
 
 
             #ButtonRHO:
