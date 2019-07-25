@@ -203,8 +203,19 @@ def on_keyboard_none(*args):
     pass
 
 class Help(ModalView):
-    pass
 
+
+    def __init__(self, **kwargs):
+        super(Help, self).__init__(**kwargs)
+
+        file_doc_help = open(PWD_INSTALL + 'doc/help', 'r')
+
+        self.text_file_doc_help = file_doc_help.read()
+        file_doc_help.close()
+
+        self.ids.label_text_help.text = self.text_file_doc_help
+
+        print(self.text_file_doc_help)
 
 
 
@@ -2020,49 +2031,23 @@ application.add_widget(graphic)
 
 
 
-
+#
 class RhoplusGUI(App):
     def build(self):
         return application
 
 # class RhoplusGUI(App):
-# 
-# 
+#
+#
 #     def build(self):
-# 
+#
 #         lay = FloatLayout()
-# 
+#
 #         help_app = Help()
 #         help_app.open()
-# 
-#         return lay
-
-
-
-# class RhoplusGUI(App):
-#
-#
-#     def build(self):
-#
-#         lay = FloatLayout()
-#         menu_config = MenuConfig(MIN_PERIOD=CONFIG.config['MIN_PERIOD'],
-#                                  MAX_PERIOD=CONFIG.config['MAX_PERIOD'],
-#                                  MIN_RHO=CONFIG.config['MIN_RHO'],
-#                                  MAX_RHO=CONFIG.config['MAX_RHO'],
-#                                  MIN_PHI=CONFIG.config['MIN_PHI'],
-#                                  MAX_PHI=CONFIG.config['MAX_PHI'],
-#                                  STEP_PHI=CONFIG.config['STEP_PHI'],
-#                                  WIDTH_MODEL=CONFIG.config['WIDTH_MODEL'],
-#                                  WIDTH_ERROR_BAR=CONFIG.config['WIDTH_ERROR_BAR'],
-#                                  WIDTH_GRAFICS_BORDER=CONFIG.config['WIDTH_GRAFICS_BORDER'],
-#                                  SIZE_POINT=CONFIG.config['SIZE_POINT'],
-#                                  COLOR_MODEL=CONFIG.config['COLOR_MODEL'],
-#                                  COLOR_SELECT_DATA=CONFIG.config['COLOR_SELECT_DATA'],
-#                                  COLOR_SELECT_MODEL=CONFIG.config['COLOR_SELECT_MODEL'],
-#                                  )
-#         menu_config.open()
 #
 #         return lay
+
 
 if __name__ == '__main__':
     window = RhoplusGUI()

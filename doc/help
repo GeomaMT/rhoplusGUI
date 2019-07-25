@@ -1,51 +1,25 @@
-rhoplusGUI é uma aplicação desenvolvida pelo grupo GEOMA do INPE (Instituto Nacional de Pesquisas Espaciais, Brasil), que tem como objetivo facilitar a utilização do programa Rho+, desenvolvido por Robert L. Parker & John R. Booker (1996).
+[b]rhoplusGUI[/b] is an application developed by the GEOMA group of INPE (National Institute of Space Research, Brazil), which aims to facilitate the use of the Rho + program, developed by [i]Robert L. Parker & John R. Booker (1996)[/i].
 
-O rhoplusGUI deve ser refênciado pelo seguinte documento:
+------------------------------------------------------------------------------------
+Shortcut:
+box select :  s
+execute:       enter
+------------------------------------------------------------------------------------
 
+The [b]rhoplusGUI[/b] shall be replaced by the following:
+
+------------------------------------------------------------------------------------
 @techreport{rhoplusGUI:2019,
-title = {Desenvolvimento de Interface Gra{\'a}fica Amig{\'a}vel
-para Valida{\c{c}}{\~a}o de Dados Magnetotel{\'u}ricos a Partir
-do Processamento Rho+},
-author = {Patrick Rogger Garcia},
-institution = {Instituto Nacional de Pesquisas Espaciais -- Brasil},
-year= {2019}
+    title       = {Desenvolvimento de Interface Gra{\'a}fica Amig{\'a}vel para Valida{\c{c}}{\~a}o de Dados Magnetotel{\'u}ricos a Partir do Processamento Rho+},
+    author      = {Patrick Rogger Garcia},
+    institution = {Instituto Nacional de Pesquisas Espaciais -- Brasil},
+    year        = {2019}
 }
-
-O programa Rho+ pode ser encontrado em http://mtnet.info/main/source.html#1d_codes
-
-Mais Informações:
-Patrick Rogger Garcia (garcia.rpatrick@gmail.com)
-Marcelo Banik de Pádua (marcelo.banik@gmail.com)
-
-Atalho:
--
-
-
-
-rhoplusGUI is an application developed by the GEOMA group of INPE (National Institute of Space Research, Brazil), which aims to facilitate the use of the Rho + program, developed by Robert L. Parker & John R. Booker (1996).
-
-The rhoplusGUI shall be replaced by the following:
-
-@techreport {rhoplusGUI: 2019,
-title = {Interface Development Grafica AmÃ © gica
-to validate {\ c {c}} of MagnetoText data from
-of Rho + Processing,
-author = {Patrick Rogger Garcia},
-institution = {National Institute of Space Research - Brazil},
-year = {2019}
-}
+------------------------------------------------------------------------------------
 
 The Rho + program can be found at http://mtnet.info/main/source.html#1d_codes
 
 More information:
 Patrick Rogger Garcia (garcia.rpatrick@gmail.com)
 Marcelo Banik de Pádua (marcelo.banik@gmail.com)
-
-Shortcut:
--
-
-
-
-
-
 
