@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#coding: utf-8
+# coding: utf-8
 
 
 """
@@ -34,6 +34,7 @@ USER = os.environ['HOME']
 PWD_INSTALL = '/opt/rhoplusGUI/'
 PWD_PROFILE = USER + '/.rhoplusGUI/'
 
+
 class Install():
 
     def __init__(self):
@@ -41,9 +42,7 @@ class Install():
         self.check_install_shell()
         self.check_install_geoma()
 
-
     def check_install_python(self):
-
         kivy = (print('Check Kivy -- OK') if pkgutil.find_loader("kivy") else self.install_python())
 
         matplotlib = (print('Check MatplotLib -- OK') if pkgutil.find_loader("matplotlib") else self.install_python())
@@ -53,7 +52,6 @@ class Install():
                    if os.system('which rhoplus') == 0 else self.install_shell('rhoplus'))
 
     def check_install_geoma(self):
-
         z2rhoplus = (print('Check Z2rhoplus -- OK')
                      if os.system('which Z2rhoplus') == 0 else self.install_geoma('Z2rhoplus'))
 
@@ -61,7 +59,7 @@ class Install():
                      if os.system('which rsp2jones') == 0 else self.install_geoma('rsp2jones'))
 
         plot_rhoplus = (print('Check plot-rhoplus -- OK')
-                   if os.system('which plot-rhoplus') == 0 else self.install_geoma('plot_rhoplus'))
+                        if os.system('which plot-rhoplus') == 0 else self.install_geoma('plot_rhoplus'))
 
     def install_python(self):
         print('You need to install kivy and matplotlib\n')
@@ -82,9 +80,9 @@ class Install():
 
     def install_geoma(self, script):
         print('You need to install the GEOMA software -- ' + script + '\n'
-              'Contact us by E-mail:\n'
-              '\n'
-              'Marcelo Banik de Padua (marcelo.banik@gmail.com)')
+                                                                      'Contact us by E-mail:\n'
+                                                                      '\n'
+                                                                      'Marcelo Banik de Padua (marcelo.banik@gmail.com)')
         sys.exit()
 
 
@@ -98,7 +96,6 @@ class Setting(object):
         if not os.path.isfile(PWD_PROFILE + 'config.json'):
             self.make_default_config()
 
-
         try:
             self.config = self.read_settings()
         except Exception:
@@ -108,27 +105,25 @@ class Setting(object):
 
         # PERIOD and RHO in power of 10
 
-        settings={'MIN_PERIOD': -4,
-                  'MAX_PERIOD': 4,
-                  'MIN_RHO': -1,
-                  'MAX_RHO': 5,
-                  'MIN_PHI': 0,
-                  'MAX_PHI': 90,
-                  'STEP_PHI': 45,
-                  'WIDTH_MODEL': 1.3,
-                  'WIDTH_ERROR_BAR': 1.05,
-                  'WIDTH_GRAFICS_BORDER': 1.05,
-                  'SIZE_POINT': 6,
-                  'COLOR_MODEL': [0., 0., 1., 1.],
-                  'COLOR_SELECT_DATA': [1., 0., 0., 1.],
-                  'COLOR_SELECT_MODEL': [0., 0., 0., 1.]}
-
+        settings = {'MIN_PERIOD': -4,
+                    'MAX_PERIOD': 4,
+                    'MIN_RHO': -1,
+                    'MAX_RHO': 5,
+                    'MIN_PHI': 0,
+                    'MAX_PHI': 90,
+                    'STEP_PHI': 45,
+                    'WIDTH_MODEL': 1.3,
+                    'WIDTH_ERROR_BAR': 1.05,
+                    'WIDTH_GRAFICS_BORDER': 1.05,
+                    'SIZE_POINT': 6,
+                    'COLOR_MODEL': [0., 0., 1., 1.],
+                    'COLOR_SELECT_DATA': [1., 0., 0., 1.],
+                    'COLOR_SELECT_MODEL': [0., 0., 0., 1.]}
 
         string_settings_json = json.dumps(settings)
         file_settings = open(PWD_PROFILE + 'config.json', 'w')
         file_settings.write(string_settings_json)
         file_settings.close()
-
 
     def read_settings(self):
         file_settings = open(PWD_PROFILE + 'config.json', 'r')
@@ -152,56 +147,56 @@ class Setting(object):
         pass
 
 
-
 install = Install()
 CONFIG = Setting()
 
-from kivy.app import App
-
 import kivy
-kivy.require('1.10.0')
 
+kivy.require('1.11.0')
+
+from kivy.app import App
 from kivy.lang import Builder
+
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.core.window import WindowBase
 from kivy.clock import Clock
 
+from kivy.metrics import sp, dp
+
 from kivy.config import Config
 Config.set('graphics', 'multisamples', 16)
 
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.uix.button import ButtonBehavior
-from kivy.uix.popup import Popup
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.modalview import ModalView
-from kivy.uix.image import Image
-
 from kivy.graphics import Color
 from kivy.graphics import Line
-from kivy.graphics import Ellipse
-from kivy.graphics import Rectangle
-from kivy.metrics import sp, dp
+
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import Screen
+
+from kivy.uix.popup import Popup
+from kivy.uix.modalview import ModalView
+
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+
 
 import matplotlib.pyplot as plt
-
 
 # Load code kivy
 file_code_kivy = open(PWD_INSTALL + 'kivy_code.kv', 'r')
 code_kivy = file_code_kivy.read()
 file_code_kivy.close()
 
-
 Builder.load_string(code_kivy)
+
 
 def on_keyboard_none(*args):
     pass
 
-class Help(ModalView):
 
+class Help(ModalView):
 
     def __init__(self, **kwargs):
         super(Help, self).__init__(**kwargs)
@@ -216,21 +211,15 @@ class Help(ModalView):
         print(self.text_file_doc_help)
 
 
-
-
-
-
 class PlotMatplotLib():
 
     def __init__(self, site):
 
         self.site = site
 
-
         self.open()
         self.select_model()
         self.plot()
-
 
     def plot(self):
 
@@ -241,7 +230,6 @@ class PlotMatplotLib():
         left_xy = left + width + 0.08
 
         height_phi = 0.25
-
 
         rect_rho_xy = [left, bottom, width, height]
         rect_rho_yx = [left_xy, bottom, width, height]
@@ -272,7 +260,6 @@ class PlotMatplotLib():
         rho_xy.set_yscale('log')
         rho_xy.grid()
         rho_xy.set_ylabel(r'$\rho$ ($\Omega.m$)')
-
 
         rho_yx.set_title('YX')
         rho_yx.set_aspect('equal')
@@ -308,14 +295,11 @@ class PlotMatplotLib():
         plt.savefig(self.site + '.png', dpi=300)
         plt.show()
 
-
-
     def open(self):
         xy_rsp = open('xy_{}.rsp'.format(self.site), 'r').read()
         xy_rsp = xy_rsp.splitlines()
 
-
-        self.T_xy = [1/float(i.split()[0]) for i in xy_rsp]
+        self.T_xy = [1 / float(i.split()[0]) for i in xy_rsp]
         self.T_xy_y_rho = self.T_xy.copy()
         self.T_xy_n_rho = self.T_xy.copy()
 
@@ -334,12 +318,10 @@ class PlotMatplotLib():
         self.Ephi_xy = [float(i.split()[5]) for i in xy_rsp]
         self.Mphi_xy = [float(i.split()[6]) for i in xy_rsp]
 
-
-
         yx_rsp = open('yx_{}.rsp'.format(self.site), 'r').read()
         yx_rsp = yx_rsp.splitlines()
 
-        self.T_yx = [1/float(i.split()[0]) for i in yx_rsp]
+        self.T_yx = [1 / float(i.split()[0]) for i in yx_rsp]
         self.T_yx_y_rho = self.T_yx.copy()
         self.T_yx_n_rho = self.T_yx.copy()
 
@@ -404,8 +386,8 @@ class PlotMatplotLib():
 class ButtonRHO(Button):
     pass
 
-class MenuConfig(ModalView):
 
+class MenuConfig(ModalView):
     MIN_PERIOD = ObjectProperty(None)
     MAX_PERIOD = ObjectProperty(None)
     MIN_RHO = ObjectProperty(None)
@@ -421,14 +403,11 @@ class MenuConfig(ModalView):
     COLOR_SELECT_DATA = ObjectProperty(None)
     COLOR_SELECT_MODEL = ObjectProperty(None)
 
-
     # functions
     ON_PRESS_OK = ObjectProperty(None)
     ON_PRESS_RESTORE = ObjectProperty(None)
 
-
-        #### pensar em como atualizar
-
+    #### pensar em como atualizar
 
     def settings_menu(self):
         settings = {'MIN_PERIOD': int(self.ids.textinput_MIN_PERIOD.text),
@@ -448,8 +427,10 @@ class MenuConfig(ModalView):
 
         return settings
 
+
 class LabelRot(Label):
     pass
+
 
 class PopUPMerge(BoxLayout):
     site = ObjectProperty(None)
@@ -465,12 +446,11 @@ class PopUPMerge(BoxLayout):
         else:
             self.rsp_jones('composto')
 
-
         graphic.pop_merge.dismiss()
 
     def rsp_jones(self, mode):
         rsp_jones = subprocess.getoutput('rsp2jones ../{}.dat xy_{}.rsp yx_{}.rsp {}'.format(
-                                                    self.site_origin, self.site, self.site, mode))
+            self.site_origin, self.site, self.site, mode))
 
         arq_save = open(self.ids.dir_merge.path + '/' + self.ids.text_save.text, 'w')
         arq_save.write(rsp_jones)
@@ -496,10 +476,8 @@ class PopUPExportFigure(BoxLayout):
     def save_kivy(self):
         graphic.ids.export_image.export_to_png(self.ids.text_save.text)
 
-
     def save_matplotlib(self):
         export = PlotMatplotLib(self.site)
-
 
     def save_gmt(self):
         export_xy = os.system('plot-rhoplus xy_{}.rsp &'.format(graphic.site))
@@ -507,18 +485,16 @@ class PopUPExportFigure(BoxLayout):
 
 
 class PopUpExecuteRhoplus(Popup):
-
     site_origin = ''
+
     def __init__(self, **kwargs):
         super(PopUpExecuteRhoplus, self).__init__(**kwargs)
 
         WindowBase.on_key_down = self.keyboard
 
     def keyboard(self, key, scancode, codepoint, modifier):
-
         if scancode == 40:
             self.on_press_ok()
-
 
     def on_press_cancel(self):
         application.current = 'menu'
@@ -526,7 +502,6 @@ class PopUpExecuteRhoplus(Popup):
         self.dismiss()
 
     def on_press_ok(self):
-
         self.parameters = {}
         self.parameters['Zorigin'] = self.site_origin
         self.parameters['Zfile'] = self.ids.zfile.text
@@ -544,7 +519,6 @@ class PopUpExecuteRhoplus(Popup):
 class BoxSelectLayout(FloatLayout):
     def __init__(self, parent, points, **kwargs):
         super(BoxSelectLayout, self).__init__(**kwargs)
-
 
         self.size = parent.size
         self.pos = parent.pos
@@ -582,12 +556,9 @@ class BoxSelectLayout(FloatLayout):
 
     def up(self, instance, value):
 
-
-
         if self.select:
 
             region = [self.i_x_on, self.i_y_on, value.pos[0], value.pos[1]]
-
 
             for point in self.points.points_rho_xy:
                 self.point_in_select(point, region)
@@ -605,9 +576,6 @@ class BoxSelectLayout(FloatLayout):
         self.i_y_on = None
         self.canvas.before.clear()
 
-
-
-
     def move(self, instance, value):
         self.canvas.before.clear()
         self.delta_x = value.pos[0] - self.i_x_on
@@ -623,7 +591,6 @@ class BoxSelectLayout(FloatLayout):
             line_right = Line(points=[value.pos[0], self.i_y_on, value.pos[0], value.pos[1]], width=border)
             line_top = Line(points=[self.i_x_on, value.pos[1], value.pos[0], value.pos[1]], width=border)
 
-
             self.canvas.before.add(Color(rgba=[0.3, 0.3, 0.3, 1.]))
             self.canvas.before.add(line_left)
             self.canvas.before.add(line_bottom)
@@ -634,9 +601,8 @@ class BoxSelectLayout(FloatLayout):
         else:
             self.select = False
 
-
     def change_mouse(self):
-        Clock.schedule_interval(self.mouse_in_grafic, 1/15)
+        Clock.schedule_interval(self.mouse_in_grafic, 1 / 15)
 
     def mouse_in_grafic(self, *args):
         x = Window.mouse_pos[0]
@@ -644,8 +610,8 @@ class BoxSelectLayout(FloatLayout):
 
         if (x > self.x0 and x < self.xf and \
             self.y0 < y < self.yf) or \
-           (x > self.x0_2 and x < self.xf_2 and \
-            y > self.y0 and y < self.yf):
+                (x > self.x0_2 and x < self.xf_2 and \
+                 y > self.y0 and y < self.yf):
             Window.set_system_cursor('crosshair')
             self.in_grafic = True
 
@@ -659,8 +625,7 @@ class BoxSelectLayout(FloatLayout):
         region_y = [region[1], region[3]]
 
         if point.x > min(region_x) and point.x < max(region_x) and \
-            point.y > min(region_y) and point.y < max(region_y):
-
+                point.y > min(region_y) and point.y < max(region_y):
             point.on_press()
 
 
@@ -682,9 +647,9 @@ class MenuInit(Screen):
             self.popup_execute_rhoplus.ids.zfile.text = \
                 os.path.basename(selection[0])
 
-
     def on_press_close(self):
         window.stop()
+
 
 class Rhoplus():
 
@@ -697,7 +662,6 @@ class Rhoplus():
         self.rotation = rotation
         self.error_floor = error_floor
 
-
         self.xy_NM = []
         self.yx_NM = []
 
@@ -707,11 +671,10 @@ class Rhoplus():
         if os.path.isdir(self.zorigin) == False:
             os.mkdir(self.zorigin)
 
-
     def make_NM(self):
         xy = subprocess.getoutput('Z2rhoplus ../{}.dat cmp=xy c={} s={} Trho={} rot={} ef={}'.format(
-                            self.zorigin, self.criterion, self.surface, self.fix_rho,
-                            self.rotation, self.error_floor))
+            self.zorigin, self.criterion, self.surface, self.fix_rho,
+            self.rotation, self.error_floor))
 
         file_xy = open('xy_' + self.site + '_NM', 'w')
         file_xy.write(xy)
@@ -727,16 +690,15 @@ class Rhoplus():
 
     def check_NM(self):
 
-        return os.path.isfile('xy_' + self.site + '_NM'),\
+        return os.path.isfile('xy_' + self.site + '_NM'), \
                os.path.isfile('yx_' + self.site + '_NM')
 
     def run(self):
         self.rhoplus_exec = subprocess.getoutput('rhoplus < xy_' + self.site + '_NM')
-        #print(self.rhoplus_exec)
+        # print(self.rhoplus_exec)
 
         self.rhoplus_exec = subprocess.getoutput('rhoplus < yx_' + self.site + '_NM')
-        #print(self.rhoplus_exec)
-
+        # print(self.rhoplus_exec)
 
     def read_NM(self):
 
@@ -857,9 +819,6 @@ class Rhoplus():
         self.xy_rsp = []
         self.yx_rsp = []
 
-
-
-
         xy = open('xy_' + self.site + '.rsp', 'r')
 
         for read_line in xy:
@@ -899,12 +858,10 @@ class DrawGraphicPlot(FloatLayout):
         super(DrawGraphicPlot, self).__init__(**kwargs)
         self.name_station = name_station
 
-
     def draw_grafic(self):
         self.draw_lines_rho()
         self.draw_lines_phi()
         self.draw_header()
-
 
     def draw_header(self):
 
@@ -925,7 +882,7 @@ class DrawGraphicPlot(FloatLayout):
         lb_title.height = '20sp'
         lb_title.width = '400sp'
         lb_title.font_size = '24sp'
-        lb_title.center_x = xf + inter/2
+        lb_title.center_x = xf + inter / 2
         lb_title.y = yf + sp(30)
         lb_title.color = [0., 0., 0., 1.]
         lb_title.text = self.name_station
@@ -935,7 +892,7 @@ class DrawGraphicPlot(FloatLayout):
         lb_xy.height = '20sp'
         lb_xy.width = '20sp'
         lb_xy.font_size = '17sp'
-        lb_xy.center_x = x0 + (xf - x0)/2
+        lb_xy.center_x = x0 + (xf - x0) / 2
         lb_xy.y = yf + sp(10)
         lb_xy.color = [0., 0., 0., 1.]
         lb_xy.text = 'XY'
@@ -950,26 +907,23 @@ class DrawGraphicPlot(FloatLayout):
         lb_yx.color = [0., 0., 0., 1.]
         lb_yx.text = 'YX'
 
-
         self.add_widget(lb_title)
         self.add_widget(lb_xy)
         self.add_widget(lb_yx)
-
 
     def draw_lines_rho(self):
 
         height = self.parent.height - sp(100)
         inter = self.parent.width * .05 + sp(40)
 
-        y0 = self.parent.y + height/3 + sp(40)
-        yf = y0 + 2 * height/3
+        y0 = self.parent.y + height / 3 + sp(40)
+        yf = y0 + 2 * height / 3
 
         x0 = self.parent.x + sp(70)
-        xf = x0 + 2 * height/3 + 2*(2*height/3)/6
+        xf = x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
 
         x0_2 = xf + inter
-        xf_2 = x0_2 + 2 * height/3 + 2*(2*height/3)/6
-
+        xf_2 = x0_2 + 2 * height / 3 + 2 * (2 * height / 3) / 6
 
         border = dp(CONFIG.config['WIDTH_GRAFICS_BORDER'])
 
@@ -979,7 +933,7 @@ class DrawGraphicPlot(FloatLayout):
         dec_x = range(CONFIG.config['MIN_PERIOD'], (CONFIG.config['MAX_PERIOD']))
         dec_y = range(CONFIG.config['MIN_RHO'], CONFIG.config['MAX_RHO'] + 1)
 
-        fzoom_rho = (yf - y0)/(log10(limy))
+        fzoom_rho = (yf - y0) / (log10(limy))
         fzoom_T = (xf - x0) / (log10(limx))
 
         scale = [1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -1028,17 +982,11 @@ class DrawGraphicPlot(FloatLayout):
                     Line(points=[xf_2, i + y0, xf_2 + sp(5), i + y0])
                     c += 1
 
-
-
-
         for i in dec_y:
-
-
             pos = -dec_y[0]
 
-
             lb = Label()
-            lb.color = [0,0,0,1]
+            lb.color = [0, 0, 0, 1]
             lb.markup = True
             lb.text = '10' + '[sup][size=10]' + str(i) + '[/size][/sup]'
             lb.size_hint = None, None
@@ -1063,12 +1011,6 @@ class DrawGraphicPlot(FloatLayout):
             lb_2.pos = x0_2 - 35, y
             self.add_widget(lb_2)
 
-
-
-
-
-
-
         lb_rho_ohm_meter = LabelRot()
         lb_rho_ohm_meter.size_hint = None, None
         lb_rho_ohm_meter.height = sp(100)
@@ -1079,10 +1021,9 @@ class DrawGraphicPlot(FloatLayout):
         lb_rho_ohm_meter.font_size = '18sp'
         lb_rho_ohm_meter.color = [0., 0., 0., 1.]
         lb_rho_ohm_meter.center_x = x0 - sp(50)
-        lb_rho_ohm_meter.center_y = int(y0 + (2*height/3) / 2)
+        lb_rho_ohm_meter.center_y = int(y0 + (2 * height / 3) / 2)
 
         self.add_widget(lb_rho_ohm_meter)
-
 
     def draw_lines_phi(self):
 
@@ -1090,14 +1031,13 @@ class DrawGraphicPlot(FloatLayout):
         inter = self.parent.width * .05 + sp(40)
 
         y0 = self.parent.y + sp(40)
-        yf = y0 + height/3
+        yf = y0 + height / 3
 
         x0 = self.parent.x + sp(70)
-        xf = x0 + 2 * height/3 + 2*(2*height/3)/6
+        xf = x0 + 2 * height / 3 + 2 * (2 * height / 3) / 6
 
         x0_2 = xf + inter
-        xf_2 = x0_2 + 2 * height/3 + 2*(2*height/3)/6
-
+        xf_2 = x0_2 + 2 * height / 3 + 2 * (2 * height / 3) / 6
 
         border = dp(CONFIG.config['WIDTH_GRAFICS_BORDER'])
 
@@ -1111,9 +1051,9 @@ class DrawGraphicPlot(FloatLayout):
         dec_x = range(CONFIG.config['MIN_PERIOD'], (CONFIG.config['MAX_PERIOD']) + 1)
         dec_y = range(CONFIG.config['MIN_RHO'], CONFIG.config['MAX_RHO'] + 1)
 
-        fzoom_rho = (yf - y0)/(log10(limy))
+        fzoom_rho = (yf - y0) / (log10(limy))
         fzoom_T = (xf - x0) / (log10(limx))
-        fzoom_phi = ((height/3)/(abs(lim_phi - phi0)))
+        fzoom_phi = ((height / 3) / (abs(lim_phi - phi0)))
 
         scale = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                  10, 20, 30, 40, 50, 60, 70, 80, 90,
@@ -1130,7 +1070,6 @@ class DrawGraphicPlot(FloatLayout):
         scale_log_zoom_T = [i * fzoom_T for i in scale_log]
 
         scale_phi = [(i - phi0) * fzoom_phi for i in range(phi0, lim_phi, step_phi)]
-
 
         with self.canvas:
             Color(rgba=(0., 0., 0., 1.))
@@ -1159,17 +1098,11 @@ class DrawGraphicPlot(FloatLayout):
                 Line(points=[x0_2, i + y0, x0_2 - sp(5), i + y0])
                 Line(points=[xf_2, i + y0, xf_2 + sp(5), i + y0])
 
-
-
-
-
         for i in dec_x:
-
-
             pos = -dec_x[0]
 
             lb = Label()
-            lb.color = [0,0,0,1]
+            lb.color = [0, 0, 0, 1]
             lb.markup = True
             lb.text = '10' + '[sup][size=10]' + str(i) + '[/size][/sup]'
             lb.size_hint = None, None
@@ -1177,7 +1110,7 @@ class DrawGraphicPlot(FloatLayout):
             lb.height = sp(30)
             lb.width = sp(30)
 
-            x = int((x0 - lb.width/2) + ((i + pos) * fzoom_T))
+            x = int((x0 - lb.width / 2) + ((i + pos) * fzoom_T))
             lb.pos = x, y0 - sp(30)
             self.add_widget(lb)
 
@@ -1194,12 +1127,6 @@ class DrawGraphicPlot(FloatLayout):
             lb_2.pos = x, y0 - sp(30)
             self.add_widget(lb_2)
 
-
-
-
-
-
-
         for i in range(phi0, lim_phi + step_phi, step_phi):
             lb_phi = Label()
             lb_phi.color = [0., 0., 0., 1.]
@@ -1213,8 +1140,7 @@ class DrawGraphicPlot(FloatLayout):
             lb_phi.text_size = lb_phi.size
             lb_phi.halign = 'left'
 
-
-            y = int((y0 - lb_phi.height/2) + ((i - phi0) * fzoom_phi))
+            y = int((y0 - lb_phi.height / 2) + ((i - phi0) * fzoom_phi))
             lb_phi.pos = xf + sp(10), y
             self.add_widget(lb_phi)
 
@@ -1234,7 +1160,6 @@ class DrawGraphicPlot(FloatLayout):
             lb_phi_2.pos = xf_2 + sp(10), y
             self.add_widget(lb_phi_2)
 
-
         lb_rho_ohm_meter = LabelRot()
         lb_rho_ohm_meter.size_hint = None, None
         lb_rho_ohm_meter.height = sp(100)
@@ -1245,30 +1170,27 @@ class DrawGraphicPlot(FloatLayout):
         lb_rho_ohm_meter.font_size = '18sp'
         lb_rho_ohm_meter.color = [0., 0., 0., 1.]
         lb_rho_ohm_meter.center_x = x0 - sp(50)
-        lb_rho_ohm_meter.center_y = int(y0 + (height/3) / 2)
+        lb_rho_ohm_meter.center_y = int(y0 + (height / 3) / 2)
 
         self.add_widget(lb_rho_ohm_meter)
 
 
 size_point = sp(CONFIG.config['SIZE_POINT']), sp(CONFIG.config['SIZE_POINT'])
 
+
 class Points(Button):
-
-
     size_hint = None, None
     background_normal = ' '
-    #cor_active = CONFIG.config['COLOR_SELECT_DATA']
-    #cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
+    # cor_active = CONFIG.config['COLOR_SELECT_DATA']
+    # cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
     border = [0, 0, 0, 0]
 
-
-    def __init__(self, cor_active=CONFIG.config['COLOR_SELECT_DATA'], cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'], **kwargs):
+    def __init__(self, cor_active=CONFIG.config['COLOR_SELECT_DATA'], cor_no_active=CONFIG.config['COLOR_SELECT_MODEL'],
+                 **kwargs):
         super(Points, self).__init__(**kwargs)
 
         self.cor_active = cor_active
         self.cor_no_active = cor_no_active
-
-
 
         self.size = sp(CONFIG.config['SIZE_POINT']), sp(CONFIG.config['SIZE_POINT'])
         self.active = False
@@ -1282,7 +1204,6 @@ class Points(Button):
             self.background_color = self.cor_no_active
 
 
-
 class PlotPeriods(FloatLayout):
 
     def __init__(self, points_xy, points_yx, model_xy, model_yx, **kwargs):
@@ -1294,7 +1215,6 @@ class PlotPeriods(FloatLayout):
         self.model_xy = model_xy
         self.model_yx = model_yx
 
-
     def plot(self):
         self.plot_rho()
         self.plot_phi()
@@ -1304,7 +1224,6 @@ class PlotPeriods(FloatLayout):
         lay_model = FloatLayout()
         lay_model.size = self.size
         lay_model.pos = self.pos
-
 
         self.canvas.before.clear()
         height = self.parent.height - sp(100)
@@ -1324,8 +1243,6 @@ class PlotPeriods(FloatLayout):
         limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + CONFIG.config['MAX_PERIOD'])
         limy = 10 ** (-CONFIG.config['MIN_RHO'] + (CONFIG.config['MAX_RHO']))
 
-
-
         fzoom_rho = (yf - y0) / (log10(limy))
         fzoom_T = (xf - x0) / (log10(limx))
 
@@ -1337,22 +1254,18 @@ class PlotPeriods(FloatLayout):
         x0_2_phi = xf + inter
         lim_phi = CONFIG.config['MAX_PHI']
         phi0 = CONFIG.config['MIN_PHI']
-        fzoom_phi = ((height / 3) /abs(lim_phi-phi0))
+        fzoom_phi = ((height / 3) / abs(lim_phi - phi0))
 
         model_xy_phi = []
         model_yx_phi = []
 
-
-
-
         for period in self.model_xy:
 
-            T = x0 + (log10(1/period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
+            T = x0 + (log10(1 / period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
             rho = y0 + (log10(period['Mrho']) + (-CONFIG.config['MIN_RHO'])) * fzoom_rho
             phi = y0_phi + (-phi0 + period['Mphi']) * fzoom_phi
 
             if T > x0 and T < xf and rho > y0 and rho < yf:
-
                 model_xy_rho.append(T)
                 model_xy_rho.append(rho)
 
@@ -1372,10 +1285,6 @@ class PlotPeriods(FloatLayout):
             if T > x0_2 and T < xf_2 and phi > y0_phi and phi < yf_phi:
                 model_yx_phi.append(T)
                 model_yx_phi.append(phi)
-
-
-
-
 
         with self.canvas.before:
             Color(rgba=CONFIG.config['COLOR_MODEL'])
@@ -1418,63 +1327,43 @@ class PlotPeriods(FloatLayout):
             for period in self.points_xy:
 
                 # dz estimated by https://faculty.washington.edu/stuve/log_error.pdf
-                dz = 0.434*(period['Erho']/period['rho'])
-
+                dz = 0.434 * (period['Erho'] / period['rho'])
 
                 yi_erro = y0 + (fzoom_rho * (log10(period['rho']) - dz + (-CONFIG.config['MIN_RHO'])))
                 yf_erro = y0 + (fzoom_rho * (log10(period['rho']) + dz + (-CONFIG.config['MIN_RHO'])))
 
-
-
                 x = x0 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
-
 
                 if yi_erro < y0:
                     yi_erro = y0
 
                 if yf_erro > yf:
                     yf_erro = yf
-
 
                 bar = [x, yi_erro, x, yf_erro]
                 rho = y0 + (log10(period['rho']) + 1) * fzoom_rho
                 if x > x0 and x < xf and rho > y0 and rho < yf:
-
                     Line(points=bar, width=border_error)
-
 
             for period in self.points_yx:
 
-                dz = 0.434*(period['Erho']/period['rho'])
-
+                dz = 0.434 * (period['Erho'] / period['rho'])
 
                 yi_erro = y0 + (fzoom_rho * (log10(period['rho']) - dz + (-CONFIG.config['MIN_RHO'])))
                 yf_erro = y0 + (fzoom_rho * (log10(period['rho']) + dz + (-CONFIG.config['MIN_RHO'])))
 
-
-
                 x = x0_2 + (log10(period['T']) + (-CONFIG.config['MIN_PERIOD'])) * fzoom_T
-
 
                 if yi_erro < y0:
                     yi_erro = y0
 
                 if yf_erro > yf:
                     yf_erro = yf
-
 
                 bar = [x, yi_erro, x, yf_erro]
                 rho = y0 + (log10(period['rho']) + 1) * fzoom_rho
                 if x > x0_2 and x < xf_2 and rho > y0 and rho < yf:
                     Line(points=bar, width=border_error)
-
-
-
-
-
-
-
-
 
         self.points_rho_xy = []
 
@@ -1488,8 +1377,6 @@ class PlotPeriods(FloatLayout):
             bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
             bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
 
-
-
             x = x - bt.width / 2
             y = y - bt.height / 2
 
@@ -1500,8 +1387,6 @@ class PlotPeriods(FloatLayout):
 
             if bt.x > x0 and bt.x < xf and bt.y > y0 and bt.y < yf:
                 self.add_widget(bt)
-
-
 
         self.points_rho_yx = []
 
@@ -1544,18 +1429,14 @@ class PlotPeriods(FloatLayout):
 
         limx = 10 ** (-CONFIG.config['MIN_PERIOD'] + CONFIG.config['MAX_PERIOD'])
 
-
         lim_phi = CONFIG.config['MAX_PHI']
         phi0 = CONFIG.config['MIN_PHI']
 
         fzoom_T = (xf - x0) / (log10(limx))
-        fzoom_phi = ((yf - y0) / abs(lim_phi-phi0))
-
+        fzoom_phi = ((yf - y0) / abs(lim_phi - phi0))
 
         # Error Bar
         border_error = dp(CONFIG.config['WIDTH_ERROR_BAR'])
-
-
 
         with self.canvas:
             Color(rgba=(0., 0., 0., 1.))
@@ -1568,10 +1449,9 @@ class PlotPeriods(FloatLayout):
                 yi_erro = yi_erro - (phi0 * fzoom_phi)
                 yf_erro = yf_erro - (phi0 * fzoom_phi)
 
-
                 print('y0: ', y0)
-                print('yi: ',yi_erro)
-                print('yf: ',yf_erro)
+                print('yi: ', yi_erro)
+                print('yf: ', yf_erro)
                 print('limphi', yf)
                 print('-----------')
 
@@ -1582,7 +1462,6 @@ class PlotPeriods(FloatLayout):
 
                 if yf_erro > yf:
                     yf_erro = yf
-
 
                 bar = [x, yi_erro, x, yf_erro]
                 phi = y0 + (-phi0 + period['phi']) * fzoom_phi
@@ -1608,18 +1487,11 @@ class PlotPeriods(FloatLayout):
                 if yf_erro > yf:
                     yf_erro = yf
 
-
-
                 bar = [x, yi_erro, x, yf_erro]
 
-                phi = y0 + (-phi0 + period['phi']) *fzoom_phi
+                phi = y0 + (-phi0 + period['phi']) * fzoom_phi
                 if x > x0_2 and x < xf_2 and phi > y0 and phi < yf:
                     Line(points=bar, width=border_error)
-
-
-
-
-
 
         self.points_phi_xy = []
 
@@ -1633,8 +1505,8 @@ class PlotPeriods(FloatLayout):
             bt.cor_active = CONFIG.config['COLOR_SELECT_DATA']
             bt.cor_no_active = CONFIG.config['COLOR_SELECT_MODEL']
 
-            x = x - bt.width/2
-            y = y - bt.height/2
+            x = x - bt.width / 2
+            y = y - bt.height / 2
 
             bt.pos = x, y
             if period['Sphi']:
@@ -1642,7 +1514,6 @@ class PlotPeriods(FloatLayout):
             self.points_phi_xy.append(bt)
             if bt.x > x0 and bt.x < xf and bt.y > y0 and bt.y < yf:
                 self.add_widget(bt)
-
 
         self.points_phi_yx = []
 
@@ -1667,16 +1538,7 @@ class PlotPeriods(FloatLayout):
                 self.add_widget(bt)
 
 
-
-
-
-
-
-
-
 class Graphic(Screen):
-
-
 
     def init_rho(self, parameter):
         WindowBase.on_key_down = on_keyboard_none
@@ -1684,12 +1546,12 @@ class Graphic(Screen):
         self.check_select_box = False
         self.ids.bt_data.on_press()
         self.rhoplus = Rhoplus(self.site,
-                          parameter['Zorigin'],
-                          parameter['c'],
-                          parameter['s'],
-                          parameter['Trho'],
-                          parameter['rot'],
-                          parameter['ef'])
+                               parameter['Zorigin'],
+                               parameter['c'],
+                               parameter['s'],
+                               parameter['Trho'],
+                               parameter['rot'],
+                               parameter['ef'])
 
         os.chdir(self.rhoplus.zorigin)
         self.draw_graphic = DrawGraphicPlot(self.rhoplus.site)
@@ -1697,11 +1559,10 @@ class Graphic(Screen):
         WindowBase.on_maximize = self.maximize_or_restore
         WindowBase.on_restore = self.maximize_or_restore
 
-
         if self.rhoplus.check_NM() == (True, True):
-            self.pop = Popup(title='The File: ' + parameter['Zorigin'].replace('.dat', '') + '/xy_' + self.site + '_NM or /yx_' + self.site + ' already exists:\n'
-                                'Do you want to replace it?')
-
+            self.pop = Popup(title='The File: ' + parameter['Zorigin'].replace('.dat',
+                                                                               '') + '/xy_' + self.site + '_NM or /yx_' + self.site + ' already exists:\n'
+                                                                                                                                      'Do you want to replace it?')
 
             bt_ok = ButtonRHO(text='Yes')
             bt_ok.height = '20sp'
@@ -1753,7 +1614,6 @@ class Graphic(Screen):
         if scancode == 22:
             self.select(self.ids.bt_box)
 
-
     def make_NM(self):
         Window.set_system_cursor('wait')
         self.rhoplus.make_NM()
@@ -1764,7 +1624,6 @@ class Graphic(Screen):
         self.plot()
         WindowBase.on_key_down = self.on_press_shortcuts
         Window.set_system_cursor('arrow')
-
 
     def close_pop(self):
         Window.set_system_cursor('wait')
@@ -1777,13 +1636,11 @@ class Graphic(Screen):
         WindowBase.on_key_down = self.on_press_shortcuts
         Window.set_system_cursor('arrow')
 
-
     def update_draw_rho(self):
         self.draw_graphic.draw_grafic()
         self.update_NM_rhoplus()
         self.points.plot()
         self.plot_model()
-
 
     def run_rhoplus(self):
         Window.set_system_cursor('wait')
@@ -1822,9 +1679,8 @@ class Graphic(Screen):
             if period['Sphi']:
                 select_phi_yx = True
 
-
         if select_rho_xy and select_phi_xy and \
-               select_rho_yx and select_phi_yx:
+                select_rho_yx and select_phi_yx:
             return True
         else:
             if not select_rho_xy:
@@ -1916,7 +1772,7 @@ class Graphic(Screen):
 
 
         except ValueError:
-            self.ids.text_change.foreground_color = (1.,0,0,1.)
+            self.ids.text_change.foreground_color = (1., 0, 0, 1.)
 
     def change_site(self):
         self.ids.draw.clear_widgets()
@@ -2019,15 +1875,10 @@ class Graphic(Screen):
         help_application.open()
 
 
-
-
 application = ScreenManager()
 application.add_widget(MenuInit(name='menu'))
 graphic = Graphic(name='graphic')
 application.add_widget(graphic)
-
-
-
 
 
 class RhoplusGUI(App):
@@ -2035,10 +1886,8 @@ class RhoplusGUI(App):
         return application
 
 
-
 if __name__ == '__main__':
-    
     window = RhoplusGUI()
 
-    Window.size = 1100, 650
+    Window.size = sp(1100), sp(650)
     window.run()
