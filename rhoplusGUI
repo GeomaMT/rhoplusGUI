@@ -87,7 +87,8 @@ class Install():
               'Marcelo Banik de Padua (marcelo.banik@gmail.com)')
         sys.exit()
 
-class Setting():
+
+class Setting(object):
 
     def __init__(self):
 
@@ -97,9 +98,6 @@ class Setting():
         if not os.path.isfile(PWD_PROFILE + 'config.json'):
             self.make_default_config()
 
-        #### config tesste
-        #self.make_default_config()
-        ####
 
         try:
             self.config = self.read_settings()
@@ -2031,38 +2029,16 @@ application.add_widget(graphic)
 
 
 
-#
+
 class RhoplusGUI(App):
     def build(self):
         return application
 
-# class RhoplusGUI(App):
-#
-#
-#     def build(self):
-#
-#         lay = FloatLayout()
-#
-#         help_app = Help()
-#         help_app.open()
-#
-#         return lay
 
 
 if __name__ == '__main__':
+    
     window = RhoplusGUI()
 
-    #window.icon = PWD_install + 'image/icon.png'
-
     Window.size = 1100, 650
-
-    # try:
     window.run()
-    # except Exception:
-    #     print('Error in running kivy')
-    #     install.install_python()
-
-    #Install().install_python()
-
-    #os.chdir('ufb101a')
-    #plot = PlotMatplotLib('ufb101a')

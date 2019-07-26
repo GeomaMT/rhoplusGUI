@@ -1,5 +1,7 @@
 [b]rhoplusGUI[/b] is an application developed by the GEOMA group of INPE (National Institute of Space Research, Brazil), which aims to facilitate the use of the Rho + program, developed by [i]Robert L. Parker & John R. Booker (1996)[/i].
 
+The [b]rhoplusGUI[/b] use dependencies as: Z2rhoplus, rsp2jones and plot-rhoplus. These dependencies are developed by Marcelo Banik de Pádua.
+
 ------------------------------------------------------------------------------------
 Shortcut:
 box select :  s
