@@ -1,0 +1,27 @@
+[b]rhoplusGUI[/b] is an application developed by the GEOMA group of INPE (National Institute of Space Research, Brazil), which aims to facilitate the use of the Rho + program, developed by [i]Robert L. Parker & John R. Booker (1996)[/i].
+
+The [b]rhoplusGUI[/b] use dependencies as: Z2rhoplus, rsp2jones and plot-rhoplus. These dependencies are developed by Marcelo Banik de Pádua.
+
+------------------------------------------------------------------------------------
+Shortcut:
+box select :  s
+execute:       enter
+------------------------------------------------------------------------------------
+
+The [b]rhoplusGUI[/b] shall be replaced by the following:
+
+------------------------------------------------------------------------------------
+@techreport{rhoplusGUI:2019,
+    title       = {Desenvolvimento de Interface Gra{\'a}fica Amig{\'a}vel para Valida{\c{c}}{\~a}o de Dados Magnetotel{\'u}ricos a Partir do Processamento Rho+},
+    author      = {Patrick Rogger Garcia},
+    institution = {Instituto Nacional de Pesquisas Espaciais -- Brasil},
+    year        = {2019}
+}
+------------------------------------------------------------------------------------
+
+The Rho + program can be found at http://mtnet.info/main/source.html#1d_codes
+
+More information:
+Patrick Rogger Garcia (garcia.rpatrick@gmail.com)
+Marcelo Banik de Pádua (marcelo.banik@gmail.com)
+

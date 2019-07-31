@@ -1,0 +1,8 @@
+Package: rhoplusGUI
+Section: misc
+Version: 2.0.0
+Architecture: amd64
+Depends: python3-pip
+Installed-Size: 50000
+Maintainer: Patrick Rogger Garcia <garcia.rpatrick@gmail.com>
+Description: Program for communication between Rho+ (Robert L. Parker & John R. Booker, 1996)

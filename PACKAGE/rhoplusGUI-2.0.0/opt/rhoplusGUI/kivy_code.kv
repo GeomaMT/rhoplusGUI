@@ -1,0 +1,1000 @@
+#: import o os
+#: set USER o.environ['HOME']
+#: set PWD_INSTALL '/opt/rhoplusGUI/'
+#: set PWD_PROFILE USER + '/.rhoplusGUI/'
+
+<ButtonRHO@Button>:
+    background_normal: ''
+    background_color: 0.00784, 0.35686, 0.90980, 1.
+    size_hint: None, None
+    height: '40sp'
+    width: '120sp'
+
+
+<ButtonIcon@Button>:
+    size_hint: None, None
+    border: 0, 0, 0, 0
+    background_down: PWD_INSTALL + 'image/icon-neutral.png'
+    mipmap: True
+
+
+<LabelRot@Label>
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: 90
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+<LineH@Widget>
+    canvas.before:
+        Color:
+            rgba: .8, .8, .8, 8.
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    size_hint_y: None
+    height: '1sp'
+
+<LineV@Widget>
+    canvas.before:
+        Color:
+            rgba: .8, .8, .8, 8.
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    size_hint_x: None
+    width: '1sp'
+
+<Help>:
+    size_hint: None, None
+    width: dp(400)
+    height: dp(440)
+    #: set tab_label '150dp'
+    #ScrollView:
+    #BoxLayout:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15), dp(15), dp(15), dp(15)
+        spacing: dp(5)
+        size_hint_y: None
+        height: dp(440)
+        id: layout_help
+
+
+
+
+        Image:
+            source: PWD_INSTALL + 'image/logo_inpe_GEOMA.png'
+            mipmap: True
+            size_hint_y: None
+            height: '80dp'
+
+
+
+
+        LineH:
+        ScrollView:
+            Label:
+                size_hint_y: None
+                height: dp(700)
+                id: label_text_help
+                halign: 'left'
+                text_size: self.width, self.height
+                markup: True
+
+
+<PopUPExportFigure@BoxLayout>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: None
+            height: '30sp'
+            text: dir_figure.path
+            text_size: self.size
+            haling: 'left'
+        LineH:
+
+        BoxLayout:
+            padding: '5sp'
+            FileChooserListView:
+                rootpath: o.environ['HOME']
+                path: o.getcwd()
+                id: dir_figure
+            LineV:
+            BoxLayout:
+                orientation: 'vertical'
+                padding: '5sp', '5sp'
+                spacing: '5sp'
+
+
+                Label:
+                    text: 'Style'
+                    size_hint_y: None
+                    height: '20sp'
+                    markup: True
+                    bold: True
+                    font_size: '18sp'
+
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'style'
+                        id: skivy
+                    Label:
+                        text: 'Kivy'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'style'
+                        id: matplot
+                    Label:
+                        text: 'MatplotLib'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'style'
+                        active: True
+                        id: gmt
+                    Label:
+                        text: 'GMT'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+
+
+                Widget:
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '30sp'
+                    padding: '5sp', '5sp'
+                    spacing: '5sp'
+                    TextInput:
+                        size_hint_y: None
+                        height: '30sp'
+                        text: root.site + '.png'
+                        id: text_save
+                    ButtonRHO:
+                        text: 'Save'
+                        height: '30sp'
+                        wight: '40sp'
+                        on_press: root.save()
+
+
+<PopUPMerge@BoxLayout>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: None
+            height: '30sp'
+            text: dir_merge.path
+            text_size: self.size
+            haling: 'left'
+        LineH:
+
+        BoxLayout:
+            padding: '5sp'
+            FileChooserListView:
+                rootpath: o.environ['HOME']
+                path: o.getcwd()
+                id: dir_merge
+            LineV:
+            BoxLayout:
+                orientation: 'vertical'
+                padding: '5sp', '5sp'
+                spacing: '5sp'
+
+
+                Label:
+                    text: 'Mode'
+                    size_hint_y: None
+                    height: '20sp'
+                    markup: True
+                    bold: True
+                    font_size: '18sp'
+
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                        id: data
+                    Label:
+                        text: 'Data'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                        id: model
+                    Label:
+                        text: 'Model'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                        active: True
+                        id: merge
+                    Label:
+                        text: 'Merge'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '20sp'
+                    spacing: '5sp'
+                    CheckBox:
+                        size_hint_x: None
+                        width: '20sp'
+                        group: 'mode'
+                        id: mergetf
+
+                    Label:
+                        text: 'Merge-tf   (experimental!)'
+                        text_size: self.size
+                        haling: 'left'
+                        size_hint_y: None
+                        height: '20sp'
+                Widget:
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: '30sp'
+                    padding: '5sp', '5sp'
+                    spacing: '5sp'
+                    TextInput:
+                        size_hint_y: None
+                        height: '30sp'
+                        text: root.site + '.dat'
+                        id: text_save
+                    ButtonRHO:
+                        text: 'Save'
+                        height: '30sp'
+                        wight: '40sp'
+                        on_press: root.save()
+
+
+
+<PopUpExecuteRhoplus>
+    title: 'Settings Rho+'
+    size_hint: None, None
+    height: '330sp'
+    width: '400sp'
+    column: '100sp'
+    auto_dismiss: False
+    BoxLayout:
+        padding: 10, 10
+        spacing: '5sp'
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label:
+                text_size: self.size
+                halign: 'left'
+                text: 'ZFile'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                id: zfile
+
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label:
+                text_size: self.size
+                halign: 'left'
+                text: 'Criterion'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '0.95'
+                id: c
+
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label:
+                text_size: self.size
+                halign: 'left'
+                text: 'Surface'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: 'conducting'
+                id: s
+
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label:
+                text_size: self.size
+                halign: 'left'
+                text: 'Fix Rho'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '10'
+                id: Trho
+
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label:
+                text_size: self.size
+                halign: 'left'
+                text: 'Rotation'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '0'
+                id: rot
+
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            Label:
+                text_size: self.size
+                halign: 'left'
+                text: 'Error Floor'
+                size_hint_x: None
+                width: root.column
+            TextInput:
+                multiline: False
+                text: '0'
+                id: ef
+
+        Widget
+        BoxLayout:
+            size_hint_y : None
+            height: '30sp'
+            spacing: '5sp'
+            ButtonRHO:
+                text: 'OK'
+                height: '30sp'
+                size_hint_x: 1.
+                on_press: root.on_press_ok()
+            ButtonRHO:
+                text: 'Cancel'
+                height: '30sp'
+                size_hint_x: 1.
+                on_press: root.on_press_cancel()
+
+
+<MenuInit>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 10
+        row_default_height: '48dp'
+        row_force_default: True
+        spacing: 10, 10
+
+        Label:
+            text: dir.path
+            size_hint_y: None
+            height: '30sp'
+
+        LineH:
+
+        FileChooserListView:
+            rootpath: o.environ['HOME']
+            filters: ['*.dat']
+            path: o.getcwd()
+            id: dir
+            on_submit: root.on_press_execute(dir.path, dir.selection)
+
+
+        LineH:
+        BoxLayout:
+            spacing: '10sp'
+            size_hint_y: None
+            height: '50sp'
+
+            Widget:
+
+            ButtonRHO:
+                text: 'Execute'
+                on_press: root.on_press_execute(dir.path, dir.selection)
+
+            ButtonRHO:
+                text: 'Close'
+                on_press: root.on_press_close()
+
+<MenuConfig>:
+    size_hint: None, None
+    width: dp(400)
+    height: dp(440)
+    #: set tab_label '150dp'
+    #ScrollView:
+    #BoxLayout:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15), dp(15), dp(15), dp(15)
+        spacing: dp(5)
+        size_hint_y: None
+        height: dp(440)
+        #LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Period:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            TextInput:
+                text: str(root.MIN_PERIOD)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MIN_PERIOD
+            Label:
+                text: 'to'
+            TextInput:
+                text: str(root.MAX_PERIOD)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MAX_PERIOD
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Rho:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+            TextInput:
+                text: str(root.MIN_RHO)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MIN_RHO
+            Label:
+                text: 'to'
+            TextInput:
+                text: str(root.MAX_RHO)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MAX_RHO
+
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Phi:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+            TextInput:
+                text: str(root.MIN_PHI)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MIN_PHI
+
+            Label:
+                text: 'to'
+            TextInput:
+                text: str(root.MAX_PHI)
+                multiline: False
+                input_filter: 'int'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_MAX_PHI
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Width Model:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            Slider:
+                value: root.WIDTH_MODEL
+                min: 0
+                max: 10
+                id: slider_WIDTH_MODEL
+
+            TextInput:
+                text: '{:.2f}'.format(slider_WIDTH_MODEL.value)
+                multiline: False
+                input_filter: 'float'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_WIDTH_MODEL
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Width Error Bar:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            Slider:
+                value: root.WIDTH_ERROR_BAR
+                min: 0
+                max: 10
+                id: slider_WIDTH_ERROR_BAR
+
+            TextInput:
+                text: '{:.2f}'.format(slider_WIDTH_ERROR_BAR.value)
+                multiline: False
+                input_filter: 'float'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_WIDTH_ERROR_BAR
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Size Point:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            Slider:
+                value: root.SIZE_POINT
+                min: 0
+                max: 20
+                id: slider_SIZE_POINT
+
+
+            TextInput:
+                text: '{:.2f}'.format(slider_SIZE_POINT.value)
+                multiline: False
+                input_filter: 'float'
+                size_hint_x: None
+                width: '50dp'
+                id: textinput_SIZE_POINT
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Color Model:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            BoxLayout:
+                spacing: '5dp'
+                Button:
+                    background_normal: ''
+                    background_color: ['0' if (textinput_COLOR_MODEL_r.text == '') else float(textinput_COLOR_MODEL_r.text)/255, '0' if (textinput_COLOR_MODEL_g.text == '') else float(textinput_COLOR_MODEL_g.text)/255, '0' if (textinput_COLOR_MODEL_b.text == '') else float(textinput_COLOR_MODEL_b.text)/255, 1.]
+                    size_hint: None, None
+                    width: dp(20)
+                    height: dp(20)
+                    id: button_COLOR_MODEL
+
+                TextInput:
+                    text: str(int(root.COLOR_MODEL[0]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_MODEL_r
+
+                TextInput:
+                    text: str(int(root.COLOR_MODEL[1]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_MODEL_g
+
+                TextInput:
+                    text: str(int(root.COLOR_MODEL[2]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_MODEL_b
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Color Select Data:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            BoxLayout:
+                spacing: '5dp'
+                Button:
+                    background_normal: ''
+                    background_color: ['0' if (textinput_COLOR_SELECT_DATA_r.text == '') else float(textinput_COLOR_SELECT_DATA_r.text)/255, '0' if (textinput_COLOR_SELECT_DATA_g.text == '') else float(textinput_COLOR_SELECT_DATA_g.text)/255, '0' if (textinput_COLOR_SELECT_DATA_b.text == '') else float(textinput_COLOR_SELECT_DATA_b.text)/255, 1.]
+                    size_hint: None, None
+                    width: dp(20)
+                    height: dp(20)
+                    id: button_COLOR_SELECT_DATA
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_DATA[0]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_DATA_r
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_DATA[1]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_DATA_g
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_DATA[2]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_DATA_b
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Label:
+                text: 'Color Select Model:'
+                halign: 'left'
+                text_size: self.size
+                size_hint_x: None
+                width: tab_label
+
+            BoxLayout:
+                spacing: '5dp'
+                Button:
+                    background_normal: ''
+                    background_color: ['0' if (textinput_COLOR_SELECT_MODEL_r.text == '') else float(textinput_COLOR_SELECT_MODEL_r.text)/255, '0' if (textinput_COLOR_SELECT_MODEL_g.text == '') else float(textinput_COLOR_SELECT_MODEL_g.text)/255, '0' if (textinput_COLOR_SELECT_MODEL_b.text == '') else float(textinput_COLOR_SELECT_MODEL_b.text)/255, 1.]
+                    size_hint: None, None
+                    width: dp(20)
+                    height: dp(20)
+                    id: button_COLOR_SELECT_MODEL
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_MODEL[0]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_MODEL_r
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_MODEL[1]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_MODEL_g
+
+                TextInput:
+                    text: str(int(root.COLOR_SELECT_MODEL[2]*255))
+                    multiline: False
+                    input_filter: 'int'
+                    id: textinput_COLOR_SELECT_MODEL_b
+        LineH:
+        BoxLayout:
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(30)
+            Widget:
+            ButtonRHO:
+                text: 'Restore'
+                height: dp(30)
+                on_press: root.ON_PRESS_RESTORE(root)
+            ButtonRHO:
+                text: 'Cancel'
+                height: dp(30)
+                on_press: root.dismiss()
+            ButtonRHO:
+                text: 'OK'
+                height: dp(30)
+                on_press: root.ON_PRESS_OK(root)
+
+
+
+
+        Widget:
+
+
+
+
+
+
+
+
+
+
+
+<Graphic>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            size_hint_y: None
+            height: '2sp'
+            padding: '5sp', '0sp'
+            spacing: '2sp'
+            canvas.before:
+                Color:
+                    rgba: 1., 1., 1., 1.
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+
+
+#            BoxLayout:
+#                orientation: 'vertical'
+#                size_hint: None, None
+#                height: '38sp'
+#                width: '55sp'
+#                padding: '5sp', '0sp'
+#                spacing: '2sp'
+#                Label:
+#                    text: 'zoom'
+#                    markup: True
+#                    italic: True
+#                    font_size: '12sp'
+#                BoxLayout:
+#                    spacing: '5sp'
+#                    ButtonRHO:
+#                        text: '+'
+#                        height: '20sp'
+#                        width: '20sp'
+#                        on_press: root.update_draw_rho()
+#                    ButtonRHO:
+#                        text: '-'
+#                        height: '20sp'
+#                        width: '20sp'
+#                Widget:
+#                    size_hint_y: None
+#                    height: '2sp'
+#            Slider:
+#                min: 1
+#                max: 20
+#                size_hint: None, None
+#                width: '150sp'
+#                height: '38sp'
+#                cursor_height: '25sp'
+#                value: 6
+#                id: Schange
+#            TextInput:
+#                text: str(int(Schange.value))
+#                size_hint: None, None
+#                height: '30sp'
+#                width: '32sp'
+#                multiline: False
+#                id: text_change
+#                on_text_validate: root.change_size_point(self.text)
+#
+#            ButtonRHO:
+#                text: 'Ok'
+#                size: '30sp', '30sp'
+#                on_press: root.change_size_point(text_change.text)
+#
+#            ButtonRHO:
+#                text: '|  |'
+#                size: '30sp', '30sp'
+#                on_press: root.select(self)
+#                press: False
+#                id: bt_box
+
+
+
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: 1., 1., 1., 1.
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            orientation: 'vertical'
+            id: export_image
+            BoxLayout:
+                size_hint_y: None
+                height: '12sp'
+                Widget:
+                    size_hint_x: None
+                    width: '100sp'
+                Points:
+                    id: bt_data
+                Label:
+                    text: 'Data'
+                    size_hint_x: None
+                    width: '35sp'
+                    color: 0., 0., 0., 1.
+                    font_size: '12sp'
+                Points:
+                    id: points_model
+                Label:
+                    text: 'Model'
+                    size_hint_x: None
+                    width: '45sp'
+                    color: 0., 0., 0., 1.
+                    font_size: '12sp'
+                Widget:
+                    size_hint_x: None
+                    width: '20sp'
+                    canvas:
+                        Color:
+                            rgba: 0, 0, 1., 1.
+                        Line:
+                            points: self.x, self.y + self.height/2, self.x + self.width, self.y + self.height/2
+                            width: sp(1.05)
+                Label:
+                    text: 'Rho+'
+                    size_hint_x: None
+                    width: '45sp'
+                    color: 0., 0., 0., 1.
+                    font_size: '12sp'
+
+
+
+
+
+
+
+            FloatLayout:
+
+                id: draw
+
+                FloatLayout:
+                    id: plot
+                    size: draw.size
+                    pos: draw.pos
+
+
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: '60sp'
+            spacing: '5sp'
+            padding: '10sp', '10sp'
+
+            Widget:
+
+            ButtonRHO:
+                text: 'Export Figure'
+                on_press: root.export_image()
+
+            ButtonRHO:
+                text: 'Merge rsp-dat'
+                on_press: root.open_merge_rsp_jones()
+
+            ButtonRHO:
+                text: 'Execute'
+                on_press: root.run_rhoplus()
+
+
+            # Menu Tools and Config
+
+            FloatLayout:
+                size_hint: None, None
+                size: 0,0
+                BoxLayout:
+                    size_hint: None, None
+                    height: self.spacing + len(self.children) * self.width
+                    width: '45dp'
+                    x: root.width - self.width - dp(20)
+                    y: root.height - self.height - dp(20)
+                    orientation: 'vertical'
+                    id: layout_tools
+                    spacing: '5dp'
+#                        canvas:
+#                            Color:
+#                                rgba: 1., 0, 0, 1.
+#                            Rectangle:
+#                                size: self.size
+#                                pos: self.pos
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-config.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
+                        on_press: root.open_settings()
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-select.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
+                        on_press: root.select(self)
+                        press: False
+                        id: bt_box
+
+#                    ButtonIcon:
+#                        background_normal: PWD_INSTALL + '/image/icon-point.png'
+#                        size_hint: None, None
+#                        height: layout_tools.width
+#                        width: layout_tools.width
+
+                    ButtonIcon:
+                        background_normal: PWD_INSTALL + '/image/icon-help.png'
+                        size_hint: None, None
+                        height: layout_tools.width
+                        width: layout_tools.width
+                        on_press: root.open_help()
+
+
+            #ButtonRHO:
+            #    text: 'Change Site'
+            #    on_press: root.change_site()
