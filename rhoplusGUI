@@ -457,7 +457,62 @@ class PopUPMerge(BoxLayout):
         arq_save.close()
 
     def rsp_jones_tf(self):
-        pass
+        rsp_jones = subprocess.getoutput('rsp2jones ../{}.dat xy_{}.rsp yx_{}.rsp {}'.format(
+            self.site_origin, self.site, self.site, 'composto'))
+
+        arq_save = open(self.ids.dir_merge.path + '/' + self.ids.text_save.text + 'tmp', 'w')
+        arq_save.write(rsp_jones)
+        arq_save.close()
+
+        file_jones_dat_origin = open('../'+self.site_origin+'.dat', 'r')
+        file_new_jones_xy_yx = open(self.ids.dir_merge.path + '/' + self.ids.text_save.text + 'tmp', 'r')
+
+
+        new = True
+        old = False
+
+        arq_merge_save = open(self.ids.dir_merge.path + '/' + self.ids.text_save.text, 'w')
+
+        i = 0
+
+        lines_new = file_new_jones_xy_yx.read().split('\n')
+
+        for line_origin in file_jones_dat_origin:
+
+            if i < len(lines_new):
+                line_new = lines_new[i]
+
+            _line_origin = line_origin.split(' ')
+            if _line_origin[0] == 'ZXX':
+                new = False
+                old = True
+
+            if _line_origin[0] == 'ZXY':
+                new = True
+                old = False
+
+            if _line_origin[0] == 'ZYX':
+                new = True
+                old = False
+
+            if _line_origin[0] == 'ZYY':
+                new = False
+                old = True
+
+            if _line_origin[0] == 'TZX':
+                new = False
+                old = True
+
+            if new:
+                arq_merge_save.write(line_new + '\n')
+            if old:
+                arq_merge_save.write(line_origin)
+
+            i += 1
+        arq_merge_save.close()
+
+
+
 
 
 class PopUPExportFigure(BoxLayout):
